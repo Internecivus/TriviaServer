@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="MorbidTriviaDB">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <!--<jta-data-source>java:jboss/datasources/db_trivia</jta-data-source>-->
+        <class>com.trivia.persistence.entity.QuestionEntity</class>
+        <class>com.trivia.persistence.entity.UserEntity</class>
+        <class>com.trivia.persistence.entity.RoleEntity</class>
+        <class>com.trivia.persistence.entity.CategoryEntity</class>
+        <shared-cache-mode>UNSPECIFIED</shared-cache-mode> <!-- TODO: How to enable cache for users, but disable it for /admin? -->
+        <properties>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/Trivia"/>
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <property name="hibernate.connection.username" value="root"/>
+            <property name="hibernate.connection.password" value="niniva01"/>
+            <property name="hibernate.archive.autodetection" value="class"/>
+            <!--<property name="javax.persistence.validation.mode" value="none"/>-->
+            <!--<property name="hibernate.validator.apply_to_ddl" value="false"/>-->
+            <!--<property name="hbm2ddl.auto" value="validate"/>-->
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect"/>
+            <property name="hibernate.hbm2ddl.import_files_sql_extractor" value="org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor"/>
+
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.drop-source" value="script" />
+            <property name="javax.persistence.schema-generation.drop-script-source" value="META-INF/sql/drop.ddl"/>
+            <property name="javax.persistence.schema-generation.create-source" value="script"/>
+            <property name="javax.persistence.schema-generation.create-script-source" value="META-INF/sql/create.ddl"/>
+            <property name="javax.persistence.sql-load-script-source" value="META-INF/sql/data.sql"/>
+        </properties>
+    </persistence-unit>
+</persistence>

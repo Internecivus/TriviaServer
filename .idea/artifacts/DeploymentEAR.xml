@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-ear" name="DeploymentEAR">
+    <output-path>$PROJECT_DIR$/out/artifacts/DeploymentEAR.ear</output-path>
+    <root id="root">
+      <element id="artifact" artifact-name="TriviaEAR:ear exploded" />
+    </root>
+  </artifact>
+</component>

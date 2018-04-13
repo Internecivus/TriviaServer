@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+    <ui:define name="title">
+        <h:outputText value="Create Question - MorbidTrivia"/>
+    </ui:define>
+
+    <ui:define name="main">
+        <p:messages id="messages" showDetail="true" closable="false">
+            <p:autoUpdate/>
+        </p:messages>
+
+        <p:panel header="Create Question">
+            <h:form enctype="multipart/form-data">
+            <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-2,ui-grid-col-9,ui-grid-col-1">
+                <h:outputLabel for="question">Question</h:outputLabel>
+                <h:inputText value="#{questionsCreateController.questionEntity.question}"
+                             id="question"/>
+                <p:message for="question"/>
+
+                <p:outputLabel for="first_answer">First Answer</p:outputLabel>
+                <p:inputText value="#{questionsCreateController.questionEntity.answerFirst}"
+                             id="first_answer"/>
+                <p:message for="first_answer"/>
+
+                <p:outputLabel for="second_answer">Second Answer</p:outputLabel>
+                <p:inputText value="#{questionsCreateController.questionEntity.answerSecond}"
+                             id="second_answer"/>
+                <p:message for="second_answer"/>
+
+                <p:outputLabel for="third_answer">Third Answer</p:outputLabel>
+                <p:inputText value="#{questionsCreateController.questionEntity.answerThird}"
+                             id="third_answer"/>
+                <p:message for="third_answer"/>
+
+                <p:outputLabel for="fourth_answer">Fourth Answer</p:outputLabel>
+                <p:inputText value="#{questionsCreateController.questionEntity.answerFourth}"
+                             id="fourth_answer"/>
+                <p:message for="fourth_answer"/>
+
+                <p:outputLabel for="correct_answer">Correct Answer</p:outputLabel>
+                <p:inputText value="#{questionsCreateController.questionEntity.answerCorrect}"
+                             id="correct_answer"/>
+                <p:message for="correct_answer"/>
+
+                <p:outputLabel for="comment">Comment</p:outputLabel>
+                <p:inputTextarea value="#{questionsCreateController.questionEntity.comment}"
+                             id="comment"/>
+                <p:message for="comment"/>
+
+                <p:outputLabel for="image">Image</p:outputLabel>
+                <p:fileUpload value="#{questionsCreateController.uploadedImage}"
+                              fileLimit="1"
+                              mode="simple"
+                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                              auto="true"
+                              id="image"
+                              invalidFileMessage="#{viewMessages['upload.invalidFile']}"
+                              fileLimitMessage="#{viewMessages['upload.fileLimit']}"
+                              invalidSizeMessage="#{viewMessages['upload.invalidSize']}"
+                              sizeLimit="500000"
+                              skinSimple="true"/>
+
+                <p:outputLabel for="categories">Categories</p:outputLabel>
+                <p:selectManyCheckbox converter="javax.faces.Integer"
+                                      id="categories"
+                                      layout="lineDirection"
+                                      value="#{questionsCreateController.categoriesUsed}">
+                    <f:selectItems value="#{questionsCreateController.categoriesAvailable}"
+                                   var="category"
+                                   itemValue="#{category.id}"
+                                   itemLabel="#{category.name}"/>
+                </p:selectManyCheckbox>
+                <p:message for="categories"/>
+
+                <p:commandButton action="#{questionsCreateController.create()}"
+                                 type="submit"
+                                 value="Create"
+                                 validateClient="true"
+                                 ajax="false"/>
+                <p:commandButton value="Reset"
+                                 type="reset"/>
+            </p:panelGrid>
+            </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>
+</html>

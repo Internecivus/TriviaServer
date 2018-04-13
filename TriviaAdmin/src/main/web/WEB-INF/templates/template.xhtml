@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{localeController.locale}">
+    <h:head>
+        <!--<link rel="stylesheet" href="css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>-->
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <title>
+            <ui:insert name="title">
+            </ui:insert>
+        </title>
+    </h:head>
+
+    <h:body>
+        <h:outputStylesheet library="css" name="primefaces-override.css"/>
+        <div id="header" class="container text-center">
+            <h1>MorbidTrivia Admin</h1>
+
+            <ul class="list-inline list-unstyled">
+                <li>
+                    <!--TODO: Create custom tag to avoid repetition. See BalusC example.-->
+                    <h:link outcome="/questions/list"
+                            styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/questions') ? 'active' : ''}"
+                            value="#{viewMessages['page.questions.name']}"/>
+                </li>
+                <li>
+                    <h:link outcome="/categories/list"
+                            styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/categories') ? 'active' : ''}"
+                            value="#{viewMessages['page.categories.name']}"/>
+                </li>
+                <li>
+                    <h:link outcome="/users/list"
+                            styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/users') ? 'active' : ''}"
+                            value="#{viewMessages['page.users.name']}"/>
+                </li>
+                <li>
+                    <h:link outcome="/logs/list"
+                            styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/list') ? 'active' : ''}"
+                            value="#{viewMessages['page.logs.name']}"/>
+                </li>
+                <li style="{display:inline-block}">
+                    <h:form>
+                        <p:commandButton id="logout"
+                                         value="#{viewMessages.logout}"
+                                         styleClass="btn btn-primary btn-sm"
+                                         action="#{logoutController.logout}"/>
+                    </h:form>
+                </li>
+            </ul>
+
+            <h:form>
+                <h:selectOneMenu value="#{localeController.language}" onchange="submit()">
+                    <f:selectItem itemValue="en" itemLabel="English" />
+                    <f:selectItem itemValue="hr" itemLabel="Croatian" />
+                </h:selectOneMenu>
+            </h:form>
+
+            <div class="container text-center">
+                <ul class="list-inline list-unstyled">
+                    <li><h:button outcome="list"
+                                  value="See All"/></li>
+                    <li><h:button outcome="create"
+                                  value="Create New"/></li>
+                </ul>
+            </div>
+        </div>
+
+        <!--<ui:insert name="header"><ui:include src="/views/template/header.xhtml" />-->
+
+        <div id="main"
+             class="col-xs-12 col-xs-offset-0 col-lg-10 col-lg-offset-1">
+            <ui:insert name="main">
+            </ui:insert>
+        </div>
+
+        <div>
+
+        </div>
+    </h:body>
+</f:view>
+</html>
