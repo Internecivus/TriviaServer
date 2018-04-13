@@ -1,7 +1,7 @@
 package com.trivia.core.services;
 
 import com.trivia.core.exception.EntityNotFoundException;
-import com.trivia.core.resources.*;
+import com.trivia.core.utility.Generator;
 import com.trivia.persistence.entity.CategoryEntity_;
 import com.trivia.persistence.entity.QuestionEntity;
 import com.trivia.persistence.entity.QuestionEntity_;
@@ -114,6 +114,8 @@ public class QuestionBean {
         typedQuery.setFirstResult(pageCurrent * pageSize - pageSize);
 
         questions = typedQuery.getResultList();
+
+        logger.info("Hello!");
 
         return questions;
     }

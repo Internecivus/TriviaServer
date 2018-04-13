@@ -5,7 +5,7 @@ import com.trivia.core.services.QuestionBean;
 import com.trivia.persistence.entity.CategoryEntity;
 import com.trivia.persistence.entity.QuestionEntity;
 import org.primefaces.model.UploadedFile;
-import com.trivia.core.resources.ImageManager;
+import com.trivia.core.utility.ImageManager;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;

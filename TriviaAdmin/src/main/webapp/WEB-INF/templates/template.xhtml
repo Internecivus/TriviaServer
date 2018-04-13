@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--suppress ELValidationInJSP -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -26,6 +27,7 @@
             <ul class="list-inline list-unstyled">
                 <li>
                     <!--TODO: Create custom tag to avoid repetition. See BalusC example.-->
+                    <!--suppress ELValidationInJSP -->
                     <h:link outcome="/questions/list"
                             styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/questions') ? 'active' : ''}"
                             value="#{viewMessages['page.questions.name']}"/>
@@ -41,6 +43,7 @@
                             value="#{viewMessages['page.users.name']}"/>
                 </li>
                 <li>
+                    <!--suppress ELValidationInJSP -->
                     <h:link outcome="/logs/list"
                             styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/list') ? 'active' : ''}"
                             value="#{viewMessages['page.logs.name']}"/>

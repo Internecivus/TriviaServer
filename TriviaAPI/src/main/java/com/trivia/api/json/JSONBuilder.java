@@ -1,9 +1,5 @@
 package com.trivia.api.json;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 /**
  * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
  */

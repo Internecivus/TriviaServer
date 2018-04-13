@@ -1,13 +1,12 @@
 package com.trivia.persistence.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 /**
  * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
  */
 @Entity
-@Table(name = "role", schema = "Trivia", catalog = "")
+@Table(name = "role", schema = "Trivia")
 public class RoleEntity {
     private String name;
     private int id;

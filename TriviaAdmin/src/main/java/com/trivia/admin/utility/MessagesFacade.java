@@ -2,7 +2,6 @@ package com.trivia.admin.utility;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 
 /**
  * Created by faust. Part of Trivia Project. All rights reserved. 2018

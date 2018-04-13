@@ -1,6 +1,5 @@
 package com.trivia.api.api.v1;
 
-import com.trivia.api.json.JSONBuilder;
 import com.trivia.core.services.CategoryBean;
 import com.trivia.persistence.entity.CategoryEntity;
 

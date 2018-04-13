@@ -1,7 +1,5 @@
 package com.trivia.admin.controller;
 
-import org.primefaces.config.WebXmlParser;
-
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
 import javax.faces.context.FacesContext;

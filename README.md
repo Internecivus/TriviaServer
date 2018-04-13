@@ -8,7 +8,7 @@ TODO: Global messages utility
 
 // Models
 TODO: Projections for admin and for client
-TODO: How to may OnetoMany, etc.
+TODO: How to do OnetoMany, etc.
 
 // REST
 TODO: HATEOAS self link rel for Entities
@@ -20,7 +20,6 @@ TODO: Logging to file
 TODO: Easy registration of SAM??
 TODO: Logout, Login, identity store, credentials
 TODO: Save number of requests per API key, instead of per IP
-TODO: Put rolesallowed in ejb instead of rest?? Which login forms
 TODO: RememberMe login
 
 // Client

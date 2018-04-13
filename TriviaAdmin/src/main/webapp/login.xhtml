@@ -23,18 +23,18 @@
                 <div class="form-group">
                     <h:outputLabel styleClass="control-label"
                                    for="username">Username</h:outputLabel>
-                    <h:inputText value="${loginBean.name}"
+                    <h:inputText value="${loginController.name}"
                                  styleClass="form-control"
                                  id="username"/>
 
                     <h:outputLabel styleClass="control-label"
                                    for="password">Password</h:outputLabel>
-                    <h:inputSecret value="${loginBean.password}"
+                    <h:inputSecret value="${loginController.password}"
                                  type="password"
                                  styleClass="form-control"
                                  id="password"/>
 
-                    <h:commandButton action="#{loginBean.login()}"
+                    <h:commandButton action="#{loginController.login()}"
                                      type="submit"
                                      value="Login"
                                      styleClass="btn btn-default"/>

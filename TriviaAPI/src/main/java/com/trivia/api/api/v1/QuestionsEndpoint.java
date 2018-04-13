@@ -2,7 +2,6 @@ package com.trivia.api.api.v1;
 
 import com.trivia.core.services.QuestionBean;
 import com.trivia.persistence.entity.QuestionEntity;
-import com.trivia.api.json.JSONBuilder;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;

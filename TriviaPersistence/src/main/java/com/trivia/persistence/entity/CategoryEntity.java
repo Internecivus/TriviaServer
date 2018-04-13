@@ -2,14 +2,12 @@ package com.trivia.persistence.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
  */
 @Entity
-@Table(name = "category", schema = "Trivia", catalog = "")
+@Table(name = "category", schema = "Trivia")
 public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

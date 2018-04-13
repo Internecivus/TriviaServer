@@ -3,8 +3,6 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="ejb" url="file://$PROJECT_DIR$/TriviaCore" />
-    <file type="ejb" url="file://$PROJECT_DIR$/TriviaPersistence" />
-    <file type="javaeeApplication" url="file://$PROJECT_DIR$/TriviaEAR" />
     <file type="web" url="file://$PROJECT_DIR$/TriviaAdmin" />
     <file type="web" url="file://$PROJECT_DIR$/TriviaAPI" />
   </component>

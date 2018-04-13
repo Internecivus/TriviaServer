@@ -1,4 +1,4 @@
-package com.trivia.core.resources;
+package com.trivia.core.utility;
 
 import java.io.IOException;
 import java.io.InputStream;

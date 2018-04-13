@@ -2,7 +2,6 @@ package com.trivia.persistence.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
@@ -11,7 +10,7 @@ import java.util.Collection;
 //TODO: There should be a different database/table for sensitive information.
 //TODO: Name/email should be hashed too.
 @Entity
-@Table(name = "user", schema = "Trivia", catalog = "")
+@Table(name = "user", schema = "Trivia")
 public class UserEntity implements Serializable {
     private String password;
     private int id;
