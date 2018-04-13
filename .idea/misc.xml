@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="ejb" url="file://$PROJECT_DIR$/TriviaCore" />
-    <file type="web" url="file://$PROJECT_DIR$/TriviaAdmin" />
-    <file type="web" url="file://$PROJECT_DIR$/TriviaAPI" />
+    <file type="javaeeApplication" url="file://$PROJECT_DIR$/TriviaEAR" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">

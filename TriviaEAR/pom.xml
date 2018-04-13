@@ -11,7 +11,7 @@
     <groupId>com.trivia</groupId>
     <artifactId>TriviaEAR</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <packaging>ear</packaging>
 
     <name>Trivia EAR</name>
 

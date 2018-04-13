@@ -15,6 +15,7 @@
         <module name="TriviaAdmin" />
         <module name="TriviaAPI" />
         <module name="TriviaCore" />
+        <module name="TriviaEAR" />
         <module name="TriviaPersistence" />
       </profile>
     </annotationProcessing>
