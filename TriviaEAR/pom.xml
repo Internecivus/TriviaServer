@@ -38,21 +38,6 @@
                     <version>6</version>
                     <defaultLibBundleDir>lib</defaultLibBundleDir>
                     <generateApplicationXml>true</generateApplicationXml>
-
-                    <modules>
-                        <jarModule>
-                            <groupId>com.trivia</groupId>
-                            <artifactId>TriviaPersistence</artifactId>
-                            <bundleFileName>TriviaPersistence.jar</bundleFileName>
-                            <bundleDir>lib</bundleDir>
-                            <includeInApplicationXml>true</includeInApplicationXml>
-                        </jarModule>
-                        <!--<webModule>-->
-                            <!--<groupId>com.trivia</groupId>-->
-                            <!--<artifactId>TriviaAdmin</artifactId>-->
-                            <!--<contextRoot>/admin</contextRoot>-->
-                        <!--</webModule>-->
-                    </modules>
                 </configuration>
             </plugin>
         </plugins>

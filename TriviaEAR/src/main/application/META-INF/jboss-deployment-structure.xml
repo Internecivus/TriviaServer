@@ -1,6 +1,6 @@
-<!--<?xml version="1.0" encoding="UTF-8"?>-->
-<!--<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">-->
-    <!--<deployment>-->
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <deployment>
         <!--<exclusions>-->
             <!--<module name="org.apache.log4j"/>-->
             <!--<module name="org.slf4j"/>-->
@@ -16,5 +16,5 @@
         <!--<exclude-subsystems>-->
             <!--<subsystem name="logging"/>-->
         <!--</exclude-subsystems>-->
-    <!--</deployment>-->
-<!--</jboss-deployment-structure>-->
+    </deployment>
+</jboss-deployment-structure>
