@@ -2,32 +2,38 @@ package com.trivia.core.security;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
 
 /**
  * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
  */
+
+// Reference implementation is Soteria.
 public class CryptoManager {
     private final static int ITERATIONS = 9999; // Aim for half a second.
     private final static int KEY_LENGTH = 160;
     private final static String RANDOM_ALGORITHM = "SHA1PRNG";
     private final static String HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
 
-    public static boolean validateMessage(String providedMessage, String storedHash) throws NoSuchAlgorithmException, InvalidKeySpecException
+    public static boolean validateMessage(String providedMessage, String storedHash)
     {
         String[] parts = storedHash.split(":");
         int iterations = Integer.parseInt(parts[0]);
-        byte[] salt = fromHex(parts[1]);
-        byte[] storedDigest = fromHex(parts[2]);
+        byte[] salt = Base64.getDecoder().decode(parts[1]);
+        byte[] storedDigest = Base64.getDecoder().decode((parts[2]));
 
         PBEKeySpec keySpec = new PBEKeySpec(providedMessage.toCharArray(), salt, iterations, storedDigest.length * 8);
-        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(HASH_ALGORITHM);
-        byte[] providedDigest = secretKeyFactory.generateSecret(keySpec).getEncoded();
 
-        return slowEquals(providedDigest, storedDigest);
+        try {
+            byte[] providedDigest = SecretKeyFactory.getInstance(HASH_ALGORITHM).generateSecret(keySpec).getEncoded();
+            return slowEquals(providedDigest, storedDigest);
+        }
+        catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     private static boolean slowEquals(byte[] hash1, byte[] hash2) {
@@ -38,46 +44,37 @@ public class CryptoManager {
         return difference == 0;
     }
 
-    public static String hashMessage(String message) throws NoSuchAlgorithmException, InvalidKeySpecException
+    public static String hashMessage(String message)
     {
         char[] messageChars = message.toCharArray();
         byte[] saltBytes = getSalt();
 
         PBEKeySpec keySpec = new PBEKeySpec(messageChars, saltBytes, ITERATIONS, KEY_LENGTH);
-        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(RANDOM_ALGORITHM);
-        byte[] digest = secretKeyFactory.generateSecret(keySpec).getEncoded();
-
-        return ITERATIONS + ":" + toHex(saltBytes) + ":" + toHex(digest);
-    }
-
-    private static byte[] getSalt() throws NoSuchAlgorithmException
-    {
-        SecureRandom secureRandom = SecureRandom.getInstance(RANDOM_ALGORITHM);
-        byte[] salt = new byte[KEY_LENGTH / 8];
-        secureRandom.nextBytes(salt);
-        return salt;
-    }
-
-    //TODO: toHex and fromHex needs to be audited.
-    private static String toHex(byte[] array)
-    {
-        BigInteger bi = new BigInteger(1, array);
-        String hex = bi.toString(16);
-        int paddingLength = (array.length * 2) - hex.length();
-        if (paddingLength > 0) {
-            return String.format("%0"  +paddingLength + "d", 0) + hex;
+        try {
+            byte[] digest = SecretKeyFactory.getInstance(RANDOM_ALGORITHM).generateSecret(keySpec).getEncoded();
+            String storedHash =
+                    ITERATIONS
+                    + ":"
+                    + Base64.getEncoder().encodeToString(saltBytes)
+                    + ":"
+                    + Base64.getEncoder().encodeToString((digest));
+            return storedHash;
         }
-        else {
-            return hex;
+        catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new IllegalStateException(e);
         }
     }
 
-    private static byte[] fromHex(String hex)
+    private static byte[] getSalt()
     {
-        byte[] bytes = new byte[hex.length() / 2];
-        for(int i = 0; i<bytes.length; i++) {
-            bytes[i] = (byte)Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+        try {
+            SecureRandom secureRandom = SecureRandom.getInstance(RANDOM_ALGORITHM);
+            byte[] salt = new byte[KEY_LENGTH / 8];
+            secureRandom.nextBytes(salt);
+            return salt;
         }
-        return bytes;
+        catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.trivia.api.authentication;
+package com.trivia.admin.security.authentication;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -6,8 +6,10 @@ import javax.security.enterprise.AuthenticationStatus;
 import javax.security.enterprise.authentication.mechanism.http.*;
 import javax.security.enterprise.credential.Credential;
 import javax.security.enterprise.identitystore.IdentityStore;
+import javax.security.enterprise.identitystore.IdentityStoreHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * Created by faust. Part of Trivia Project. All rights reserved. 2018
@@ -21,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
         errorPage = "",
         useForwardToLogin = false)
 @ApplicationScoped
-public class TriviaFormAuthenticationMechanism implements HttpAuthenticationMechanism {
+public class AdminFormAuthenticationMechanism implements HttpAuthenticationMechanism {
     @Inject private IdentityStore identityStore;
 
     @Override

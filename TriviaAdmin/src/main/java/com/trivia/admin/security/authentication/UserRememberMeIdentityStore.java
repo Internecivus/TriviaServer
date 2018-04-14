@@ -1,4 +1,4 @@
-package com.trivia.api.authentication;
+package com.trivia.admin.security.authentication;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -13,7 +13,7 @@ import java.util.Set;
  * Created by faust. Part of TriviaServer Project. All rights reserved. 2018
  */
 @ApplicationScoped
-public class TriviaRememberMeIdentityStore implements RememberMeIdentityStore {
+public class UserRememberMeIdentityStore implements RememberMeIdentityStore {
     @Inject private HttpServletRequest request;
 
     @Override

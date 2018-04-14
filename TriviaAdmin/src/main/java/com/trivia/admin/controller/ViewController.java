@@ -22,7 +22,7 @@ public class ViewController {
     public void init() {
         String viewId = facesContext.getViewRoot().getViewId();
         path = viewId.substring(1, viewId.lastIndexOf('.'));
-        name = path.replaceFirst("WEB\\-INF/", "").replaceAll("\\W+", "_");
+        name = path.replaceFirst("WEB-INF/", "").replaceAll("\\W+", "_");
     }
 
     public boolean pathIs(String path) {

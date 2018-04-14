@@ -1,4 +1,4 @@
-package com.trivia.api.authentication;
+package com.trivia.admin.security.authentication;
 
 import com.trivia.core.exception.CredentialsException;
 import com.trivia.core.services.UserBean;
@@ -19,7 +19,7 @@ import javax.security.enterprise.identitystore.IdentityStore;
 //TODO: Reset password via email, using a nonce random binary blob token valid for 15 min tied to the account via a special table.
 //TODO: Creation and logging in should be done via two different database users with different permissions (create vs read)
 @ApplicationScoped
-public class TriviaIdentityStore implements IdentityStore {
+public class UserIdentityStore implements IdentityStore {
     @Inject private UserBean userBean;
 
     @Override
@@ -52,7 +52,7 @@ public class TriviaIdentityStore implements IdentityStore {
 //                throw new EmailNotVerifiedException();
 //            }
 
-            return new CredentialValidationResult(new TriviaCallerPrincipal(user));//user.getRolesAsStrings());
+            return new CredentialValidationResult(new UserCallerPrincipal(user));//user.getRolesAsStrings());
         }
         catch (CredentialsException e) {
             return CredentialValidationResult.INVALID_RESULT;

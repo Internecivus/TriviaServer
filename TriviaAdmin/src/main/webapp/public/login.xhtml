@@ -2,10 +2,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://java.sun.com/jstl/core">
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
 <f:view>
     <h:head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
@@ -18,30 +19,34 @@
 
         <div id="main" class="col-xs-10 col-xs-offset-1 col-lg-2 col-lg-offset-5">
             <h:form action="">
-                <c:set var="user" value=""/>
 
                 <div class="form-group">
                     <h:outputLabel styleClass="control-label"
                                    for="username">Username</h:outputLabel>
-                    <h:inputText value="${loginController.name}"
+                    <h:inputText value="#{loginController.user.name}"
                                  styleClass="form-control"
                                  id="username"/>
 
                     <h:outputLabel styleClass="control-label"
                                    for="password">Password</h:outputLabel>
-                    <h:inputSecret value="${loginController.password}"
+                    <h:inputSecret value="#{loginController.user.password}"
                                  type="password"
                                  styleClass="form-control"
                                  id="password"/>
 
+                    <h:outputText styleClass="control-label"
+                                  for="remember_me">Remember me?</h:outputText>
+                    <h:selectBooleanCheckbox id="remember_me"
+                                             value="#{loginController.rememberMe}}"/>
+
                     <h:commandButton action="#{loginController.login()}"
                                      type="submit"
                                      value="Login"
+                                     ajax="false"
                                      styleClass="btn btn-default"/>
                 </div>
             </h:form>
         </div>
     </h:body>
 </f:view>
-
 </html>

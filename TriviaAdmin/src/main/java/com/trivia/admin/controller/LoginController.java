@@ -1,6 +1,7 @@
 package com.trivia.admin.controller;
 
 import com.trivia.core.services.UserBean;
+import com.trivia.persistence.entity.UserEntity;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -16,8 +17,8 @@ import java.io.Serializable;
 @ViewScoped
 public class LoginController implements Serializable {
     @Inject private UserBean userBean;
-    private String name;
-    private String password;
+    private UserEntity user;
+    private boolean rememberMe;
 
     @PostConstruct
     public void init() {
@@ -25,22 +26,22 @@ public class LoginController implements Serializable {
     }
 
     public void login() {
-        userBean.validateCredentials(name, password);
+        userBean.validateCredentials(user.getName(), user.getPassword());
     }
 
-    public String getName() {
-        return name;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
-    public String getPassword() {
-        return password;
+    public boolean getRememberMe() {
+        return rememberMe;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setRememberMe(boolean rememberMe) {
+        this.rememberMe = rememberMe;
     }
 }

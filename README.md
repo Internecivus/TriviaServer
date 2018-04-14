@@ -21,6 +21,7 @@ TODO: Easy registration of SAM??
 TODO: Logout, Login, identity store, credentials
 TODO: Save number of requests per API key, instead of per IP
 TODO: RememberMe login
+TODO: Reset password
 
 // Client
 TODO: Salje zahtjev za API keyom -> stvara se "Client" user i api key -> moze vrsiti requestove

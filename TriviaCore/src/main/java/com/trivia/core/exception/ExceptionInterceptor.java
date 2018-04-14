@@ -25,8 +25,8 @@ public class ExceptionInterceptor implements Serializable {
         catch (javax.persistence.NoResultException e) {
             throw new NoResultException();
         }
-        catch (java.security.NoSuchAlgorithmException e) {
-            throw new SystemException();
+        catch (IllegalStateException e) {
+            throw new SystemException(e);
         }
     }
 }

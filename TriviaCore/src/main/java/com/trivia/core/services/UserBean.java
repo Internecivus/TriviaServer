@@ -64,20 +64,11 @@ public class UserBean {
             return null;
         }
 
-        try {
-            if(CryptoManager.validateMessage(password, user.getPassword())) {
-                return user;
-            }
-            else {
-                throw new InvalidCredentialsException();
-            }
-        }
-        catch (NoSuchAlgorithmException e) {
 
+        if(CryptoManager.validateMessage(password, user.getPassword())) {
+            return user;
         }
-        catch (InvalidKeySpecException e) {
 
-        }
 
         return null;
     }
@@ -93,16 +84,9 @@ public class UserBean {
 //        roles.add(em.merge(role));
 //        user.setRoles(roles);
 
-        try {
-            newUser.setPassword(CryptoManager.hashMessage(newUser.getPassword()));
-        }
-        //These are system exceptions
-        catch (NoSuchAlgorithmException e) {
-            throw new SystemException();
-        }
-        catch (InvalidKeySpecException e) {
 
-        }
+        newUser.setPassword(CryptoManager.hashMessage(newUser.getPassword()));
+        
 
         em.persist(newUser);
         em.flush();
