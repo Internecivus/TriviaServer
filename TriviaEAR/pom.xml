@@ -41,6 +41,8 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <finalName>TriviaEAR.ear</finalName> <!--An .ear extensions needs to be added because otherwise Intellij has a problem with an exploded deployment.-->
     </build>
     <dependencies>
         <dependency>

@@ -10,7 +10,7 @@
         </locale-config>
 
         <resource-bundle>
-            <base-name>com.trivia.admin.resources.ViewMessages</base-name>
+            <base-name>ViewMessages</base-name>
             <var>viewMessages</var>
         </resource-bundle>
     </application>
