@@ -19,7 +19,7 @@ import java.util.List;
 
 @Stateless
 public class CategoryBean {
-    @PersistenceContext(unitName = "MorbidTriviaDB")
+    @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
     //@PersistenceContext(properties={@PersistenceProperty(name="javax.persistence.sharedCache.mode", value="ALL")})
     @Inject private Logger logger;

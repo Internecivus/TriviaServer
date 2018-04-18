@@ -16,7 +16,7 @@ import java.security.spec.InvalidKeySpecException;
 
 @Stateless
 public class UserBean {
-    @PersistenceContext(unitName = "MorbidTriviaDB")
+    @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
     private UserEntity userEntity;
 

@@ -27,7 +27,7 @@ import java.util.List;
 // TODO: Needs heavy performance testing
 @Stateless
 public class QuestionBean {
-    @PersistenceContext(unitName = "MorbidTriviaDB")
+    @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
     @EJB private UserBean userBean;
     @Inject private Logger logger;

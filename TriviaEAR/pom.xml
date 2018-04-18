@@ -22,6 +22,12 @@
     <dependencies>
         <dependency>
             <groupId>com.trivia</groupId>
+            <artifactId>TriviaPersistence</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.trivia</groupId>
             <artifactId>TriviaCore</artifactId>
             <version>1.0-SNAPSHOT</version>
             <type>ejb</type>
@@ -38,12 +44,6 @@
             <version>1.0-SNAPSHOT</version>
             <type>war</type>
         </dependency>
-        <dependency>
-            <groupId>com.trivia</groupId>
-            <artifactId>TriviaPersistence</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
     </dependencies>
 
     <build>
@@ -56,6 +56,7 @@
                     <version>8</version>
                     <defaultLibBundleDir>lib</defaultLibBundleDir>
                     <generateApplicationXml>true</generateApplicationXml>
+                    <initializeInOrder>true</initializeInOrder>
                     <modules>
                         <jarModule>
                             <groupId>com.trivia</groupId>

@@ -33,11 +33,6 @@ https://stackoverflow.com/questions/43574426/how-to-resolve-java-lang-noclassdef
             <version>2.3.0</version>
         </dependency>
         <dependency>
-            <groupId>javax.xml.ws</groupId>
-            <artifactId>jaxws-api</artifactId>
-            <version>2.3.0</version>
-        </dependency>
-        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>8.0</version>
@@ -56,11 +51,12 @@ https://stackoverflow.com/questions/43574426/how-to-resolve-java-lang-noclassdef
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
                 <configuration>
-                    <source>9</source>
-                    <target>9</target>
-                    <compilerArgs>
-                        <arg>--add-modules=java.se.ee</arg>
-                    </compilerArgs>
+                    <source>10</source>
+                    <target>10</target>
+                    <!--Not needed since we added the dependencies manually.-->
+                    <!--<compilerArgs>-->
+                        <!--<arg>&#45;&#45;add-modules=java.se.ee</arg>-->
+                    <!--</compilerArgs>-->
                     <fork>true</fork>
                 </configuration>
             </plugin>
@@ -70,8 +66,8 @@ https://stackoverflow.com/questions/43574426/how-to-resolve-java-lang-noclassdef
                 <version>1.2.1.Final</version>
                 <configuration>
                     <hostname>localhost</hostname>
-                    <username>_username_</username>
-                    <password>_password_</password>
+                    <username>_USERNAME_</username>
+                    <password>_PASSWORD_</password>
                 </configuration>
             </plugin>
         </plugins>
