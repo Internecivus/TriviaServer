@@ -6,7 +6,22 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/admin.xhtml">
     <ui:define name="title">
-        <h:outputText value="Edit Question - MorbidTrivia"/>
+        <h:outputText value="#{viewMessages['action.edit']} #{viewMessages['page.question.name']} - #{viewMessages['this.name']}"/>
+    </ui:define>
+
+    <ui:define name="subnavigation">
+        <div class="container text-center">
+            <ul class="list-inline list-unstyled">
+                <li>
+                    <h:button outcome="list"
+                              value="#{viewMessages['action.all']}"/>
+                </li>
+                <li>
+                    <h:button outcome="create"
+                              value="#{viewMessages['action.create']}"/>
+                </li>
+            </ul>
+        </div>
     </ui:define>
 
     <ui:define name="main">

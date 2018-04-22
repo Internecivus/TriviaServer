@@ -1,5 +1,7 @@
 package com.trivia.core.security;
 
+import com.trivia.core.utility.Generator;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
@@ -17,8 +19,6 @@ import java.util.Base64;
 public final class CryptoManager {
     private final static int ITERATIONS = 9999; // Aim for half a second.
     private final static int KEY_LENGTH = 160;
-    private final static String RANDOM_ALGORITHM = "SHA1PRNG";
-    private final static String RANDOM_ALGORITHM_PROVIDER = "SUN";
     private final static String HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
 
     public static boolean validateMessage(String providedMessage, String storedHash) {
@@ -48,7 +48,7 @@ public final class CryptoManager {
 
     public static String hashMessage(String message) {
         char[] messageChars = message.toCharArray();
-        byte[] saltBytes = getSalt();
+        byte[] saltBytes = Generator.generateSecureRandomBytes(KEY_LENGTH / 8);
 
         PBEKeySpec keySpec = new PBEKeySpec(messageChars, saltBytes, ITERATIONS, KEY_LENGTH);
         try {
@@ -62,19 +62,6 @@ public final class CryptoManager {
             return storedHash;
         }
         catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    private static byte[] getSalt() {
-        try {
-            // TODO: Might not be portable.
-            SecureRandom secureRandom = SecureRandom.getInstance(RANDOM_ALGORITHM, RANDOM_ALGORITHM_PROVIDER);
-            byte[] salt = new byte[KEY_LENGTH / 8];
-            secureRandom.nextBytes(salt);
-            return salt;
-        }
-        catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             throw new IllegalStateException(e);
         }
     }

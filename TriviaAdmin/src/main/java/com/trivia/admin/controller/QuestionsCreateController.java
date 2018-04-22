@@ -1,13 +1,11 @@
 package com.trivia.admin.controller;
 
 import com.trivia.admin.utility.Messages;
-import com.trivia.core.exception.BusinessException;
-import com.trivia.core.service.CategoryBean;
-import com.trivia.core.service.QuestionBean;
+import com.trivia.core.service.CategoryService;
+import com.trivia.core.service.QuestionService;
 import com.trivia.persistence.entity.CategoryEntity;
 import com.trivia.persistence.entity.QuestionEntity;
 import org.primefaces.model.UploadedFile;
-import com.trivia.core.utility.ImageManager;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -16,9 +14,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityExistsException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.PropertyResourceBundle;
 
@@ -28,8 +24,8 @@ import java.util.PropertyResourceBundle;
 @Named
 @ViewScoped
 public class QuestionsCreateController implements Serializable {
-    @Inject private QuestionBean questionBean; //TODO: Needs to be transient?
-    @Inject private CategoryBean categoryBean;
+    @Inject private QuestionService questionService; //TODO: Needs to be transient?
+    @Inject private CategoryService categoryService;
     @Inject private transient PropertyResourceBundle viewMessages;
     @Inject private transient FacesContext facesContext;
     private QuestionEntity questionEntity;
@@ -40,16 +36,16 @@ public class QuestionsCreateController implements Serializable {
     @PostConstruct
     public void init() {
         this.questionEntity = new QuestionEntity();
-        this.categoriesAvailable = categoryBean.getAll();
+        this.categoriesAvailable = categoryService.getAll();
     }
 
     public String create() {
         try {
             if (uploadedImage.getSize() > 0) {
-                questionBean.createWithImage(questionEntity, uploadedImage.getFileName(), uploadedImage.getInputstream());
+                questionService.createWithImage(questionEntity, uploadedImage.getFileName(), uploadedImage.getInputstream());
             }
             else {
-                questionBean.create(questionEntity);
+                questionService.create(questionEntity);
             }
 
             Messages.addInfoGlobalFlash(viewMessages.getString("success"), viewMessages.getString("create.success"));

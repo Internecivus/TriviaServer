@@ -15,7 +15,9 @@ import javax.security.enterprise.authentication.mechanism.http.AuthenticationPar
 import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.PropertyResourceBundle;
 
 /**
  * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
@@ -26,35 +28,38 @@ import java.io.Serializable;
 public class LoginController implements Serializable {
     @Inject private FacesContext facesContext;
     @Inject private SecurityContext securityContext;
+    @Inject private transient PropertyResourceBundle viewMessages;
     private UserEntity userEntity;
     private boolean rememberMe;
 
     @PostConstruct
-    public void init() {
+    public void init() throws IOException {
         userEntity = new UserEntity();
+
+        if (securityContext.getCallerPrincipal() != null) {
+            facesContext.getExternalContext().redirect("/admin/index.xhtml");
+        }
     }
 
-    public void login() {
+    public void login() throws IOException {
+        AuthenticationStatus authenticationStatus = securityContext.authenticate(
+                (HttpServletRequest) facesContext.getExternalContext().getRequest(),
+                (HttpServletResponse) facesContext.getExternalContext().getResponse(),
+                AuthenticationParameters.withParams()
+                        .credential(new UsernamePasswordCredential(userEntity.getName(), userEntity.getPassword()))
+                        .newAuthentication(true)
+                        .rememberMe(rememberMe)
+        );
 
-        try {
-            AuthenticationStatus authenticationStatus = securityContext.authenticate(
-                    (HttpServletRequest) facesContext.getExternalContext().getRequest(),
-                    (HttpServletResponse) facesContext.getExternalContext().getResponse(),
-                    AuthenticationParameters.withParams()
-                            .credential(new UsernamePasswordCredential(userEntity.getName(), userEntity.getPassword()))
-                            .newAuthentication(true)
-                            .rememberMe(rememberMe)
-            );
-
-            if (authenticationStatus == AuthenticationStatus.SEND_FAILURE) {
-                Messages.addErrorGlobal("Failed", "Authentication failed.");
-                facesContext.validationFailed();
-            } else if (authenticationStatus == AuthenticationStatus.SEND_CONTINUE) {
-                facesContext.responseComplete();
-            }
+        if (authenticationStatus == AuthenticationStatus.SEND_FAILURE) {
+            Messages.addErrorGlobal(viewMessages.getString("failure"),viewMessages.getString("login.failure"));
+            facesContext.validationFailed();
         }
-        catch (BusinessException e) {
-            Messages.addErrorGlobal("Failed", "Authentication failed.");
+        else if (authenticationStatus == AuthenticationStatus.SEND_CONTINUE) {
+            facesContext.responseComplete();
+        }
+        else if (authenticationStatus == AuthenticationStatus.SUCCESS) {
+            facesContext.getExternalContext().redirect("/admin/index.xhtml");
         }
     }
 

@@ -10,14 +10,11 @@ import com.trivia.persistence.entity.UserEntity_;
 import javax.ejb.Stateless;
 import javax.persistence.*;
 import javax.persistence.criteria.*;
+import java.sql.Timestamp;
 import java.util.List;
 
-/**
- * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
- */
-
 @Stateless
-public class UserBean {
+public class UserService {
     @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
 
@@ -52,6 +49,10 @@ public class UserBean {
         catch (NoResultException e) {
             return null;
         }
+    }
+
+    public void makeProvider() {
+        // TODO: api
     }
 
     public void update(UserEntity updatedUser) {
@@ -90,11 +91,7 @@ public class UserBean {
             throw new EntityExistsException();
         }
 
-//        RoleName role = roleBean.getUserRole();
-//        List<RoleName> roles = new ArrayList<RoleName>();
-//        roles.add(em.merge(role));
-//        user.setRoles(roles);
-
+        newUser.setDateCreated(new Timestamp(System.currentTimeMillis()));
         newUser.setPassword(CryptoManager.hashMessage(newUser.getPassword()));
 
         em.persist(newUser);

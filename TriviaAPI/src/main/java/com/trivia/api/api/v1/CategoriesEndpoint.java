@@ -1,6 +1,6 @@
 package com.trivia.api.api.v1;
 
-import com.trivia.core.service.CategoryBean;
+import com.trivia.core.service.CategoryService;
 import com.trivia.persistence.entity.CategoryEntity;
 
 import javax.inject.Inject;
@@ -15,12 +15,12 @@ import java.util.List;
 
 @Path("/categories")
 public class CategoriesEndpoint {
-    @Inject private CategoryBean categoryBean;
+    @Inject private CategoryService categoryService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCategories() {
-        List<CategoryEntity> categories = categoryBean.getAll();
+        List<CategoryEntity> categories = categoryService.getAll();
 
 
 

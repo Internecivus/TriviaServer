@@ -5,6 +5,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +14,11 @@ import java.util.stream.Collectors;
 
 /**
  * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
+ */
+
+/**
+ * TODO: We are mixing logic in User since it is acting as both a "normal" user and a provider. A separate provider
+ * table/entity should be made.
  */
 @Entity
 @Table(name = "user", schema = "Trivia")
@@ -31,6 +37,30 @@ public class UserEntity implements Serializable {
     @NotBlank
     @Column(name = "name")
     private String name;
+
+    @Basic
+    @NotBlank
+    @Column(name = "api_key")
+    private String apiKey;
+
+    @Basic
+    @NotBlank
+    @Column(name = "api_secret")
+    private String apiSecret;
+
+    @Basic
+    @NotBlank
+    @Column(name = "provider_secret")
+    private String providerSecret;
+
+    @NotNull
+    @Column(name = "requests")
+    private int requests;
+
+    @Basic
+    @NotNull
+    @Column(name = "date_created")
+    private Timestamp dateCreated;
 
     @NotEmpty
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -70,6 +100,46 @@ public class UserEntity implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public String getApiSecret() {
+        return apiSecret;
+    }
+
+    public void setApiSecret(String apiSecret) {
+        this.apiSecret = apiSecret;
+    }
+
+    public void setDateCreated(Timestamp dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Timestamp getDateCreated() {
+        return dateCreated;
+    }
+
+    public String getProviderSecret() {
+        return providerSecret;
+    }
+
+    public void setProviderSecret(String providerSecret) {
+        this.providerSecret = providerSecret;
+    }
+
+    public int getRequests() {
+        return requests;
+    }
+
+    public void setRequests(int requests) {
+        this.requests = requests;
     }
 
     public Set<RoleEntity> getRoles() {

@@ -18,7 +18,7 @@ import java.util.List;
 // TODO: Create interface for all beans?
 
 @Stateless
-public class CategoryBean {
+public class CategoryService {
     @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
     //@PersistenceContext(properties={@PersistenceProperty(name="javax.persistence.sharedCache.mode", value="ALL")})

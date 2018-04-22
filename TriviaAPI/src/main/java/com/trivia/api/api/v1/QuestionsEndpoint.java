@@ -1,6 +1,6 @@
 package com.trivia.api.api.v1;
 
-import com.trivia.core.service.QuestionBean;
+import com.trivia.core.service.QuestionService;
 import com.trivia.persistence.dto.client.QuestionClient;
 
 import javax.inject.Inject;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Path("/questions")
 public class QuestionsEndpoint {
-    @Inject private QuestionBean questionBean;
+    @Inject private QuestionService questionService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -27,10 +27,10 @@ public class QuestionsEndpoint {
             @DefaultValue("") @QueryParam("sortOrder") String sortOrder
     ) {
 
-        //List<QuestionEntity> questions = questionBean.findAll(page, size, sortField, SortOrder.valueOf(sortOrder), null, false);
+        //List<QuestionEntity> questions = questionService.findAll(page, size, sortField, SortOrder.valueOf(sortOrder), null, false);
             //throw new com.trivia.api.WebApplicationException(Response.Status.NOT_FOUND);
         category = "Horor";
-        List<QuestionClient> questions = questionBean.getRandomForClient(pageSize, category);
+        List<QuestionClient> questions = questionService.getRandomForClient(pageSize, category);
 
 
 

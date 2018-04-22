@@ -1,15 +1,14 @@
 package com.trivia.core.service;
 
-import com.trivia.core.exception.BusinessException;
 import com.trivia.core.exception.EntityNotFoundException;
 import com.trivia.core.exception.SystemException;
 import com.trivia.core.utility.Generator;
 import com.trivia.core.utility.ImageManager;
+import com.trivia.core.utility.SortOrder;
 import com.trivia.persistence.dto.client.QuestionClient;
 import com.trivia.persistence.entity.CategoryEntity_;
 import com.trivia.persistence.entity.QuestionEntity;
 import com.trivia.persistence.entity.QuestionEntity_;
-import com.trivia.persistence.entity.UserEntity;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 
@@ -20,26 +19,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
- */
-
-
-// TODO: Needs complete refactoring to use a single, more systematic JPA API (JPQL / Criteria API?)
-// TODO: Needs heavy performance testing
-// TODO: Needs to be heavily refactored into a proper service / DAO architecture as there are huge violations of separation of concerns and the single responsibility principle (see 'getRandomForClient' for the most egregious one).
 @Stateless
-public class QuestionBean {
+public class QuestionService {
     @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
-    @EJB private UserBean userBean;
+    @EJB private UserService userService;
     @Inject private Logger logger;
     private final static Integer PAGE_SIZE_DEFAULT = 20;
     private final static Integer PAGE_SIZE_MAX = 100;
@@ -179,11 +169,11 @@ public class QuestionBean {
 
     public void create(QuestionEntity questionEntity) {
         questionEntity.setDateCreated(new Timestamp(System.currentTimeMillis()));
-        questionEntity.setUser(userBean.findById(1));
+        questionEntity.setUser(userService.findById(1)); // TODO : auth
 
         em.persist(questionEntity);
         em.flush();
-        logger.info("Question id: {} CREATED by user id: {}", questionEntity.getId(), 5);
+        logger.info("Question id: {} CREATED by user id: {}", questionEntity.getId(), 5); // TODO: auth
     }
 
     private Path<?> getPath(String field, Root<QuestionEntity> root) {

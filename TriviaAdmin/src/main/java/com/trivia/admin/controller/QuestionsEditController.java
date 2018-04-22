@@ -2,8 +2,8 @@ package com.trivia.admin.controller;
 
 import com.trivia.admin.utility.Messages;
 import com.trivia.core.exception.BusinessException;
-import com.trivia.core.service.CategoryBean;
-import com.trivia.core.service.QuestionBean;
+import com.trivia.core.service.CategoryService;
+import com.trivia.core.service.QuestionService;
 import com.trivia.persistence.entity.CategoryEntity;
 import com.trivia.persistence.entity.QuestionEntity;
 
@@ -24,8 +24,8 @@ import java.util.PropertyResourceBundle;
 @Named
 @ViewScoped
 public class QuestionsEditController implements Serializable {
-    @Inject private QuestionBean questionBean;
-    @Inject private CategoryBean categoryBean;
+    @Inject private QuestionService questionService;
+    @Inject private CategoryService categoryService;
     @Inject private transient FacesContext facesContext;
     @Inject private transient PropertyResourceBundle viewMessages;
     private QuestionEntity questionEntity;
@@ -36,8 +36,8 @@ public class QuestionsEditController implements Serializable {
     public void init() {
         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         int id = Integer.valueOf(request.getParameter("id"));
-        this.questionEntity = questionBean.findById(id);
-        this.categoriesAvailable = categoryBean.getAllNames();
+        this.questionEntity = questionService.findById(id);
+        this.categoriesAvailable = categoryService.getAllNames();
         List<CategoryEntity> categories = questionEntity.getCategories();
         categoriesUsed = new ArrayList<>();
 
@@ -48,7 +48,7 @@ public class QuestionsEditController implements Serializable {
 
     public void update() {
         try {
-            questionBean.update(questionEntity);
+            questionService.update(questionEntity);
 
             Messages.addInfoGlobal(viewMessages.getString("success"), viewMessages.getString("update.success"));
         }

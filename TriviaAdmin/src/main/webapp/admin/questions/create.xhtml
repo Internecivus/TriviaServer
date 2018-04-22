@@ -9,6 +9,21 @@
         <h:outputText value="#{viewMessages['action.create']} #{viewMessages['page.question.name']} - #{viewMessages['this.name']}"/>
     </ui:define>
 
+    <ui:define name="subnavigation">
+        <div class="container text-center">
+            <ul class="list-inline list-unstyled">
+                <li>
+                    <h:button outcome="list"
+                              value="#{viewMessages['action.all']}"/>
+                </li>
+                <li>
+                    <h:button outcome="create"
+                              value="#{viewMessages['action.create']}"/>
+                </li>
+            </ul>
+        </div>
+    </ui:define>
+
     <ui:define name="main">
         <p:messages id="messages" globalOnly="true" showDetail="true" closable="false">
             <p:autoUpdate/>
@@ -117,10 +132,10 @@
                 <div class="form-group">
                     <p:commandButton action="#{questionsCreateController.create()}"
                                      type="submit"
-                                     value="Create"
+                                     value="#{viewMessages['action.create']}"
                                      validateClient="true"
                                      ajax="false"/>
-                    <p:commandButton value="Reset"
+                    <p:commandButton value="#{viewMessages['action.reset']}"
                                      type="reset"/>
                 </div>
             </h:form>

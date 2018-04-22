@@ -1,4 +1,4 @@
-package com.trivia.core.service;
+package com.trivia.core.utility;
 
 /**
  * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018

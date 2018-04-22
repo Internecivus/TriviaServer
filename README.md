@@ -1,14 +1,20 @@
+// Admin
+TODO: My Clients
+
 // Rest
+TODO: Rest auth
+TODO: More methods
 TODO: Rest exceptions
 TODO: Bean validation
 
 // Security
-TODO: make it work
-TODO: Persistence entities
-TODO: project-wide
 TODO: Save number of requests per API key, instead of per IP
 TODO: RememberMe login
 
+
+
+
+JEDNOSTAVNO SVAKOM KLIJENTU DATI APIKEY I SECRET
 
 
 // Client

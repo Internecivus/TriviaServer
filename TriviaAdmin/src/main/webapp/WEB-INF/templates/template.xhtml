@@ -21,12 +21,12 @@
     <h:body>
         <h:outputStylesheet library="css" name="primefaces-override.css"/>
         <div id="header" class="container text-center">
-            <h1>Trivia Admin</h1>
+            <h1><h:link outcome="/public/login.xhtml">#{viewMessages['this.name']} #{viewMessages['this.admin']}</h:link></h1>
 
             <h:form class="pull-right">
                 <h:selectOneMenu value="#{localeController.language}" onchange="submit()">
-                    <f:selectItem itemValue="en" itemLabel="English" />
-                    <f:selectItem itemValue="hr" itemLabel="Croatian" />
+                    <f:selectItem itemValue="en" itemLabel="#{viewMessages['language.en']}" />
+                    <f:selectItem itemValue="hr" itemLabel="#{viewMessages['language.hr']}" />
                 </h:selectOneMenu>
             </h:form>
 

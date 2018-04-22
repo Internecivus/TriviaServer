@@ -6,7 +6,6 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/template.xhtml">
     <ui:define name="title">
-        <h:outputText value="#{viewMessages['this.name']} Admin"/>
     </ui:define>
 
     <ui:define name="navigation">
@@ -42,22 +41,10 @@
             </li>
         </ul>
 
-        <div class="container text-center">
-            <ul class="list-inline list-unstyled">
-                <li>
-                    <h:button outcome="list"
-                              value="See All"/>
-                </li>
-                <li>
-                    <h:button outcome="create"
-                              value="Create New"/>
-                </li>
-            </ul>
-        </div>
+        <ui:insert name="subnavigation">
+        </ui:insert>
     </ui:define>
 
     <ui:define name="main">
-        <ui:insert name="main">
-        </ui:insert>
     </ui:define>
 </ui:composition>

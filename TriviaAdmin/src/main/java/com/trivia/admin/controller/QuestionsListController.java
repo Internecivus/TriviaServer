@@ -2,8 +2,8 @@ package com.trivia.admin.controller;
 
 import com.trivia.admin.utility.Messages;
 import com.trivia.core.exception.BusinessException;
-import com.trivia.core.service.CategoryBean;
-import com.trivia.core.service.QuestionBean;
+import com.trivia.core.service.CategoryService;
+import com.trivia.core.service.QuestionService;
 import com.trivia.persistence.entity.QuestionEntity;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -25,8 +25,8 @@ import java.util.PropertyResourceBundle;
 @Named
 @ViewScoped
 public class QuestionsListController implements Serializable {
-    @Inject private QuestionBean questionBean;
-    @Inject private CategoryBean categoryBean;
+    @Inject private QuestionService questionService;
+    @Inject private CategoryService categoryService;
     @Inject private transient FacesContext facesContext;
     @Inject private transient PropertyResourceBundle viewMessages;
     private LazyDataModel<QuestionEntity> lazyQuestions;
@@ -40,14 +40,14 @@ public class QuestionsListController implements Serializable {
                 String searchString = (filters.get("globalFilter") != null) ? filters.get("globalFilter").toString() : null;
 
                 try {
-                    List<QuestionEntity> result = questionBean.findAll(
+                    List<QuestionEntity> result = questionService.findAll(
                             first / pageSize + 1,
                             pageSize,
                             sortField,
-                            com.trivia.core.service.SortOrder.valueOf(sortOrder.toString()),
+                            com.trivia.core.utility.SortOrder.valueOf(sortOrder.toString()),
                             searchString
                     );
-                    lazyQuestions.setRowCount(questionBean.getLastCount());
+                    lazyQuestions.setRowCount(questionService.getLastCount());
 
                     return result;
                 }
@@ -75,7 +75,7 @@ public class QuestionsListController implements Serializable {
 
     public void delete(int id) {
         try {
-            questionBean.deleteById(id); /// TODO: needs to update the dataTable
+            questionService.deleteById(id); /// TODO: needs to update the dataTable
             Messages.addInfoFor("growl", viewMessages.getString("success"), viewMessages.getString("delete.success"));
         }
         catch (BusinessException e) {
