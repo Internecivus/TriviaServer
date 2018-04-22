@@ -7,7 +7,6 @@ import java.util.PropertyResourceBundle;
 /**
  * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
  */
-// TODO: This is not at all typesafe?
 public class MessagesProducer {
     @Produces
     public PropertyResourceBundle getBundle() {

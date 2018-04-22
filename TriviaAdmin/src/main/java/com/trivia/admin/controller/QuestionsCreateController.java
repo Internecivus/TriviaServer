@@ -1,15 +1,15 @@
 package com.trivia.admin.controller;
 
-import com.trivia.core.services.CategoryBean;
-import com.trivia.core.services.QuestionBean;
+import com.trivia.admin.utility.Messages;
+import com.trivia.core.exception.BusinessException;
+import com.trivia.core.service.CategoryBean;
+import com.trivia.core.service.QuestionBean;
 import com.trivia.persistence.entity.CategoryEntity;
 import com.trivia.persistence.entity.QuestionEntity;
 import org.primefaces.model.UploadedFile;
 import com.trivia.core.utility.ImageManager;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -28,7 +28,7 @@ import java.util.PropertyResourceBundle;
 @Named
 @ViewScoped
 public class QuestionsCreateController implements Serializable {
-    @Inject private QuestionBean questionBean;
+    @Inject private QuestionBean questionBean; //TODO: Needs to be transient?
     @Inject private CategoryBean categoryBean;
     @Inject private transient PropertyResourceBundle viewMessages;
     @Inject private transient FacesContext facesContext;
@@ -40,42 +40,26 @@ public class QuestionsCreateController implements Serializable {
     @PostConstruct
     public void init() {
         this.questionEntity = new QuestionEntity();
-
-        try {
-            this.categoriesAvailable = categoryBean.getAll();
-        }
-        catch (Exception e) {
-            // TODO: redirect or something?
-        }
+        this.categoriesAvailable = categoryBean.getAll();
     }
 
     public String create() {
         try {
-            if (uploadedImage != null) {
-                InputStream imageStream = uploadedImage.getInputstream();
-                Path imagePath = ImageManager.saveImageAndGetPath(imageStream);
-                String imageFileName = imagePath.getFileName().toString();
-                questionEntity.setImage(imageFileName);
+            if (uploadedImage.getSize() > 0) {
+                questionBean.createWithImage(questionEntity, uploadedImage.getFileName(), uploadedImage.getInputstream());
             }
-            //questionEntity.setCategories(categoriesUsed);
-            questionBean.create(questionEntity);
-            facesContext.addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_INFO, "Success", viewMessages.getString("create.success")
-            ));
+            else {
+                questionBean.create(questionEntity);
+            }
 
-            UIViewRoot view = facesContext.getViewRoot();
-            facesContext.getExternalContext().getFlash().setKeepMessages(true);
-            return view.getViewId() + "?faces-redirect=true";
+            Messages.addInfoGlobalFlash(viewMessages.getString("success"), viewMessages.getString("create.success"));
+            return facesContext.getViewRoot().getViewId() + "?faces-redirect=true";
         }
         catch (IOException e) {
-            facesContext.addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_ERROR, "Failure", viewMessages.getString("create.failure")
-            ));
+            Messages.addErrorGlobal(viewMessages.getString("failure"), viewMessages.getString("create.failure"));
         }
         catch (EntityExistsException e) {
-            facesContext.addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_ERROR, "Failure", "HEEEEEHOOOO!"
-            ));
+            Messages.addErrorGlobal(viewMessages.getString("failure"), viewMessages.getString("error.exists.message"));
         }
 
         return null;

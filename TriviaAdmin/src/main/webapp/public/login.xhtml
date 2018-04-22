@@ -23,13 +23,13 @@
                 <div class="form-group">
                     <h:outputLabel styleClass="control-label"
                                    for="username">Username</h:outputLabel>
-                    <h:inputText value="#{loginController.user.name}"
+                    <h:inputText value="#{loginController.userEntity.name}"
                                  styleClass="form-control"
                                  id="username"/>
 
                     <h:outputLabel styleClass="control-label"
                                    for="password">Password</h:outputLabel>
-                    <h:inputSecret value="#{loginController.user.password}"
+                    <h:inputSecret value="#{loginController.userEntity.password}"
                                  type="password"
                                  styleClass="form-control"
                                  id="password"/>
@@ -37,7 +37,7 @@
                     <h:outputText styleClass="control-label"
                                   for="remember_me">Remember me?</h:outputText>
                     <h:selectBooleanCheckbox id="remember_me"
-                                             value="#{loginController.rememberMe}}"/>
+                                             value="#{loginController.rememberMe}"/>
 
                     <h:commandButton action="#{loginController.login()}"
                                      type="submit"

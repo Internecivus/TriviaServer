@@ -1,13 +1,13 @@
 package com.trivia.admin.controller;
 
+import com.trivia.admin.utility.Messages;
 import com.trivia.core.exception.BusinessException;
-import com.trivia.core.services.CategoryBean;
-import com.trivia.core.services.QuestionBean;
+import com.trivia.core.service.CategoryBean;
+import com.trivia.core.service.QuestionBean;
 import com.trivia.persistence.entity.CategoryEntity;
 import com.trivia.persistence.entity.QuestionEntity;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -34,14 +34,14 @@ public class QuestionsEditController implements Serializable {
 
     @PostConstruct
     public void init() {
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         int id = Integer.valueOf(request.getParameter("id"));
         this.questionEntity = questionBean.findById(id);
         this.categoriesAvailable = categoryBean.getAllNames();
-        List<CategoryEntity> coll = questionEntity.getCategories();
+        List<CategoryEntity> categories = questionEntity.getCategories();
         categoriesUsed = new ArrayList<>();
 
-        for (CategoryEntity category : coll) {
+        for (CategoryEntity category : categories) {
             categoriesUsed.add(category.getName());
         }
     }
@@ -50,14 +50,10 @@ public class QuestionsEditController implements Serializable {
         try {
             questionBean.update(questionEntity);
 
-            facesContext.addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_INFO, "Success", viewMessages.getString("update.success")
-            ));
+            Messages.addInfoGlobal(viewMessages.getString("success"), viewMessages.getString("update.success"));
         }
         catch (BusinessException e) {
-            facesContext.addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_ERROR, "Failure", viewMessages.getString("update.failure")
-            ));
+            Messages.addErrorGlobal(viewMessages.getString("failure"), viewMessages.getString("update.failure"));
         }
     }
 
@@ -84,5 +80,4 @@ public class QuestionsEditController implements Serializable {
     public void setCategoriesUsed(List<String> categoriesUsed) {
         this.categoriesUsed = categoriesUsed;
     }
-
 }

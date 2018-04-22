@@ -1,10 +1,16 @@
-package com.trivia.core.services;
+package com.trivia.core.service;
 
+import com.trivia.core.exception.BusinessException;
 import com.trivia.core.exception.EntityNotFoundException;
+import com.trivia.core.exception.SystemException;
 import com.trivia.core.utility.Generator;
+import com.trivia.core.utility.ImageManager;
+import com.trivia.persistence.dto.client.QuestionClient;
 import com.trivia.persistence.entity.CategoryEntity_;
 import com.trivia.persistence.entity.QuestionEntity;
 import com.trivia.persistence.entity.QuestionEntity_;
+import com.trivia.persistence.entity.UserEntity;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 
 import javax.ejb.EJB;
@@ -14,6 +20,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +34,7 @@ import java.util.List;
 
 // TODO: Needs complete refactoring to use a single, more systematic JPA API (JPQL / Criteria API?)
 // TODO: Needs heavy performance testing
+// TODO: Needs to be heavily refactored into a proper service / DAO architecture as there are huge violations of separation of concerns and the single responsibility principle (see 'getRandomForClient' for the most egregious one).
 @Stateless
 public class QuestionBean {
     @PersistenceContext(unitName = "TriviaDB")
@@ -46,7 +56,8 @@ public class QuestionBean {
         return questionEntity;
     }
 
-    public List<QuestionEntity> getRandomSizeFromCategory(int size, String category) {
+    public List<QuestionClient> getRandomForClient(int size, String category) {
+        List<QuestionClient> questionsClient = new ArrayList<>();
         List<QuestionEntity> questions = new ArrayList<>();
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<QuestionEntity> query = builder.createQuery(QuestionEntity.class);
@@ -67,7 +78,12 @@ public class QuestionBean {
             questions.addAll(typedQuery.getResultList()); // This logic is unfortunate.
         }
 
-        return questions;
+        //typedQuery.unwrap(org.hibernate.Query.class).setResultTransformer(Transformers.aliasToBean(QuestionClient.class)
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.map(questions, questionsClient);
+
+        return questionsClient;
     }
 
     //TODO: This selects EVERYTHING. Create another, more discriminating method for clients.
@@ -115,8 +131,6 @@ public class QuestionBean {
 
         questions = typedQuery.getResultList();
 
-        logger.info("Hello!");
-
         return questions;
     }
 
@@ -139,6 +153,7 @@ public class QuestionBean {
             updatedQuestion.setDateLastModified(new Timestamp(System.currentTimeMillis()));
             em.merge(updatedQuestion);
             em.flush();
+            logger.info("Question id: {} UPDATED by user id: {}", question.getId(), 5);
         }
     }
 
@@ -146,14 +161,29 @@ public class QuestionBean {
         QuestionEntity question = findById(id);
         em.remove(question);
         em.flush();
+        logger.info("Question id: {} DELETED by user id: {}", question.getId(), 5);
     }
 
-    public void create(QuestionEntity newQuestion) {
-        newQuestion.setDateCreated(new Timestamp(System.currentTimeMillis()));
-        newQuestion.setUser(userBean.findById(1));
+    public void createWithImage(QuestionEntity questionEntity, String fileName, InputStream inputStream) {
+        try {
+            java.nio.file.Path imagePath = ImageManager.saveImageAndGetPath(fileName, inputStream);
+            String imageFileName = imagePath.getFileName().toString();
+            questionEntity.setImage(imageFileName);
+        }
+        catch (IOException e) {
+            throw new SystemException();
+        }
 
-        em.persist(newQuestion);
+        create(questionEntity);
+    }
+
+    public void create(QuestionEntity questionEntity) {
+        questionEntity.setDateCreated(new Timestamp(System.currentTimeMillis()));
+        questionEntity.setUser(userBean.findById(1));
+
+        em.persist(questionEntity);
         em.flush();
+        logger.info("Question id: {} CREATED by user id: {}", questionEntity.getId(), 5);
     }
 
     private Path<?> getPath(String field, Root<QuestionEntity> root) {
@@ -201,6 +231,6 @@ public class QuestionBean {
         return path;
     }
 
-    //TODO: TEMPORARY - This is crazy. Create data structure (EntityPage -- has page out of x, randomized, sort field, sort order, count, etc.) to fix this???
+    //TODO: TEMPORARY - This is crazy. Wrap the list inside a data structure (e.g. EntityPage -- has page out of x, randomized, sort field, sort order, count, etc.) to fix this.
     private int lastCount; public int getLastCount() {return lastCount;} public void setLastCount(int lastCount) { this.lastCount = lastCount; }
 }

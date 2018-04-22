@@ -12,22 +12,22 @@ import java.util.Set;
 /**
  * Created by faust. Part of TriviaServer Project. All rights reserved. 2018
  */
-//@ApplicationScoped
-//public class UserRememberMeIdentityStore implements RememberMeIdentityStore {
-//    @Inject private HttpServletRequest request;
-//
-//    @Override
-//    public CredentialValidationResult validate(RememberMeCredential credential) {
-//        return null;
-//    }
-//
-//    @Override
-//    public String generateLoginToken(CallerPrincipal callerPrincipal, Set<String> groups) {
-//        return null;
-//    }
-//
-//    @Override
-//    public void removeLoginToken(String loginToken) {
-//
-//    }
-//}
+@ApplicationScoped
+public class UserRememberMeIdentityStore implements RememberMeIdentityStore {
+    @Inject private HttpServletRequest request;
+
+    @Override
+    public CredentialValidationResult validate(RememberMeCredential credential) {
+        return null;
+    }
+
+    @Override
+    public String generateLoginToken(CallerPrincipal callerPrincipal, Set<String> groups) {
+        return null;
+    }
+
+    @Override
+    public void removeLoginToken(String loginToken) {
+
+    }
+}

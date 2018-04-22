@@ -1,51 +1,68 @@
 package com.trivia.persistence.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
-/**
- * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
- */
 @Entity
 @Table(name = "role", schema = "Trivia")
 public class RoleEntity {
-    private String name;
-    private int id;
-
-    @Basic
-    @Column(name = "name")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    public int getId() {
+    private Integer id;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "name")
+    private RoleName name;
+
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
+    private Set<UserEntity> users = new HashSet<>();
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public RoleName getName() {
+        return name;
+    }
+
+    public void setName(RoleName name) {
+        this.name = name;
+    }
+
+    public Set<UserEntity> getUsers() {
+        return users;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         RoleEntity that = (RoleEntity) o;
-
-        if (id != that.id) return false;
-        return name != null ? name.equals(that.name) : that.name == null;
+        return Objects.equals(id, that.id) &&
+                name == that.name;
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + id;
-        return result;
+
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "RoleEntity{" +
+                "id=" + id +
+                ", name=" + name +
+                '}';
     }
 }

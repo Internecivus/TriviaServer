@@ -1,7 +1,7 @@
 package com.trivia.api.api.v1;
 
-import com.trivia.core.services.QuestionBean;
-import com.trivia.persistence.entity.QuestionEntity;
+import com.trivia.core.service.QuestionBean;
+import com.trivia.persistence.dto.client.QuestionClient;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -30,7 +30,9 @@ public class QuestionsEndpoint {
         //List<QuestionEntity> questions = questionBean.findAll(page, size, sortField, SortOrder.valueOf(sortOrder), null, false);
             //throw new com.trivia.api.WebApplicationException(Response.Status.NOT_FOUND);
         category = "Horor";
-        List<QuestionEntity> questions = questionBean.getRandomSizeFromCategory(pageSize, category);
+        List<QuestionClient> questions = questionBean.getRandomForClient(pageSize, category);
+
+
 
         return Response.status(Response.Status.OK).entity(questions).build();
     }

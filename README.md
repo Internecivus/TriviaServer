@@ -1,30 +1,31 @@
-// Admin UI
-TODO: Working update for categories
-TODO: Working create, update for fileupload
-TODO: Read admin log
-TODO: Test error template
-TODO: Bootstrap
-TODO: Global messages utility
-
-// Models
-TODO: Projections for admin and for client
-TODO: How to do OnetoMany, etc.
-
-// REST
-TODO: HATEOAS self link rel for Entities
-
-// Logging
-TODO: Logging to file
+// Rest
+TODO: Rest exceptions
+TODO: Bean validation
 
 // Security
-TODO: Easy registration of SAM??
-TODO: Logout, Login, identity store, credentials
+TODO: make it work
+TODO: Persistence entities
+TODO: project-wide
 TODO: Save number of requests per API key, instead of per IP
 TODO: RememberMe login
-TODO: Reset password
+
+
 
 // Client
-TODO: Salje zahtjev za API keyom -> stvara se "Client" user i api key -> moze vrsiti requestove
+TODO:   Prvi put: DA:   Stvara client id (GUUID) putem BLOB
+                        Radi provjeru kao pod 1. NE
+                        Server registrira client id pod username/api key
+                        
+                  NE:
+                        Client salje hashani API key usera + secret + clientID + user name + request + salt
+                        Server dehashira i vrsi ekstrakciju podatka
+                        Provjerava Username i API key
+                        Provjerava secret
+                        Uzima request i obraduje ga
+                        Salje odgovor
+        
+
+
 TODO: Korisnicke postavke za velicinu prozora, client id, etc.
 TODO: Salje zathev kod svakog pokretanja za dobivanje svih kategorija
 TODO: Renderanje svih kategorija i slika
@@ -34,5 +35,3 @@ TODO: Rendera pitanje i odgovore
 TODO: Vrijeme prolazi, kada prode automatski novo
 TODO: Na kraju bodovi
 TODO: Sharing rezultata na drustvenim mrezama
-
-// Testing

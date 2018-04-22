@@ -4,9 +4,13 @@ package com.trivia.persistence.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import javax.xml.registry.infomodel.User;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 /**
  * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
  */
@@ -53,7 +57,7 @@ public class QuestionEntity {
     private Timestamp dateCreated;
 
     @Basic
-    @NotNull(message = "{answerCorrect.required}")
+    @NotNull(message = "{field.required}")
     @Min(value = 1, message = "{answerCorrect.between}")
     @Max(value = 4, message = "{answerCorrect.between}")
     @Column(name = "answer_correct")
@@ -68,16 +72,25 @@ public class QuestionEntity {
     private String image;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false) //TODO: Implicit insertable=true -- FIX ASAP!!!!!!!!!!!!!!!!!!!!!!!
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)// insertable nullable
     private UserEntity user;
 
+    @NotEmpty
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name="question_category_map",
-            joinColumns = @JoinColumn(name="question_id", referencedColumnName="id"),
-            inverseJoinColumns = @JoinColumn(name="category_id", referencedColumnName="id"))
+            joinColumns = {@JoinColumn(name = "question_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")}
+    )
     private List<CategoryEntity> categories = new ArrayList<>();
 
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity userEntity) {
+        this.user = userEntity;
+    }
 
     public Integer getId() {
         return id;
@@ -165,14 +178,6 @@ public class QuestionEntity {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
     }
 
     public List<CategoryEntity> getCategories() {

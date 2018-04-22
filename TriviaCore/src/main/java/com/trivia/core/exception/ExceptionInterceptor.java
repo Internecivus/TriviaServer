@@ -22,11 +22,11 @@ public class ExceptionInterceptor implements Serializable {
         catch (javax.persistence.EntityExistsException e) {
             throw new EntityExistsException();
         }
-        catch (javax.persistence.NoResultException e) {
-            throw new NoResultException();
-        }
         catch (IllegalStateException e) {
             throw new SystemException(e);
         }
+//        catch (Exception e) {
+//            throw new SystemException(e);
+//        }
     }
 }

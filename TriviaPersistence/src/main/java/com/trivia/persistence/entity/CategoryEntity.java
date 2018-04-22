@@ -2,6 +2,8 @@ package com.trivia.persistence.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
@@ -29,10 +31,9 @@ public class CategoryEntity {
     @NotNull
     @Column(name = "image")
     private String image;
-//
-//    @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<QuestionEntity> questions = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<QuestionEntity> questions = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -66,13 +67,13 @@ public class CategoryEntity {
         this.image = image;
     }
 
-//    public List<QuestionEntity> getQuestions() {
-//        return questions;
-//    }
-//
-//    public void setQuestions(List<QuestionEntity> questions) {
-//        this.questions = questions;
-//    }
+    public List<QuestionEntity> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<QuestionEntity> questions) {
+        this.questions = questions;
+    }
 
     @Override
     public boolean equals(Object o) {

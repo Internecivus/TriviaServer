@@ -13,6 +13,7 @@ import java.util.Locale;
 
 // TODO: This is very bare-bones. Locale should change not only on user action but via cookies. Reference implementation - Kickoff)
 
+@Named
 @SessionScoped
 public class LocaleController implements Serializable {
     private Locale locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();

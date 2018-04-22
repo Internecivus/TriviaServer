@@ -2,12 +2,6 @@ INSERT INTO Trivia.category (name, description, image) VALUES ('Horor', 'ggdg', 
 INSERT INTO Trivia.category (name, description, image) VALUES ('Akcija', 'ggdg', 'ggg');
 INSERT INTO Trivia.category (name, description, image) VALUES ('Covjek', 'ggdg', 'ggg');
 
-INSERT INTO Trivia.role (name) VALUES ('admin');
-INSERT INTO Trivia.role (name) VALUES ('admin');
-INSERT INTO Trivia.role (name) VALUES ('admin');
-
-
-INSERT INTO Trivia.user (name, password, role) VALUES ('viktor', 'lenz', 3);
 
 
 INSERT INTO Trivia.question (question, answer_first, answer_second, answer_third, answer_fourth, user_id, comment, date_created, answer_correct, date_last_modified, image) VALUES ('accag', 'abbbbb', 'a', 'a', 'a', 1, 'aa', '2018-03-26 02:24:31', 1, '2018-04-05 12:48:23', '5555');
@@ -67,4 +61,9 @@ INSERT INTO Trivia.question_category_map (question_id, category_id) VALUES (5, 1
 INSERT INTO Trivia.question_category_map (question_id, category_id) VALUES (7, 1);
 INSERT INTO Trivia.question_category_map (question_id, category_id) VALUES (5, 2);
 INSERT INTO Trivia.question_category_map (question_id, category_id) VALUES (7, 2);
+
+
+INSERT INTO Trivia.role (name) VALUES ('MODERATOR');
+INSERT INTO Trivia.role (name) VALUES ('CONTRIBUTOR');
+INSERT INTO Trivia.role (name) VALUES ('PROVIDER');
 

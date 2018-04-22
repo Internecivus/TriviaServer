@@ -3,7 +3,9 @@ package com.trivia.core.security;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
@@ -12,14 +14,14 @@ import java.util.Base64;
  */
 
 // Reference implementation is Soteria.
-public class CryptoManager {
+public final class CryptoManager {
     private final static int ITERATIONS = 9999; // Aim for half a second.
     private final static int KEY_LENGTH = 160;
     private final static String RANDOM_ALGORITHM = "SHA1PRNG";
+    private final static String RANDOM_ALGORITHM_PROVIDER = "SUN";
     private final static String HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
 
-    public static boolean validateMessage(String providedMessage, String storedHash)
-    {
+    public static boolean validateMessage(String providedMessage, String storedHash) {
         String[] parts = storedHash.split(":");
         int iterations = Integer.parseInt(parts[0]);
         byte[] salt = Base64.getDecoder().decode(parts[1]);
@@ -44,14 +46,13 @@ public class CryptoManager {
         return difference == 0;
     }
 
-    public static String hashMessage(String message)
-    {
+    public static String hashMessage(String message) {
         char[] messageChars = message.toCharArray();
         byte[] saltBytes = getSalt();
 
         PBEKeySpec keySpec = new PBEKeySpec(messageChars, saltBytes, ITERATIONS, KEY_LENGTH);
         try {
-            byte[] digest = SecretKeyFactory.getInstance(RANDOM_ALGORITHM).generateSecret(keySpec).getEncoded();
+            byte[] digest = SecretKeyFactory.getInstance(HASH_ALGORITHM).generateSecret(keySpec).getEncoded();
             String storedHash =
                     ITERATIONS
                     + ":"
@@ -65,15 +66,15 @@ public class CryptoManager {
         }
     }
 
-    private static byte[] getSalt()
-    {
+    private static byte[] getSalt() {
         try {
-            SecureRandom secureRandom = SecureRandom.getInstance(RANDOM_ALGORITHM);
+            // TODO: Might not be portable.
+            SecureRandom secureRandom = SecureRandom.getInstance(RANDOM_ALGORITHM, RANDOM_ALGORITHM_PROVIDER);
             byte[] salt = new byte[KEY_LENGTH / 8];
             secureRandom.nextBytes(salt);
             return salt;
         }
-        catch (NoSuchAlgorithmException e) {
+        catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             throw new IllegalStateException(e);
         }
     }

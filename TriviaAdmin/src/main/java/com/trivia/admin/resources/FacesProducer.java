@@ -9,7 +9,6 @@ import javax.faces.context.FacesContext;
  */
 
 public class FacesProducer {
-    //TODO: Maybe needs RequestScoped?
     @RequestScoped
     @Produces
     public FacesContext produceFacesContext() {

@@ -1,14 +1,14 @@
 package com.trivia.admin.controller;
 
+import com.trivia.admin.utility.Messages;
 import com.trivia.core.exception.BusinessException;
-import com.trivia.core.services.CategoryBean;
-import com.trivia.core.services.QuestionBean;
+import com.trivia.core.service.CategoryBean;
+import com.trivia.core.service.QuestionBean;
 import com.trivia.persistence.entity.QuestionEntity;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -29,25 +29,30 @@ public class QuestionsListController implements Serializable {
     @Inject private CategoryBean categoryBean;
     @Inject private transient FacesContext facesContext;
     @Inject private transient PropertyResourceBundle viewMessages;
-    private LazyDataModel<QuestionEntity> questions;
+    private LazyDataModel<QuestionEntity> lazyQuestions;
     private String searchString;
 
     @PostConstruct
     public void init() {
-        questions = new LazyDataModel<QuestionEntity>() {
+        lazyQuestions = new LazyDataModel<QuestionEntity>() {
             @Override
-            public List<QuestionEntity> load(int pageFirst, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+            public List<QuestionEntity> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
                 String searchString = (filters.get("globalFilter") != null) ? filters.get("globalFilter").toString() : null;
 
                 try {
-                    List<QuestionEntity> result = questionBean.findAll(pageFirst / pageSize + 1, pageSize, sortField, com.trivia.core.services.SortOrder.valueOf(sortOrder.toString()), searchString);
-                    questions.setRowCount(questionBean.getLastCount());
+                    List<QuestionEntity> result = questionBean.findAll(
+                            first / pageSize + 1,
+                            pageSize,
+                            sortField,
+                            com.trivia.core.service.SortOrder.valueOf(sortOrder.toString()),
+                            searchString
+                    );
+                    lazyQuestions.setRowCount(questionBean.getLastCount());
 
                     return result;
                 }
                 catch (BusinessException e) {
-                    facesContext.addMessage(null, new FacesMessage(
-                            FacesMessage.SEVERITY_ERROR, "Error", viewMessages.getString("database.failure")));
+                    Messages.addErrorGlobal(viewMessages.getString("failure"), viewMessages.getString("services.failure"));
                 }
 
                 return null;
@@ -60,15 +65,21 @@ public class QuestionsListController implements Serializable {
         };
     }
 
-    public void setQuestions(LazyDataModel<QuestionEntity> questions) {
-        this.questions = questions;
+    public void setLazyQuestions(LazyDataModel<QuestionEntity> lazyQuestions) {
+        this.lazyQuestions = lazyQuestions;
     }
 
-    public LazyDataModel<QuestionEntity> getQuestions() {
-        return questions;
+    public LazyDataModel<QuestionEntity> getLazyQuestions() {
+        return lazyQuestions;
     }
 
     public void delete(int id) {
-        questionBean.deleteById(id);
+        try {
+            questionBean.deleteById(id); /// TODO: needs to update the dataTable
+            Messages.addInfoFor("growl", viewMessages.getString("success"), viewMessages.getString("delete.success"));
+        }
+        catch (BusinessException e) {
+            Messages.addErrorFor("growl", viewMessages.getString("failure"), viewMessages.getString("delete.failure"));
+        }
     }
 }

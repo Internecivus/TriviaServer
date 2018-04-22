@@ -74,7 +74,7 @@
                             <groupId>com.trivia</groupId>
                             <artifactId>TriviaAdmin</artifactId>
                             <bundleFileName>TriviaAdmin.war</bundleFileName>
-                            <contextRoot>/admin</contextRoot>
+                            <contextRoot>/</contextRoot>
                         </webModule>
 
                         <webModule>

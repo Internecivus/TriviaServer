@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/admin.xhtml">
+    <ui:define name="title">
+        <h:outputText value="Logs - MorbidTrivia"/>
+    </ui:define>
+
+    <ui:define name="main">
+        <h:form>
+            <p:messages id="messages" showDetail="true" closable="false">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:dataTable id="log_table"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         rows="10"
+                         value="#{logController.lazyLogs}"
+                         var="log"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PageLinks} {LastPageLink} {CurrentPageReport}"
+                         rowsPerPageTemplate="10,25,100"
+                         pageLinks="5"
+                         reflow="true"
+                         tableStyleClass="table table-striped"
+                         rowStyleClass=""
+                         emptyMessage="#{viewMessages.notFound}"
+                         widgetVar="logTable"
+                         lazy="true">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Message"/>
+                    </f:facet>
+
+                    <h:outputText value="#{log.message}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

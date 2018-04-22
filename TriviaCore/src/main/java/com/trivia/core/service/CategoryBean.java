@@ -1,4 +1,4 @@
-package com.trivia.core.services;
+package com.trivia.core.service;
 
 import com.trivia.persistence.entity.CategoryEntity;
 import org.slf4j.Logger;

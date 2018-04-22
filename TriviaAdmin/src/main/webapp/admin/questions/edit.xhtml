@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/admin.xhtml">
+    <ui:define name="title">
+        <h:outputText value="Edit Question - MorbidTrivia"/>
+    </ui:define>
+
+    <ui:define name="main">
+        <p:messages id="messages" showDetail="true" closable="false">
+            <p:autoUpdate/>
+        </p:messages>
+
+        <h:form enctype="multipart/form-data">
+            <p:panel header="Edit Question">
+
+
+
+                <div class="form-group">
+                    <h:outputLabel for="date_created">Date Created</h:outputLabel>
+                    <h:outputText id="date_created" value="#{questionsEditController.questionEntity.dateCreated}"/>
+                </div>
+
+
+
+                <div class="form-group">
+                    <h:outputLabel>Categories</h:outputLabel>
+
+                </div>
+
+
+
+                <div class="form-group">
+                    <p:commandButton action="#{questionsEditController.update()}"
+                                     type="submit"
+                                     value="Save"
+                                     validateClient="true"
+                                     ajax="false">
+                    </p:commandButton>
+                    <p:commandButton value="Reset"
+                                     type="reset"/>
+                </div>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

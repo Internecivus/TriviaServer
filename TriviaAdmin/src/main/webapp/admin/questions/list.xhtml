@@ -1,29 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://java.sun.com/jstl/core"
-      xmlns:p="http://primefaces.org/ui">
-<ui:composition template="/WEB-INF/templates/template.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/admin.xhtml">
     <ui:define name="title">
-        <h:outputText value="Questions - MorbidTrivia"/>
+        <h:outputText value="#{viewMessages['page.questions.name']} - #{viewMessages['this.name']}"/>
     </ui:define>
 
     <ui:define name="main">
         <h:form>
-            <p:messages id="messages" showDetail="true" closable="false">
+            <p:messages id="messages" globalOnly="true" showDetail="true" closable="false">
                 <p:autoUpdate/>
             </p:messages>
+            <p:growl id="growl" showDetail="true" sticky="true" for="growl">
+                <p:autoUpdate/>
+            </p:growl>
 
-            <!--suppress ELValidationInJSP -->
             <p:dataTable id="questions_table"
                          paginator="true"
                          paginatorPosition="bottom"
                          rows="10"
-                         value="#{questionsListController.questions}"
+                         value="#{questionsListController.lazyQuestions}"
                          var="question"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PageLinks} {LastPageLink} {CurrentPageReport}"
                          rowsPerPageTemplate="10,25,100"
@@ -37,14 +36,14 @@
                          lazy="true">
                 <f:facet name="header">
                     <p:outputPanel>
-                        <h:outputText value="Search: "/>
-                        <p:inputText id="globalFilter" onkeyup="PF('questionsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                        <h:outputText value="#{viewMessages['search']}: "/>
+                        <p:inputText id="globalFilter" onkeyup="PF('questionsTable').filter()" style="width:150px" placeholder="#{viewMessages['search.placeholder']}..."/>
                     </p:outputPanel>
                 </f:facet>
 
                 <p:column sortBy="#{question.id}">
                     <f:facet name="header">
-                        <h:outputText value="ID"/>
+                        <h:outputText value="#{viewMessages['question.id']}"/>
                     </f:facet>
 
                     <h:outputText value="#{question.id}"/>
@@ -52,7 +51,7 @@
 
                 <p:column sortBy="#{question.question}">
                     <f:facet name="header">
-                        <h:outputText value="Question"/>
+                        <h:outputText value="#{viewMessages['question.question']}"/>
                     </f:facet>
 
                     <h:outputText value="#{question.question}"/>
@@ -60,7 +59,7 @@
 
                 <p:column sortBy="#{question.user.name}">
                     <f:facet name="header">
-                        <h:outputText value="Created by"/>
+                        <h:outputText value="#{viewMessages['question.user']}"/>
                     </f:facet>
 
                     <h:outputText value="#{question.user.name}"/>
@@ -68,7 +67,7 @@
 
                 <p:column sortBy="#{question.dateCreated}">
                     <f:facet name="header">
-                        <h:outputText value="Date Created"/>
+                        <h:outputText value="#{viewMessages['question.dateCreated']}"/>
                     </f:facet>
 
                     <h:outputText value="#{question.dateCreated}"/>
@@ -76,39 +75,38 @@
 
                 <p:column sortBy="#{question.dateLastModified}">
                     <f:facet name="header">
-                        <h:outputText value="Date Last Modified"/>
+                        <h:outputText value="#{viewMessages['question.dateLastModified']}"/>
                     </f:facet>
 
                     <h:outputText value="#{question.dateLastModified}"/>
                 </p:column>
 
                 <p:column headerText="Actions">
-                    <p:commandButton value="Details"
+                    <p:commandButton value="#{viewMessages['action.details']}"
                                      styleClass="btn btn-primary btn-sm"
                                      outcome="details">
                         <f:param name="id" value="#{question.id}"/>
                     </p:commandButton>
 
-                    <p:commandButton value="Edit"
+                    <p:commandButton value="#{viewMessages['action.edit']}"
                                      styleClass="btn btn-primary btn-sm"
                                      outcome="edit">
                         <f:param name="id" value="#{question.id}"/>
                     </p:commandButton>
 
-                    <p:commandButton value="Delete"
+                    <p:commandButton value="#{viewMessages['action.delete']}"
                                      styleClass="btn btn-danger btn-sm"
                                      actionListener="#{questionsListController.delete(question.id)}">
-                        <p:confirm header="Delete Confirmation"
-                                   message="Are you sure you want to delete this item?"/>
+                        <p:confirm header="#{viewMessages['delete.confirmation.header']}"
+                                   message="#{viewMessages['delete.confirmation.message']}"/>
                     </p:commandButton>
 
                     <p:confirmDialog global="true">
-                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"/>
-                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"/>
+                        <p:commandButton value="#{viewMessages['no']}" type="button" styleClass="ui-confirmdialog-no"/>
+                        <p:commandButton value="#{viewMessages['yes']}" type="button" styleClass="ui-confirmdialog-yes"/>
                     </p:confirmDialog>
                 </p:column>
             </p:dataTable>
         </h:form>
     </ui:define>
 </ui:composition>
-</html>
