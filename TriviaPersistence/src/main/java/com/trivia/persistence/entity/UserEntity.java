@@ -29,12 +29,12 @@ public class UserEntity implements Serializable {
     private int id;
 
     @Basic
-    @NotBlank
+    @NotBlank(message = "{field.required}")
     @Column(name = "password")
     private String password;
 
     @Basic
-    @NotBlank
+    @NotBlank(message = "{field.required}")
     @Column(name = "name")
     private String name;
 

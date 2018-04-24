@@ -51,48 +51,36 @@
                          lazy="true">
                 <f:facet name="header">
                     <p:outputPanel>
+                        <h:outputText value="#{viewMessages['questions']}"/>
+
+
                         <h:outputText value="#{viewMessages['search']}: "/>
                         <p:inputText id="globalFilter" onkeyup="PF('questionsTable').filter()" style="width:150px" placeholder="#{viewMessages['search.placeholder']}..."/>
                     </p:outputPanel>
                 </f:facet>
 
-                <p:column sortBy="#{question.id}">
-                    <f:facet name="header">
-                        <h:outputText value="#{viewMessages['question.id']}"/>
-                    </f:facet>
-
+                <p:column sortBy="#{question.id}"
+                          headerText="#{viewMessages['question.id']}">
                     <h:outputText value="#{question.id}"/>
                 </p:column>
 
-                <p:column sortBy="#{question.question}">
-                    <f:facet name="header">
-                        <h:outputText value="#{viewMessages['question.question']}"/>
-                    </f:facet>
-
+                <p:column sortBy="#{question.question}"
+                          headerText="#{viewMessages['question.question']}">
                     <h:outputText value="#{question.question}"/>
                 </p:column>
 
-                <p:column sortBy="#{question.user.name}">
-                    <f:facet name="header">
-                        <h:outputText value="#{viewMessages['question.user']}"/>
-                    </f:facet>
-
+                <p:column sortBy="#{question.user.name}"
+                          headerText="#{viewMessages['question.user']}">
                     <h:outputText value="#{question.user.name}"/>
                 </p:column>
 
-                <p:column sortBy="#{question.dateCreated}">
-                    <f:facet name="header">
-                        <h:outputText value="#{viewMessages['question.dateCreated']}"/>
-                    </f:facet>
-
+                <p:column sortBy="#{question.dateCreated}"
+                          headerText="#{viewMessages['question.dateCreated']}">
                     <h:outputText value="#{question.dateCreated}"/>
                 </p:column>
 
-                <p:column sortBy="#{question.dateLastModified}">
-                    <f:facet name="header">
-                        <h:outputText value="#{viewMessages['question.dateLastModified']}"/>
-                    </f:facet>
-
+                <p:column sortBy="#{question.dateLastModified}"
+                          headerText="#{viewMessages['question.dateLastModified']}">
                     <h:outputText value="#{question.dateLastModified}"/>
                 </p:column>
 

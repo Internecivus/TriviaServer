@@ -32,7 +32,7 @@
             <p:autoUpdate/>
         </p:growl>
 
-        <p:panel header="#{viewMessages['action.create.question']}">
+        <p:panel header="#{viewMessages['action.create']} #{viewMessages['question']}">
             <h:form enctype="multipart/form-data">
                 <div class="form-group">
                     <p:outputLabel for="question">#{viewMessages['question.question']}</p:outputLabel>
@@ -104,19 +104,6 @@
                                   skinSimple="true"/>
                     <p:messages for="image"/>
                 </div>
-                <!--<div class="form-group">-->
-                    <!--<p:outputLabel for="categories">#{viewMessages['question.categories']}</p:outputLabel>-->
-                    <!--<p:selectManyCheckbox converter="javax.faces.Integer"-->
-                                          <!--id="categories"-->
-                                          <!--layout="lineDirection"-->
-                                          <!--value="#{questionsCreateController.categoriesUsed}">-->
-                        <!--<f:selectItems value="#{questionsCreateController.categoriesAvailable}"-->
-                                       <!--var="category"-->
-                                       <!--itemValue="#{category.id}"-->
-                                       <!--itemLabel="#{category.name}"/>-->
-                    <!--</p:selectManyCheckbox>-->
-                    <!--<p:message for="categories"/>-->
-                <!--</div>-->
                 <div class="form-group">
                     <p:outputLabel for="categories">#{viewMessages['question.categories']}</p:outputLabel>
                     <p:selectManyCheckbox id="categories"

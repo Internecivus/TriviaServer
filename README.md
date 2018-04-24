@@ -1,6 +1,3 @@
-// Admin
-TODO: My Clients
-
 // Rest
 TODO: Rest auth
 TODO: More methods
@@ -10,12 +7,6 @@ TODO: Bean validation
 // Security
 TODO: Save number of requests per API key, instead of per IP
 TODO: RememberMe login
-
-
-
-
-JEDNOSTAVNO SVAKOM KLIJENTU DATI APIKEY I SECRET
-
 
 // Client
 TODO:   Prvi put: DA:   Stvara client id (GUUID) putem BLOB
@@ -30,7 +21,6 @@ TODO:   Prvi put: DA:   Stvara client id (GUUID) putem BLOB
                         Uzima request i obraduje ga
                         Salje odgovor
         
-
 
 TODO: Korisnicke postavke za velicinu prozora, client id, etc.
 TODO: Salje zathev kod svakog pokretanja za dobivanje svih kategorija

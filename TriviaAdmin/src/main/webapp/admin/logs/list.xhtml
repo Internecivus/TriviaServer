@@ -30,11 +30,7 @@
                          emptyMessage="#{viewMessages.notFound}"
                          widgetVar="logTable"
                          lazy="true">
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="#{viewMessages['log.message']}"/>
-                    </f:facet>
-
+                <p:column headerText="#{viewMessages['log.message']}">
                     <h:outputText value="#{log.message}"/>
                 </p:column>
             </p:dataTable>

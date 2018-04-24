@@ -6,6 +6,7 @@ import com.trivia.core.service.CategoryService;
 import com.trivia.core.service.QuestionService;
 import com.trivia.persistence.entity.CategoryEntity;
 import com.trivia.persistence.entity.QuestionEntity;
+import org.primefaces.model.UploadedFile;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -29,21 +30,15 @@ public class QuestionsEditController implements Serializable {
     @Inject private transient FacesContext facesContext;
     @Inject private transient PropertyResourceBundle viewMessages;
     private QuestionEntity questionEntity;
-    private List<String> categoriesAvailable;
-    private List<String> categoriesUsed;
+    private UploadedFile uploadedImage;
+    private List<CategoryEntity> categoriesAvailable;
 
     @PostConstruct
     public void init() {
         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         int id = Integer.valueOf(request.getParameter("id"));
         this.questionEntity = questionService.findById(id);
-        this.categoriesAvailable = categoryService.getAllNames();
-        List<CategoryEntity> categories = questionEntity.getCategories();
-        categoriesUsed = new ArrayList<>();
-
-        for (CategoryEntity category : categories) {
-            categoriesUsed.add(category.getName());
-        }
+        this.categoriesAvailable = categoryService.getAll();
     }
 
     public void update() {
@@ -65,19 +60,20 @@ public class QuestionsEditController implements Serializable {
         this.questionEntity = questionEntity;
     }
 
-    public List<String> getCategoriesAvailable() {
+    public UploadedFile getUploadedImage() {
+        return uploadedImage;
+    }
+
+    public void setUploadedImage(UploadedFile uploadedImage) {
+        this.uploadedImage = uploadedImage;
+    }
+
+    public List<CategoryEntity> getCategoriesAvailable() {
         return categoriesAvailable;
     }
 
-    public void setCategoriesAvailable(List<String> categoriesAvailable) {
+    public void setCategoriesAvailable(List<CategoryEntity> categoriesAvailable) {
         this.categoriesAvailable = categoriesAvailable;
     }
 
-    public List<String> getCategoriesUsed() {
-        return categoriesUsed;
-    }
-
-    public void setCategoriesUsed(List<String> categoriesUsed) {
-        this.categoriesUsed = categoriesUsed;
-    }
 }

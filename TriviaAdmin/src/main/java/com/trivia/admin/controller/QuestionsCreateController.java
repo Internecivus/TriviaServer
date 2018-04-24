@@ -31,7 +31,6 @@ public class QuestionsCreateController implements Serializable {
     private QuestionEntity questionEntity;
     private UploadedFile uploadedImage;
     private List<CategoryEntity> categoriesAvailable;
-    private List<CategoryEntity> categoriesUsed;
 
     @PostConstruct
     public void init() {
@@ -83,13 +82,5 @@ public class QuestionsCreateController implements Serializable {
 
     public void setCategoriesAvailable(List<CategoryEntity> categoriesAvailable) {
         this.categoriesAvailable = categoriesAvailable;
-    }
-
-    public List<CategoryEntity> getCategoriesUsed() {
-        return categoriesUsed;
-    }
-
-    public void setCategoriesUsed(List<CategoryEntity> categoriesUsed) {
-        this.categoriesUsed = categoriesUsed;
     }
 }

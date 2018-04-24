@@ -25,40 +25,129 @@
     </ui:define>
 
     <ui:define name="main">
-        <p:messages id="messages" showDetail="true" closable="false">
+        <p:messages id="messages" globalOnly="true" showDetail="true" closable="false">
             <p:autoUpdate/>
         </p:messages>
+        <p:growl id="growl" showDetail="true" sticky="true" for="growl">
+            <p:autoUpdate/>
+        </p:growl>
 
-        <h:form enctype="multipart/form-data">
-            <p:panel header="Edit Question">
-
-
-
+        <p:panel header="#{viewMessages['action.edit']} #{viewMessages['question']}">
+            <h:form enctype="multipart/form-data">
                 <div class="form-group">
-                    <h:outputLabel for="date_created">Date Created</h:outputLabel>
-                    <h:outputText id="date_created" value="#{questionsEditController.questionEntity.dateCreated}"/>
+                    <p:outputLabel for="date_created">#{viewMessages['question.dateCreated']}</p:outputLabel>
+                    <h:outputText id="date_created"
+                                  value="#{questionsEditController.questionEntity.dateCreated}"/>
+                </div>
+                <div class="form-group">
+                    <p:outputLabel for="date_last_modified">#{viewMessages['question.dateLastModified']}</p:outputLabel>
+                    <h:outputText id="date_last_modified"
+                                  value="#{questionsEditController.questionEntity.dateLastModified}"/>
+                </div>
+                <div class="form-group">
+                    <p:outputLabel for="question">#{viewMessages['question.question']}</p:outputLabel>
+                    <p:inputText value="#{questionsEditController.questionEntity.question}"
+                                 placeholder="#{questionsEditController.questionEntity.question}"
+                                 styleClass="form-control"
+                                 id="question"/>
+                    <p:message for="question"/>
+                </div>
+                <div class="form-group">
+                    <p:outputLabel for="first_answer">#{viewMessages['question.firstAnswer']}</p:outputLabel>
+                    <p:inputText value="#{questionsEditController.questionEntity.answerFirst}"
+                                 placeholder="#{questionsEditController.questionEntity.answerFirst}"
+                                 styleClass="form-control"
+                                 id="first_answer"/>
+                    <p:message for="first_answer"/>
+                </div>
+                <div class="form-group">
+                    <p:outputLabel for="second_answer">#{viewMessages['question.secondAnswer']}</p:outputLabel>
+                    <p:inputText value="#{questionsEditController.questionEntity.answerSecond}"
+                                 placeholder="#{questionsEditController.questionEntity.answerSecond}"
+                                 styleClass="form-control"
+                                 id="second_answer"/>
+                    <p:message for="second_answer"/>
+                </div>
+                <div class="form-group">
+                    <p:outputLabel for="third_answer">#{viewMessages['question.thirdAnswer']}</p:outputLabel>
+                    <p:inputText value="#{questionsEditController.questionEntity.answerThird}"
+                                 placeholder="#{questionsEditController.questionEntity.answerThird}"
+                                 styleClass="form-control"
+                                 id="third_answer"/>
+                    <p:message for="third_answer"/>
+                </div>
+                <div class="form-group">
+                    <p:outputLabel for="fourth_answer">#{viewMessages['question.fourthAnswer']}</p:outputLabel>
+                    <p:inputText value="#{questionsEditController.questionEntity.answerFourth}"
+                                 placeholder="#{questionsEditController.questionEntity.answerFourth}"
+                                 styleClass="form-control"
+                                 id="fourth_answer"/>
+                    <p:message for="fourth_answer"/>
                 </div>
 
-
-
                 <div class="form-group">
-                    <h:outputLabel>Categories</h:outputLabel>
-
+                    <p:outputLabel for="correct_answer">#{viewMessages['question.correctAnswer']}</p:outputLabel>
+                    <p:inputText value="#{questionsEditController.questionEntity.answerCorrect}"
+                                 placeholder="#{questionsEditController.questionEntity.answerCorrect}"
+                                 styleClass="form-control"
+                                 converterMessage="#{viewMessages['conversion.integer']}"
+                                 id="correct_answer"/>
+                    <p:message for="correct_answer"/>
                 </div>
-
-
-
+                <div class="form-group">
+                    <p:outputLabel for="comment">#{viewMessages['question.comment']}</p:outputLabel>
+                    <p:inputTextarea value="#{questionsEditController.questionEntity.comment}"
+                                     placeholder="#{questionsEditController.questionEntity.comment}"
+                                     styleClass="form-control"
+                                     id="comment"/>
+                    <p:message for="comment"/>
+                </div>
+                <div class="form-group">
+                    <!--TODO: Show old image-->
+                    <p:outputLabel for="image">#{viewMessages['action.change']} #{viewMessages['question.image']}</p:outputLabel>
+                    <p:fileUpload value="#{questionsEditController.uploadedImage}"
+                                  fileLimit="1"
+                                  mode="simple"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                  auto="true"
+                                  id="image"
+                                  invalidFileMessage="#{viewMessages['upload.invalidFile']}"
+                                  fileLimitMessage="#{viewMessages['upload.fileLimit']}"
+                                  invalidSizeMessage="#{viewMessages['upload.invalidSize']}"
+                                  sizeLimit="500000"
+                                  skinSimple="true"/>
+                    <p:messages for="image"/>
+                </div>
+                <div class="form-group">
+                    <p:outputLabel for="categories">#{viewMessages['question.categories']}</p:outputLabel>
+                    <p:selectManyCheckbox id="categories"
+                                          styleClass="form-control"
+                                          layout="lineDirection"
+                                          value="#{questionsEditController.questionEntity.categories}">
+                        <f:selectItems value="#{questionsEditController.categoriesAvailable}"
+                                       var="category"
+                                       itemValue="#{category}"
+                                       itemLabel="#{category.name}"/>
+                    </p:selectManyCheckbox>
+                </div>
                 <div class="form-group">
                     <p:commandButton action="#{questionsEditController.update()}"
                                      type="submit"
-                                     value="Save"
+                                     value="#{viewMessages['action.save']}"
                                      validateClient="true"
                                      ajax="false">
+                        <p:confirm header="#{viewMessages['update.confirmation.header']}"
+                                   message="#{viewMessages['update.confirmation.message']}"/>
                     </p:commandButton>
-                    <p:commandButton value="Reset"
-                                     type="reset"/>
+                    <p:commandButton value="#{viewMessages['action.cancel']}"
+                                     type="reset"/> <!--TODO: Refresh page-->
+
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="#{viewMessages['no']}" type="button" styleClass="ui-confirmdialog-no"/>
+                        <p:commandButton value="#{viewMessages['yes']}" type="button" styleClass="ui-confirmdialog-yes"/>
+                    </p:confirmDialog> <!--TODO: Create confirmDialog tag-->
                 </div>
-            </p:panel>
-        </h:form>
+            </h:form>
+        </p:panel>
     </ui:define>
 </ui:composition>

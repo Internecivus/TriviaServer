@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `client` (
   `api_secret` varchar(36),
   `requests` int(11) NOT NULL,
   `date_created` datetime NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `client_user_fk_idx` (`user_id`),
   CONSTRAINT `client_user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
