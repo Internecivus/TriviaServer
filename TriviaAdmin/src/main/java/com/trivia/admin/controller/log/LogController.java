@@ -1,10 +1,9 @@
-package com.trivia.admin.controller;
+package com.trivia.admin.controller.log;
 
-import com.trivia.core.utility.LogManager;
+import com.trivia.core.utility.LogUtil;
 import com.trivia.core.utility.LogType;
 import com.trivia.persistence.dto.server.Log;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
 import javax.annotation.PostConstruct;
@@ -12,9 +11,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +29,8 @@ public class LogController implements Serializable {
                 List<Log> logs = new ArrayList<>();
 
                 try {
-                    logs = LogManager.readFromTo(first, pageSize, LogType.ADMIN);
-                    lazyLogs.setRowCount(Math.toIntExact(LogManager.getLineCount(LogType.ADMIN)));
+                    logs = LogUtil.readFromTo(first, pageSize, LogType.ADMIN);
+                    lazyLogs.setRowCount(Math.toIntExact(LogUtil.getLineCount(LogType.ADMIN)));
                 }
                 catch (IOException e) {
 

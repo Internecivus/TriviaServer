@@ -1,6 +1,5 @@
 package com.trivia.core.utility;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -11,9 +10,11 @@ import java.nio.file.StandardCopyOption;
 /**
  * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
  */
-public class ImageManager extends FileManager {
+public final class ImageUtil extends FileUtil {
     public final static Path IMAGE_DIR = Paths.get(SERVER_DIR + "/data/images");
     public static String IMAGE_FILE_PREFIX = "img_";
+
+    private ImageUtil() {}
 
     public static enum AllowedImageTypes {
 

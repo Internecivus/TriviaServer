@@ -7,6 +7,7 @@ import javax.enterprise.context.Dependent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.security.enterprise.SecurityContext;
 
 /**
  * Created by faust. Part of Trivia Project. All rights reserved. 2018
@@ -14,9 +15,13 @@ import javax.inject.Named;
 @Named
 @Dependent
 public class ViewController {
+    private @Inject SecurityContext securityContext;
+    private @Inject FacesContext facesContext;
+
     private String path;
     private String fullName;
     private String name;
+    private String userName;
 
     public ViewController() {}
 
@@ -26,6 +31,17 @@ public class ViewController {
         path = viewId.substring(1, viewId.lastIndexOf('.'));
         fullName = path.replaceFirst("WEB-INF/", "").replaceAll("\\W+", "_");
         name = fullName.substring(fullName.lastIndexOf('_') + 1, fullName.length());
+
+        if (securityContext.getCallerPrincipal() == null) {
+            userName = "";
+        }
+        else {
+            userName = securityContext.getCallerPrincipal().getName();
+        }
+    }
+
+    public String reset() {
+        return facesContext.getViewRoot().getViewId() + "?faces-redirect=true";
     }
 
     public boolean pathIs(String path) {
@@ -42,5 +58,9 @@ public class ViewController {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 }

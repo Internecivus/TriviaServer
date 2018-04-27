@@ -21,12 +21,12 @@
     <h:body>
         <h:outputStylesheet library="css" name="primefaces-override.css"/>
         <div id="header" class="container text-center">
-            <h1><h:link outcome="/public/login.xhtml">#{viewMessages['this.name']} #{viewMessages['this.admin']}</h:link></h1>
+            <h1><h:link outcome="/public/login.xhtml">#{i18n['this.name']} #{i18n['this.admin']}</h:link></h1>
 
             <h:form class="pull-right">
                 <h:selectOneMenu value="#{localeController.language}" onchange="submit()">
-                    <f:selectItem itemValue="en" itemLabel="#{viewMessages['language.en']}" />
-                    <f:selectItem itemValue="hr" itemLabel="#{viewMessages['language.hr']}" />
+                    <f:selectItem itemValue="en" itemLabel="#{i18n['language.en']}" />
+                    <f:selectItem itemValue="hr" itemLabel="#{i18n['language.hr']}" />
                 </h:selectOneMenu>
             </h:form>
 
@@ -34,8 +34,7 @@
             </ui:insert>
         </div>
 
-        <div id="main"
-             class="col-xs-12 col-xs-offset-0 col-lg-10 col-lg-offset-1">
+        <div id="main" class="col-xs-12 col-xs-offset-0 col-lg-10 col-lg-offset-1">
             <ui:insert name="main">
             </ui:insert>
         </div>

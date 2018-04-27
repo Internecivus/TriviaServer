@@ -1,27 +1,23 @@
 package com.trivia.core.utility;
 
 import com.trivia.persistence.dto.server.Log;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.zip.InflaterOutputStream;
 
 
-public class LogManager extends FileManager {
+public final class LogUtil extends FileUtil {
     public final static Path LOG_DIR = Paths.get(SERVER_DIR + "/log");
     public final static Path ADMIN_LOG_PATH = Paths.get(LOG_DIR + "/" + LogType.ADMIN);
     public final static Path SERVER_LOG_PATH = Paths.get(LOG_DIR + "/" + LogType.SERVER);
     private final static Integer LOGS_PAGE_MAX = 100;
+
+    private LogUtil() {}
 
     /**
      * Since a log row can have a fixed byte size, this could better be done MUCH faster by offsetting the search by

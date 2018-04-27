@@ -14,27 +14,32 @@
                 <!--TODO: Create custom tag to avoid repetition. See BalusC example.-->
                 <h:link outcome="/admin/questions/list"
                         styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/admin/questions') ? 'active' : ''}"
-                        value="#{viewMessages['page.questions.name']}"/>
+                        value="#{i18n['page.questions.name']}"/>
             </li>
             <li>
                 <h:link outcome="/admin/categories/list"
                         styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/admin/categories') ? 'active' : ''}"
-                        value="#{viewMessages['page.categories.name']}"/>
+                        value="#{i18n['page.categories.name']}"/>
             </li>
             <li>
                 <h:link outcome="/admin/users/list"
                         styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/admin/users') ? 'active' : ''}"
-                        value="#{viewMessages['page.users.name']}"/>
+                        value="#{i18n['page.users.name']}"/>
+            </li>
+            <li>
+                <h:link outcome="/admin/clients/list"
+                        styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/admin/clients') ? 'active' : ''}"
+                        value="#{i18n['page.clients.name']}"/>
             </li>
             <li>
                 <h:link outcome="/admin/logs/list"
-                        styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/admin/list') ? 'active' : ''}"
-                        value="#{viewMessages['page.logs.name']}"/>
+                        styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/admin/logs') ? 'active' : ''}"
+                        value="#{i18n['page.logs.name']}"/>
             </li>
             <li style="{display:inline-block}">
                 <h:form>
                     <p:commandButton id="logout"
-                                     value="#{viewMessages.logout}"
+                                     value="#{i18n.logout}"
                                      styleClass="btn btn-primary btn-sm"
                                      action="#{logoutController.logout}"/>
                 </h:form>

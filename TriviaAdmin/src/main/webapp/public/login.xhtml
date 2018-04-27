@@ -6,7 +6,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/template.xhtml">
     <ui:define name="title">
-        <h:outputText value="#{viewMessages['page.login.name']} - #{viewMessages['this.name']}"/>
+        <h:outputText value="#{i18n['page.login.name']} - #{i18n['this.name']}"/>
     </ui:define>
 
     <ui:define name="navigation">
@@ -23,7 +23,7 @@
         <h:form action="">
             <div class="form-group">
                 <p:outputLabel styleClass="control-label"
-                               for="username">#{viewMessages['auth.username']}</p:outputLabel>
+                               for="username">#{i18n['auth.username']}</p:outputLabel>
                 <p:inputText value="#{loginController.userEntity.name}"
                              styleClass="form-control"
                              id="username"/>
@@ -32,7 +32,7 @@
 
             <div class="form-group">
                 <p:outputLabel styleClass="control-label"
-                               for="password">#{viewMessages['auth.password']}</p:outputLabel>
+                               for="password">#{i18n['auth.password']}</p:outputLabel>
                 <h:inputSecret value="#{loginController.userEntity.password}"
                                type="password"
                                styleClass="form-control"
@@ -42,7 +42,7 @@
 
             <div class="form-group">
                 <h:outputText styleClass="control-label"
-                              for="remember_me">#{viewMessages['auth.rememberme']}</h:outputText>
+                              for="remember_me">#{i18n['auth.rememberme']}</h:outputText>
                 <h:selectBooleanCheckbox id="remember_me"
                                          value="#{loginController.rememberMe}"/>
 

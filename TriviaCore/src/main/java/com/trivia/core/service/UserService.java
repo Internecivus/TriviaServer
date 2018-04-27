@@ -1,9 +1,7 @@
 package com.trivia.core.service;
 
-import com.trivia.core.exception.EntityException;
 import com.trivia.core.exception.EntityExistsException;
-import com.trivia.core.security.CryptoManager;
-import com.trivia.persistence.entity.QuestionEntity;
+import com.trivia.core.security.Cryptography;
 import com.trivia.persistence.entity.UserEntity;
 import com.trivia.persistence.entity.UserEntity_;
 
@@ -11,8 +9,8 @@ import javax.ejb.Stateless;
 import javax.persistence.*;
 import javax.persistence.criteria.*;
 import java.sql.Timestamp;
-import java.util.List;
 
+//TODO: Extract LoginService out of this EJB service
 @Stateless
 public class UserService {
     @PersistenceContext(unitName = "TriviaDB")
@@ -77,7 +75,7 @@ public class UserService {
         if (user == null) {
             return null;
         }
-        else if (CryptoManager.validateMessage(password, user.getPassword())) {
+        else if (Cryptography.validateMessage(password, user.getPassword())) {
             return user;
         }
         else {
@@ -92,7 +90,7 @@ public class UserService {
         }
 
         newUser.setDateCreated(new Timestamp(System.currentTimeMillis()));
-        newUser.setPassword(CryptoManager.hashMessage(newUser.getPassword()));
+        newUser.setPassword(Cryptography.hashMessage(newUser.getPassword()));
 
         em.persist(newUser);
         em.flush();

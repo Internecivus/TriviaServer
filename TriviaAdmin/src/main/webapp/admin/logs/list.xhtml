@@ -6,14 +6,17 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/admin.xhtml">
     <ui:define name="title">
-        <h:outputText value="#{viewMessages['action.all']} #{viewMessages['page.logs.name']} - #{viewMessages['this.name']}"/>
+        <h:outputText value="#{i18n['page.logs.list.name']} - #{i18n['this.name']}"/>
     </ui:define>
 
     <ui:define name="main">
         <h:form>
-            <p:messages id="messages" showDetail="true" closable="false">
+            <p:messages id="messages" globalOnly="true" showDetail="true" closable="false">
                 <p:autoUpdate/>
             </p:messages>
+            <p:growl id="growl" showDetail="true" sticky="true" for="growl">
+                <p:autoUpdate/>
+            </p:growl>
 
             <p:dataTable id="log_table"
                          paginator="true"
@@ -27,10 +30,10 @@
                          reflow="true"
                          tableStyleClass="table table-striped"
                          rowStyleClass=""
-                         emptyMessage="#{viewMessages.notFound}"
+                         emptyMessage="#{i18n.notFound}"
                          widgetVar="logTable"
                          lazy="true">
-                <p:column headerText="#{viewMessages['log.message']}">
+                <p:column headerText="#{i18n['log.message']}">
                     <h:outputText value="#{log.message}"/>
                 </p:column>
             </p:dataTable>

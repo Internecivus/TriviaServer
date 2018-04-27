@@ -1,8 +1,8 @@
-package com.trivia.admin.controller;
+package com.trivia.admin.controller.auth;
 
-import com.trivia.admin.utility.Messages;
-import com.trivia.core.exception.BusinessException;
+import com.trivia.admin.utility.Message;
 import com.trivia.persistence.entity.UserEntity;
+import com.trivia.admin.resources.i18n;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.PropertyResourceBundle;
 
 /**
  * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
@@ -28,11 +27,12 @@ import java.util.PropertyResourceBundle;
 public class LoginController implements Serializable {
     @Inject private FacesContext facesContext;
     @Inject private SecurityContext securityContext;
-    @Inject private transient PropertyResourceBundle viewMessages;
     private UserEntity userEntity;
     private boolean rememberMe;
 
     @PostConstruct
+    // For some way this throws a warning about init() using IOEXception, but a return of String (in using the String
+    // redirect) is not even going to deploy.
     public void init() throws IOException {
         userEntity = new UserEntity();
 
@@ -52,7 +52,7 @@ public class LoginController implements Serializable {
         );
 
         if (authenticationStatus == AuthenticationStatus.SEND_FAILURE) {
-            Messages.addErrorGlobal(viewMessages.getString("failure"),viewMessages.getString("login.failure"));
+            Message.addErrorGlobal(i18n.get("failure"),i18n.get("login.failure"));
             facesContext.validationFailed();
         }
         else if (authenticationStatus == AuthenticationStatus.SEND_CONTINUE) {

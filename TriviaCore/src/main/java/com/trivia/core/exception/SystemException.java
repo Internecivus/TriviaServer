@@ -1,9 +1,11 @@
 package com.trivia.core.exception;
 
+import javax.ejb.ApplicationException;
+
 /**
  * Created by faust. Part of Trivia Project. All rights reserved. 2018
  */
-public class SystemException extends RuntimeException {
+public class SystemException extends BusinessException {
     public SystemException() {
         super();
     }

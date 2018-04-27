@@ -10,8 +10,8 @@
         </locale-config>
 
         <resource-bundle>
-            <base-name>ViewMessages</base-name>
-            <var>viewMessages</var>
+            <base-name>i18n</base-name>
+            <var>i18n</var>
         </resource-bundle>
     </application>
 </faces-config>

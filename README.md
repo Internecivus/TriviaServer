@@ -1,5 +1,5 @@
 // Rest
-TODO: Rest auth
+TODO: Rest BasicAuth
 TODO: More methods
 TODO: Rest exceptions
 TODO: Bean validation
@@ -20,14 +20,3 @@ TODO:   Prvi put: DA:   Stvara client id (GUUID) putem BLOB
                         Provjerava secret
                         Uzima request i obraduje ga
                         Salje odgovor
-        
-
-TODO: Korisnicke postavke za velicinu prozora, client id, etc.
-TODO: Salje zathev kod svakog pokretanja za dobivanje svih kategorija
-TODO: Renderanje svih kategorija i slika
-TODO: Izabire kategoriju
-TODO: Salje request za random pitanja
-TODO: Rendera pitanje i odgovore
-TODO: Vrijeme prolazi, kada prode automatski novo
-TODO: Na kraju bodovi
-TODO: Sharing rezultata na drustvenim mrezama

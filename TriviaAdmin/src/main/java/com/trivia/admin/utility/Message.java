@@ -11,8 +11,10 @@ import javax.inject.Named;
  */
 // This is basically stolen from Omnifaces :-)
 // The only reason why we are using this instead of Omnifaces is that we want both details and the summary of the messages.
-public class Messages {
+public final class Message {
     private static FacesMessage facesMessage;
+
+    private Message() {};
 
     public static void addErrorGlobalFlash(String summary, String message) {
         facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, message);

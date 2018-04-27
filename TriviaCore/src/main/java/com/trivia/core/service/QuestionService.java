@@ -3,7 +3,7 @@ package com.trivia.core.service;
 import com.trivia.core.exception.EntityNotFoundException;
 import com.trivia.core.exception.SystemException;
 import com.trivia.core.utility.Generator;
-import com.trivia.core.utility.ImageManager;
+import com.trivia.core.utility.ImageUtil;
 import com.trivia.core.utility.SortOrder;
 import com.trivia.persistence.dto.client.QuestionClient;
 import com.trivia.persistence.entity.CategoryEntity_;
@@ -46,6 +46,7 @@ public class QuestionService {
         return questionEntity;
     }
 
+    // TODO: Model better served from a DTO layer?
     public List<QuestionClient> getRandomForClient(int size, String category) {
         List<QuestionClient> questionsClient = new ArrayList<>();
         List<QuestionEntity> questions = new ArrayList<>();
@@ -76,7 +77,6 @@ public class QuestionService {
         return questionsClient;
     }
 
-    //TODO: This selects EVERYTHING. Create another, more discriminating method for clients.
     public List<QuestionEntity> findAll(int pageCurrent, int pageSize, String sortField, SortOrder sortOrder, String searchString) {
         List<QuestionEntity> questions;
         CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -156,7 +156,7 @@ public class QuestionService {
 
     public void createWithImage(QuestionEntity questionEntity, String fileName, InputStream inputStream) {
         try {
-            java.nio.file.Path imagePath = ImageManager.saveImageAndGetPath(fileName, inputStream);
+            java.nio.file.Path imagePath = ImageUtil.saveImageAndGetPath(fileName, inputStream);
             String imageFileName = imagePath.getFileName().toString();
             questionEntity.setImage(imageFileName);
         }

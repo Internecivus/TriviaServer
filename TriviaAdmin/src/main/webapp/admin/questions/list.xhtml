@@ -6,19 +6,19 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/admin.xhtml">
     <ui:define name="title">
-        <h:outputText value="#{viewMessages['action.all']} #{viewMessages['page.questions.name']} - #{viewMessages['this.name']}"/>
+        <h:outputText value="#{i18n['page.questions.list.name']} - #{i18n['this.name']}"/>
     </ui:define>
 
     <ui:define name="subnavigation">
         <div class="container text-center">
             <ul class="list-inline list-unstyled">
                 <li>
-                    <h:button outcome="list"
-                              value="#{viewMessages['action.all']}"/>
+                    <p:button outcome="list"
+                              value="#{i18n['action.all']}"/>
                 </li>
                 <li>
-                    <h:button outcome="create"
-                              value="#{viewMessages['action.create']}"/>
+                    <p:button outcome="create"
+                              value="#{i18n['action.create']}"/>
                 </li>
             </ul>
         </div>
@@ -45,68 +45,69 @@
                          reflow="true"
                          tableStyleClass="table table-striped"
                          rowStyleClass=""
-                         emptyMessage="#{viewMessages.notFound}"
+                         emptyMessage="#{i18n.notFound}"
                          widgetVar="questionsTable"
                          sortBy="#{question.dateCreated}"
                          lazy="true">
                 <f:facet name="header">
                     <p:outputPanel>
-                        <h:outputText value="#{viewMessages['questions']}"/>
-
-
-                        <h:outputText value="#{viewMessages['search']}: "/>
-                        <p:inputText id="globalFilter" onkeyup="PF('questionsTable').filter()" style="width:150px" placeholder="#{viewMessages['search.placeholder']}..."/>
+                        <h:outputText value="#{i18n['search']}: "/>
+                        <p:inputText id="globalFilter" onkeyup="PF('questionsTable').filter()" style="width:150px" placeholder="#{i18n['search.placeholder']}..."/>
                     </p:outputPanel>
                 </f:facet>
 
                 <p:column sortBy="#{question.id}"
-                          headerText="#{viewMessages['question.id']}">
+                          headerText="#{i18n['question.id']}">
                     <h:outputText value="#{question.id}"/>
                 </p:column>
 
                 <p:column sortBy="#{question.question}"
-                          headerText="#{viewMessages['question.question']}">
+                          headerText="#{i18n['question.question']}">
                     <h:outputText value="#{question.question}"/>
                 </p:column>
 
                 <p:column sortBy="#{question.user.name}"
-                          headerText="#{viewMessages['question.user']}">
+                          headerText="#{i18n['question.user']}">
                     <h:outputText value="#{question.user.name}"/>
                 </p:column>
 
                 <p:column sortBy="#{question.dateCreated}"
-                          headerText="#{viewMessages['question.dateCreated']}">
-                    <h:outputText value="#{question.dateCreated}"/>
+                          headerText="#{i18n['question.dateCreated']}">
+                    <h:outputText value="#{question.dateCreated}">
+                        <f:convertDateTime type="date" pattern="dd. MMMM yyyy HH:mm"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column sortBy="#{question.dateLastModified}"
-                          headerText="#{viewMessages['question.dateLastModified']}">
-                    <h:outputText value="#{question.dateLastModified}"/>
+                          headerText="#{i18n['question.dateLastModified']}">
+                    <h:outputText value="#{question.dateLastModified}">
+                        <f:convertDateTime type="date" pattern="dd. MMMM yyyy HH:mm"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="Actions">
-                    <p:commandButton value="#{viewMessages['action.details']}"
+                    <p:button value="#{i18n['action.details']}"
                                      styleClass="btn btn-primary btn-sm"
                                      outcome="details">
                         <f:param name="id" value="#{question.id}"/>
-                    </p:commandButton>
+                    </p:button>
 
-                    <p:commandButton value="#{viewMessages['action.edit']}"
+                    <p:button value="#{i18n['action.edit']}"
                                      styleClass="btn btn-primary btn-sm"
                                      outcome="edit">
                         <f:param name="id" value="#{question.id}"/>
-                    </p:commandButton>
+                    </p:button>
 
-                    <p:commandButton value="#{viewMessages['action.delete']}"
+                    <p:commandButton value="#{i18n['action.delete']}"
                                      styleClass="btn btn-danger btn-sm"
                                      actionListener="#{questionsListController.delete(question.id)}">
-                        <p:confirm header="#{viewMessages['delete.confirmation.header']}"
-                                   message="#{viewMessages['delete.confirmation.message']}"/>
+                        <p:confirm header="#{i18n['delete.confirmation.header']}"
+                                   message="#{i18n['delete.confirmation.message']}"/>
                     </p:commandButton>
 
                     <p:confirmDialog global="true">
-                        <p:commandButton value="#{viewMessages['no']}" type="button" styleClass="ui-confirmdialog-no"/>
-                        <p:commandButton value="#{viewMessages['yes']}" type="button" styleClass="ui-confirmdialog-yes"/>
+                        <p:commandButton value="#{i18n['no']}" type="button" styleClass="ui-confirmdialog-no"/>
+                        <p:commandButton value="#{i18n['yes']}" type="button" styleClass="ui-confirmdialog-yes"/>
                     </p:confirmDialog>
                 </p:column>
             </p:dataTable>

@@ -6,10 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import javax.xml.registry.infomodel.User;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
@@ -148,12 +145,12 @@ public class QuestionEntity {
         this.comment = comment;
     }
 
-    public Timestamp getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Timestamp dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = new Timestamp(dateCreated.getTime());
     }
 
     public Integer getAnswerCorrect() {
@@ -164,12 +161,12 @@ public class QuestionEntity {
         this.answerCorrect = answerCorrect;
     }
 
-    public Timestamp getDateLastModified() {
+    public Date getDateLastModified() {
         return dateLastModified;
     }
 
-    public void setDateLastModified(Timestamp dateLastModified) {
-        this.dateLastModified = dateLastModified;
+    public void setDateLastModified(Date dateLastModified) {
+        this.dateLastModified = new Timestamp(dateLastModified.getTime());
     }
 
     public String getImage() {
