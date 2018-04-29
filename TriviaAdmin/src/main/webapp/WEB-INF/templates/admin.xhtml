@@ -11,7 +11,7 @@
     <ui:define name="navigation">
         <ul id="navigation" class="list-inline list-unstyled">
             <li>
-                <!--TODO: Create custom tag to avoid repetition. See BalusC example.-->
+                <!--TODO: Create custom tag to avoid repetition. See a BalusC example.-->
                 <h:link outcome="/admin/questions/list"
                         styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/admin/questions') ? 'active' : ''}"
                         value="#{i18n['page.questions.name']}"/>

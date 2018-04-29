@@ -1,48 +1,53 @@
-package com.trivia.admin.controller.question;
+package com.trivia.admin.controller.user;
 
 import com.trivia.admin.resources.i18n;
 import com.trivia.admin.utility.Message;
 import com.trivia.core.exception.BusinessException;
 import com.trivia.core.exception.NotAuthorizedException;
-import com.trivia.core.service.CategoryService;
-import com.trivia.core.service.QuestionService;
+import com.trivia.core.service.UserService;
 import com.trivia.persistence.entity.QuestionEntity;
+import com.trivia.persistence.entity.UserEntity;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.UploadedFile;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityExistsException;
+import javax.security.enterprise.SecurityContext;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 @Named
 @Dependent
-//TODO: Put delete, find, create, etc. here??
-public class QuestionController {
-    private @Inject QuestionService questionService;
+public class UserController {
+    private @Inject UserService userService;
+    private @Inject SecurityContext securityContext;
     private transient @Inject FacesContext facesContext;
 
-    public LazyDataModel<QuestionEntity> findAll() {
-        LazyDataModel<QuestionEntity> lazyQuestions;
-        lazyQuestions = new LazyDataModel<QuestionEntity>() {
+    @PostConstruct
+    public void init() {}
+
+    public LazyDataModel<UserEntity> findAll() {
+        LazyDataModel<UserEntity> lazyUsers;
+        lazyUsers = new LazyDataModel<UserEntity>() {
             @Override
-            public List<QuestionEntity> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+            public List<UserEntity> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
                 String searchString = (filters.get("globalFilter") != null) ? filters.get("globalFilter").toString() : null;
 
                 try {
-                    List<QuestionEntity> result = questionService.findAll(
+                    List<UserEntity> result = userService.findAll(
                             first / pageSize + 1,
                             pageSize,
                             sortField,
                             com.trivia.core.utility.SortOrder.valueOf(sortOrder.toString()),
                             searchString
                     );
-                    super.setRowCount(questionService.getLastCount());
+                    super.setRowCount(userService.getLastCount());
                     return result;
                 }
                 catch (BusinessException e) {
@@ -53,28 +58,20 @@ public class QuestionController {
             }
 
             @Override
-            public Object getRowKey(QuestionEntity object) {
+            public Object getRowKey(UserEntity object) {
                 return super.getRowKey(object);
             }
         };
 
-        return lazyQuestions;
+        return lazyUsers;
     }
 
-    public String create(QuestionEntity questionEntity, UploadedFile uploadedImage) {
+    public String create(UserEntity userEntity) {
         try {
-            if (uploadedImage.getSize() > 0) {
-                questionService.createWithImage(questionEntity, uploadedImage.getFileName(), uploadedImage.getInputstream());
-            }
-            else {
-                questionService.create(questionEntity);
-            }
+            userService.create(userEntity);
 
             Message.addInfoGlobalFlash(i18n.get("success"), i18n.get("create.success"));
             return facesContext.getViewRoot().getViewId() + "?faces-redirect=true";
-        }
-        catch (IOException e) {
-            Message.addErrorGlobal(i18n.get("failure"), i18n.get("create.failure"));
         }
         catch (EntityExistsException e) {
             Message.addErrorGlobal(i18n.get("failure"), i18n.get("error.exists.message"));
@@ -83,9 +80,9 @@ public class QuestionController {
         return null;
     }
 
-    public void update(QuestionEntity questionEntity) {
+    public void update(UserEntity userEntity) {
         try {
-            questionService.update(questionEntity);
+            userService.update(userEntity);
 
             Message.addInfoGlobal(i18n.get("success"), i18n.get("update.success"));
         }
@@ -96,7 +93,7 @@ public class QuestionController {
 
     public void delete(int id) {
         try {
-            questionService.deleteById(id); /// TODO: needs to update the dataTable
+            userService.deleteById(id); /// TODO: needs to update the dataTable
             Message.addInfoFor("growl", i18n.get("success"), i18n.get("delete.success"));
         }
         catch (NotAuthorizedException e) {

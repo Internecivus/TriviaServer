@@ -5,13 +5,14 @@ TODO: Working Auth
 
 // Admin
 TODO: Show image, update image, remove image
-TODO: Promote user to provider or admin etc
-TODO: Users, categories CRUD
+TODO: Users, clients, categories CRUD
 
 // Core
-TODO: ClientService
-TODO: Why do we need to find user in every method (questionCreate, Delete, etc) instead of using SecurityContext?
-TODO: UserService -> promote -> create providerId and secret
+TODO: ClientService register, UserService validateProvider
 
 // Persistence
 TODO: Caching
+
+
+
+Logging all methods

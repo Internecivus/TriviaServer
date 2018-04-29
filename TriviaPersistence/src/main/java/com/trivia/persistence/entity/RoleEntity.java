@@ -1,7 +1,6 @@
 package com.trivia.persistence.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Objects;
@@ -18,7 +17,7 @@ public class RoleEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "name")
-    private RoleName name;
+    private Role name;
 
     @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
     private Set<UserEntity> users = new HashSet<>();
@@ -31,11 +30,11 @@ public class RoleEntity {
         this.id = id;
     }
 
-    public RoleName getName() {
+    public Role getName() {
         return name;
     }
 
-    public void setName(RoleName name) {
+    public void setName(Role name) {
         this.name = name;
     }
 

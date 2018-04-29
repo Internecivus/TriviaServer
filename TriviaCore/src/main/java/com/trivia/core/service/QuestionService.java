@@ -1,15 +1,13 @@
 package com.trivia.core.service;
 
 import com.trivia.core.exception.EntityNotFoundException;
+import com.trivia.core.exception.NotAuthorizedException;
 import com.trivia.core.exception.SystemException;
 import com.trivia.core.utility.Generator;
 import com.trivia.core.utility.ImageUtil;
 import com.trivia.core.utility.SortOrder;
 import com.trivia.persistence.dto.client.QuestionClient;
-import com.trivia.persistence.entity.CategoryEntity_;
-import com.trivia.persistence.entity.QuestionEntity;
-import com.trivia.persistence.entity.QuestionEntity_;
-import com.trivia.persistence.entity.UserEntity;
+import com.trivia.persistence.entity.*;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 
@@ -22,7 +20,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import javax.security.enterprise.SecurityContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
@@ -35,7 +32,7 @@ public class QuestionService {
     private EntityManager em;
     private @EJB UserService userService;
     private @Inject Logger logger;
-    private @Resource SessionContext securityContext;
+    private @Resource SessionContext sessionContext;
     private final static Integer PAGE_SIZE_DEFAULT = 20;
     private final static Integer PAGE_SIZE_MAX = 100;
     private final static Integer PAGE_SIZE_RANDOM_DEFAULT = 20;
@@ -43,11 +40,7 @@ public class QuestionService {
 
     public QuestionEntity findById(int id) {
         QuestionEntity questionEntity = em.find(QuestionEntity.class, id);
-
-        if (questionEntity == null) {
-            throw new EntityNotFoundException();
-        }
-
+        if (questionEntity == null) throw new EntityNotFoundException();
         return questionEntity;
     }
 
@@ -72,9 +65,6 @@ public class QuestionService {
             typedQuery.setFirstResult(randomUniqueArray[i]).setMaxResults(1);
             questions.addAll(typedQuery.getResultList()); // This logic is unfortunate.
         }
-
-        //typedQuery.unwrap(org.hibernate.Query.class).setResultTransformer(Transformers.aliasToBean(QuestionClient.class)
-
         ModelMapper mapper = new ModelMapper();
         mapper.map(questions, questionsClient);
 
@@ -92,6 +82,9 @@ public class QuestionService {
 
         if (searchString != null && searchString.trim().length() > 0) {
             Predicate filterCondition = builder.disjunction();
+            if (searchString.chars().allMatch(Character::isDigit)) {
+                filterCondition = builder.or(filterCondition, builder.equal(root.get(QuestionEntity_.id), Integer.parseInt(searchString)));
+            }
             filterCondition = builder.or(filterCondition, builder.like(root.get(QuestionEntity_.question), "%" + searchString + "%"));
             filterCondition = builder.or(filterCondition, builder.like(root.get(QuestionEntity_.answerFirst), "%" + searchString + "%"));
             filterCondition = builder.or(filterCondition, builder.like(root.get(QuestionEntity_.answerSecond), "%" + searchString + "%"));
@@ -141,17 +134,19 @@ public class QuestionService {
     }
 
     public void update(QuestionEntity updatedQuestion) {
+        UserEntity user = userService.findByName(sessionContext.getCallerPrincipal().getName());
         QuestionEntity question = findById(updatedQuestion.getId());
-        if (question != null) {
-            updatedQuestion.setDateLastModified(new Timestamp(System.currentTimeMillis()));
-            em.merge(updatedQuestion);
-            em.flush();
-            logger.info("Question id: {} UPDATED by user id: {}", question.getId(), 5);
-        }
+        updatedQuestion.setDateLastModified(new Timestamp(System.currentTimeMillis()));
+        em.merge(updatedQuestion);
+        em.flush();
+        logger.info("Question id: {} UPDATED by user id: {}", question.getId(), user.getId());
     }
 
+    //TODO: use @RolesAllowed("ADMIN") and @DeclareRoles({"ADMIN", "PROVIDER", etc}) for authorization
     public void deleteById(int id) {
-        UserEntity user = userService.findByName(securityContext.getCallerPrincipal().getName());
+        if (!sessionContext.isCallerInRole(Role.ADMIN.toString())) throw new NotAuthorizedException();
+
+        UserEntity user = userService.findByName(sessionContext.getCallerPrincipal().getName());
         QuestionEntity question = findById(id);
         em.remove(question);
         em.flush();
@@ -173,7 +168,7 @@ public class QuestionService {
 
     public void create(QuestionEntity questionEntity) {
         questionEntity.setDateCreated(new Timestamp(System.currentTimeMillis()));
-        UserEntity user = userService.findByName(securityContext.getCallerPrincipal().getName());
+        UserEntity user = userService.findByName(sessionContext.getCallerPrincipal().getName());
         questionEntity.setUser(user);
 
         em.persist(questionEntity);

@@ -6,7 +6,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/admin.xhtml">
     <ui:define name="title">
-        <h:outputText value="#{i18n['page.question.details.name']} - #{i18n['this.name']}"/>
+        <h:outputText value="#{i18n['page.user.details.name']} - #{i18n['this.name']}"/>
     </ui:define>
 
     <ui:define name="subnavigation">
@@ -32,7 +32,7 @@
             <p:autoUpdate/>
         </p:growl>
 
-        <p:panel header="#{i18n['page.question.details.name']}">
+        <p:panel header="#{i18n['page.user.details.name']}">
             <h:form enctype="multipart/form-data">
                 <div class="form-group">
                     <p:outputLabel for="date_created">#{i18n['question.dateCreated']}</p:outputLabel>

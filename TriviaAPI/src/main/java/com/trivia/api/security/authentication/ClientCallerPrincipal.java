@@ -12,7 +12,7 @@ public class ClientCallerPrincipal extends CallerPrincipal {
     private final ClientEntity client;
 
     public ClientCallerPrincipal(ClientEntity client) {
-        super(client.getClientId());
+        super(client.getApiKey());
         this.client = client;
     }
 

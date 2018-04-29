@@ -18,7 +18,8 @@ import java.util.Base64;
 // Reference implementation is Soteria.
 public final class Cryptography {
     private final static int ITERATIONS = 9999; // Aim for half a second.
-    private final static int KEY_LENGTH = 160;
+    private final static int KEY_LENGTH = 160; // Total String length is 4 + 1 + 28 + 1 + 28 = 62
+    public final static int API_KEY_LENGTH = 32;
     private final static String HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
 
     public static boolean validateMessage(String providedMessage, String storedHash) {

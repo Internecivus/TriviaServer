@@ -3,10 +3,7 @@ package com.trivia.core.utility;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public final class Generator {
     private final static String RANDOM_ALGORITHM = "SHA1PRNG"; //TODO: For interoperability reasons use in production only.
@@ -36,6 +33,13 @@ public final class Generator {
     public static String generateUUID() {
         UUID uuid = UUID.randomUUID();
         return uuid.toString();
+    }
+
+    public static String generateSecureRandomString(int size) {
+        //TODO: CHECK!!!!!
+        int bytesSize = (int) Math.ceil(size * 3.0 / 4.0);     // Calculate how many bytes we need for a String of this size.
+        byte[] bytes = generateSecureRandomBytes(bytesSize);
+        return Base64.getEncoder().encodeToString(bytes);
     }
 
     public static byte[] generateSecureRandomBytes(int size) {

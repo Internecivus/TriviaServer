@@ -4,6 +4,7 @@ package com.trivia.core.exception;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
+import javax.persistence.NoResultException;
 import java.io.Serializable;
 
 /**
@@ -16,7 +17,7 @@ public class ExceptionInterceptor implements Serializable {
         try {
             return invocationContext.proceed();
         }
-        catch (javax.persistence.EntityNotFoundException e) {
+        catch (javax.persistence.EntityNotFoundException | NoResultException e) {
             throw new EntityNotFoundException();
         }
         catch (javax.persistence.EntityExistsException e) {

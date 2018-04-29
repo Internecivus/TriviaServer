@@ -28,11 +28,15 @@
                          rowsPerPageTemplate="10,25,100"
                          pageLinks="5"
                          reflow="true"
-                         tableStyleClass="table table-striped"
+                         tableStyleClass="table-striped"
                          rowStyleClass=""
                          emptyMessage="#{i18n.notFound}"
                          widgetVar="logTable"
                          lazy="true">
+                <f:facet name="header">
+                    <p:outputPanel>
+                    </p:outputPanel>
+                </f:facet>
                 <p:column headerText="#{i18n['log.message']}">
                     <h:outputText value="#{log.message}"/>
                 </p:column>

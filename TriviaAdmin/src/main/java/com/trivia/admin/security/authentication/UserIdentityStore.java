@@ -1,11 +1,12 @@
 package com.trivia.admin.security.authentication;
 
+import com.trivia.core.exception.CredentialException;
 import com.trivia.core.service.UserService;
 import com.trivia.persistence.entity.UserEntity;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.security.enterprise.credential.Credential;
+import javax.persistence.PersistenceException;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
@@ -21,10 +22,15 @@ public class UserIdentityStore implements IdentityStore {
 
         String username = credential.getCaller();
         String password = credential.getPasswordAsString();
-        user = userService.validateCredential(username, password);
 
-        if (user == null) {
+        try {
+            user = userService.validateCredential(username, password);
+        }
+        catch (CredentialException e) {
             return CredentialValidationResult.INVALID_RESULT;
+        }
+        catch (PersistenceException e) {
+            return CredentialValidationResult.NOT_VALIDATED_RESULT;
         }
 
         return new CredentialValidationResult(new UserCallerPrincipal(user), user.getRolesNames());

@@ -6,7 +6,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/admin.xhtml">
     <ui:define name="title">
-        <h:outputText value="#{i18n['page.question.details.name']} - #{i18n['this.name']}"/>
+        <h:outputText value="#{i18n['page.user.create.name']} - #{i18n['this.name']}"/>
     </ui:define>
 
     <ui:define name="subnavigation">
@@ -32,92 +32,35 @@
             <p:autoUpdate/>
         </p:growl>
 
-        <p:panel header="#{i18n['page.question.create.name']}">
+        <p:panel header="#{i18n['page.user.create.name']}">
             <h:form enctype="multipart/form-data">
                 <div class="form-group">
-                    <p:outputLabel for="question">#{i18n['question.question']}</p:outputLabel>
-                    <p:inputText value="#{questionCreateController.questionEntity.question}"
+                    <p:outputLabel for="name">#{i18n['user.name']}</p:outputLabel>
+                    <p:inputText value="#{userCreateController.userEntity.name}"
                                  styleClass="form-control"
-                                 id="question"/>
-                    <p:message for="question"/>
+                                 id="name"/>
+                    <p:message for="name"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="first_answer">#{i18n['question.firstAnswer']}</p:outputLabel>
-                    <p:inputText value="#{questionCreateController.questionEntity.answerFirst}"
-                                 styleClass="form-control"
-                                 id="first_answer"/>
-                    <p:message for="first_answer"/>
+                    <p:outputLabel for="password">#{i18n['user.password']}</p:outputLabel>
+                    <p:password value="#{userCreateController.userEntity.password}"
+                                styleClass="form-control"
+                                id="password"/>
+                    <p:message for="password"/>
                 </div>
+                <!--<div class="form-group">-->
+                    <!--<p:outputLabel for="roles">#{i18n['user.roles']}</p:outputLabel>-->
+                    <!--<p:selectManyCheckbox id="roles"-->
+                                          <!--styleClass="form-control"-->
+                                          <!--layout="lineDirection"-->
+                                          <!--value="#{userCreateController.userEntity.roles}">-->
+                        <!--<f:selectItems value="#{userCreateController}"-->
+                                       <!--itemValue="#{status}"-->
+                                       <!--itemLabel="#{status.label}"/>-->
+                    <!--</p:selectManyCheckbox>-->
+                <!--</div>-->
                 <div class="form-group">
-                    <p:outputLabel for="second_answer">#{i18n['question.secondAnswer']}</p:outputLabel>
-                    <p:inputText value="#{questionCreateController.questionEntity.answerSecond}"
-                                 styleClass="form-control"
-                                 id="second_answer"/>
-                    <p:message for="second_answer"/>
-                </div>
-                <div class="form-group">
-                    <p:outputLabel for="third_answer">#{i18n['question.thirdAnswer']}</p:outputLabel>
-                    <p:inputText value="#{questionCreateController.questionEntity.answerThird}"
-                                 styleClass="form-control"
-                                 id="third_answer"/>
-                    <p:message for="third_answer"/>
-                </div>
-                <div class="form-group">
-                    <p:outputLabel for="fourth_answer">#{i18n['question.fourthAnswer']}</p:outputLabel>
-                    <p:inputText value="#{questionCreateController.questionEntity.answerFourth}"
-                                 styleClass="form-control"
-                                 id="fourth_answer"/>
-                    <p:message for="fourth_answer"/>
-                </div>
-
-                <!-- The convertMessage is unfortunate since we are doing "validation" on two fronts now - both bean
-                validation and JSF validation. Now, since conversion happens BEFORE validation, there is nothing
-                that can be done about that, outside of changing the type of the entity field to String and doing
-                the conversion there or indeed changing the message somewhere else in the JSF system. -->
-                <div class="form-group">
-                    <p:outputLabel for="correct_answer">#{i18n['question.correctAnswer']}</p:outputLabel>
-                    <p:inputText value="#{questionCreateController.questionEntity.answerCorrect}"
-                                 styleClass="form-control"
-                                 converterMessage="#{i18n['conversion.integer']}"
-                                 id="correct_answer"/>
-                    <p:message for="correct_answer"/>
-                </div>
-                <div class="form-group">
-                    <p:outputLabel for="comment">#{i18n['question.comment']}</p:outputLabel>
-                    <p:inputTextarea value="#{questionCreateController.questionEntity.comment}"
-                                     styleClass="form-control"
-                                     id="comment"/>
-                    <p:message for="comment"/>
-                </div>
-                <div class="form-group">
-                    <p:outputLabel for="image">#{i18n['question.image']}</p:outputLabel>
-                    <p:fileUpload value="#{questionCreateController.uploadedImage}"
-                                  fileLimit="1"
-                                  mode="simple"
-                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                                  auto="true"
-                                  id="image"
-                                  invalidFileMessage="#{i18n['upload.invalidFile']}"
-                                  fileLimitMessage="#{i18n['upload.fileLimit']}"
-                                  invalidSizeMessage="#{i18n['upload.invalidSize']}"
-                                  sizeLimit="500000"
-                                  skinSimple="true"/>
-                    <p:messages for="image"/>
-                </div>
-                <div class="form-group">
-                    <p:outputLabel for="categories">#{i18n['question.categories']}</p:outputLabel>
-                    <p:selectManyCheckbox id="categories"
-                                          styleClass="form-control"
-                                          layout="lineDirection"
-                                          value="#{questionCreateController.questionEntity.categories}">
-                        <f:selectItems value="#{questionCreateController.categoriesAvailable}"
-                                       var="category"
-                                       itemValue="#{category}"
-                                       itemLabel="#{category.name}"/>
-                    </p:selectManyCheckbox>
-                </div>
-                <div class="form-group">
-                    <p:commandButton action="#{questionCreateController.create()}"
+                    <p:commandButton action="#{userController.create(userCreateController.userEntity)}"
                                      type="submit"
                                      value="#{i18n['action.create']}"
                                      validateClient="true"

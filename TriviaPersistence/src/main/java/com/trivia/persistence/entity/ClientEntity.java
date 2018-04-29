@@ -20,11 +20,6 @@ public class ClientEntity implements Serializable {
 
     @Basic
     @NotBlank
-    @Column(name = "client_id")
-    private String clientId;
-
-    @Basic
-    @NotBlank
     @Column(name = "api_key")
     private String apiKey;
 
@@ -38,20 +33,24 @@ public class ClientEntity implements Serializable {
     @Column(name = "date_created")
     private Timestamp dateCreated;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)// insertable nullable
+    private UserEntity user;
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
     }
 
     public String getApiSecret() {
@@ -84,13 +83,12 @@ public class ClientEntity implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         ClientEntity that = (ClientEntity) o;
         return id == that.id &&
-                Objects.equals(clientId, that.clientId) &&
                 Objects.equals(dateCreated, that.dateCreated);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, clientId, dateCreated);
+        return Objects.hash(id, dateCreated);
     }
 }

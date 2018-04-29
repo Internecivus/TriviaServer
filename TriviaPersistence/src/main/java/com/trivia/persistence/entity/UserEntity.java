@@ -1,9 +1,7 @@
 package com.trivia.persistence.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -30,6 +28,7 @@ public class UserEntity implements Serializable {
 
     @Basic
     @NotBlank(message = "{field.required}")
+    @Size(min = 6, max = 20, message = "{password.length}")
     @Column(name = "password")
     private String password;
 
@@ -40,8 +39,8 @@ public class UserEntity implements Serializable {
 
     @Basic
     @NotBlank
-    @Column(name = "provider_id")
-    private String providerId;
+    @Column(name = "provider_key")
+    private String providerKey;
 
     @Basic
     @NotBlank
@@ -93,12 +92,12 @@ public class UserEntity implements Serializable {
         this.name = name;
     }
 
-    public String getProviderId() {
-        return providerId;
+    public String getProviderKey() {
+        return providerKey;
     }
 
-    public void setProviderId(String providerId) {
-        this.providerId = providerId;
+    public void setProviderKey(String providerKey) {
+        this.providerKey = providerKey;
     }
 
     public void setDateCreated(Timestamp dateCreated) {
@@ -123,6 +122,10 @@ public class UserEntity implements Serializable {
 
     public Set<String> getRolesNames() {
         return getRoles().stream().map(g -> g.getName().name()).collect(Collectors.toSet());
+    }
+
+    public boolean hasRole(Role role) {
+        return getRoles().stream().map(g -> g.getName().name()).collect(Collectors.toSet()).contains(role);
     }
 
     public void addRole(RoleEntity role) {

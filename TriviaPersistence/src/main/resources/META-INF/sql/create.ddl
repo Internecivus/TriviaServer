@@ -16,17 +16,16 @@ CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `password` char(62) NOT NULL,
   `name` varchar(45) NOT NULL,
-  `provider_id` varchar(36),
-  `provider_secret` varchar(36),
+  `provider_key` varchar(62),
+  `provider_secret` varchar(62),
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `client` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `client_id` varchar(36) NOT NULL,
-  `api_key` varchar(36),
-  `api_secret` varchar(36),
+  `api_key` varchar(62),
+  `api_secret` varchar(62),
   `date_created` datetime NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
