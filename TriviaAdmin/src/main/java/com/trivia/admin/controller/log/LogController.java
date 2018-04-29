@@ -18,7 +18,6 @@ import java.util.Map;
 @Named
 @ViewScoped
 public class LogController implements Serializable {
-    // TODO: Maybe just use String here?
     private LazyDataModel<Log> lazyLogs;
 
     @PostConstruct

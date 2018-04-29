@@ -7,11 +7,8 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Locale;
 
-/**
- * Created by faust. Part of Trivia Project. All rights reserved. 2018
- */
 
-// TODO: This is very bare-bones. Locale should change not only on user action but via cookies. Reference implementation - Kickoff)
+// TODO: This is very bare-bones. Locale should change not only on direct user action but via cookies too.
 
 @Named
 @SessionScoped

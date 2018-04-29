@@ -13,7 +13,7 @@ public final class i18n {
 
     }
 
-    //TODO: Check the performance of fetching via EL and util
+    //TODO: Check the performance of fetching via EL and util.
     /** It's unfortunate that IntelliJ does not autofetch the key-value pairs if we use this method.
      * If you want this, create a direct PropertyResourceBundle injection for example.
      * */

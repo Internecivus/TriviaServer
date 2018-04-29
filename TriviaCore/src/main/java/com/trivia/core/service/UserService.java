@@ -10,7 +10,6 @@ import javax.persistence.*;
 import javax.persistence.criteria.*;
 import java.sql.Timestamp;
 
-//TODO: Extract LoginService out of this EJB service
 @Stateless
 public class UserService {
     @PersistenceContext(unitName = "TriviaDB")
@@ -34,7 +33,7 @@ public class UserService {
         CriteriaQuery<UserEntity> query = builder.createQuery(UserEntity.class);
         Root<UserEntity> root = query.from(UserEntity.class);
 
-        // Not sure if we want this to be optimised (it reuses the query if the param is the same type).
+        // TODO: Not sure if we want this to be optimised (it reuses the query if the param is the same type).
         ParameterExpression<String> nameParameter = builder.parameter(String.class, "name");
         query.select(root).where(builder.equal(root.get(UserEntity_.NAME), nameParameter));
 
@@ -69,7 +68,7 @@ public class UserService {
         }
     }
 
-    public UserEntity validateCredentials(String name, String password) {
+    public UserEntity validateCredential(String name, String password) {
         UserEntity user = findByName(name);
 
         if (user == null) {
@@ -83,7 +82,6 @@ public class UserService {
         }
     }
 
-    //TODO: Check the provided password against a dictionary.
     public void create(UserEntity newUser) {
         if (findByName(newUser.getName()) != null) {
             throw new EntityExistsException();

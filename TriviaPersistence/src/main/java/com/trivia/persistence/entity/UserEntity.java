@@ -40,22 +40,13 @@ public class UserEntity implements Serializable {
 
     @Basic
     @NotBlank
-    @Column(name = "api_key")
-    private String apiKey;
-
-    @Basic
-    @NotBlank
-    @Column(name = "api_secret")
-    private String apiSecret;
+    @Column(name = "provider_id")
+    private String providerId;
 
     @Basic
     @NotBlank
     @Column(name = "provider_secret")
     private String providerSecret;
-
-    @NotNull
-    @Column(name = "requests")
-    private int requests;
 
     @Basic
     @NotNull
@@ -102,20 +93,12 @@ public class UserEntity implements Serializable {
         this.name = name;
     }
 
-    public String getApiKey() {
-        return apiKey;
+    public String getProviderId() {
+        return providerId;
     }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
-    public String getApiSecret() {
-        return apiSecret;
-    }
-
-    public void setApiSecret(String apiSecret) {
-        this.apiSecret = apiSecret;
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
     }
 
     public void setDateCreated(Timestamp dateCreated) {
@@ -132,14 +115,6 @@ public class UserEntity implements Serializable {
 
     public void setProviderSecret(String providerSecret) {
         this.providerSecret = providerSecret;
-    }
-
-    public int getRequests() {
-        return requests;
-    }
-
-    public void setRequests(int requests) {
-        this.requests = requests;
     }
 
     public Set<RoleEntity> getRoles() {

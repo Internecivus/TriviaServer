@@ -9,16 +9,20 @@ import com.trivia.persistence.dto.client.QuestionClient;
 import com.trivia.persistence.entity.CategoryEntity_;
 import com.trivia.persistence.entity.QuestionEntity;
 import com.trivia.persistence.entity.QuestionEntity_;
+import com.trivia.persistence.entity.UserEntity;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import javax.security.enterprise.SecurityContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
@@ -29,8 +33,9 @@ import java.util.List;
 public class QuestionService {
     @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
-    @EJB private UserService userService;
-    @Inject private Logger logger;
+    private @EJB UserService userService;
+    private @Inject Logger logger;
+    private @Resource SessionContext securityContext;
     private final static Integer PAGE_SIZE_DEFAULT = 20;
     private final static Integer PAGE_SIZE_MAX = 100;
     private final static Integer PAGE_SIZE_RANDOM_DEFAULT = 20;
@@ -46,7 +51,6 @@ public class QuestionService {
         return questionEntity;
     }
 
-    // TODO: Model better served from a DTO layer?
     public List<QuestionClient> getRandomForClient(int size, String category) {
         List<QuestionClient> questionsClient = new ArrayList<>();
         List<QuestionEntity> questions = new ArrayList<>();
@@ -136,7 +140,6 @@ public class QuestionService {
         return count;
     }
 
-    // TODO: Return QuestionEntity??
     public void update(QuestionEntity updatedQuestion) {
         QuestionEntity question = findById(updatedQuestion.getId());
         if (question != null) {
@@ -148,10 +151,11 @@ public class QuestionService {
     }
 
     public void deleteById(int id) {
+        UserEntity user = userService.findByName(securityContext.getCallerPrincipal().getName());
         QuestionEntity question = findById(id);
         em.remove(question);
         em.flush();
-        logger.info("Question id: {} DELETED by user id: {}", question.getId(), 5);
+        logger.info("Question id: {} DELETED by user id: {}", question.getId(), user.getId());
     }
 
     public void createWithImage(QuestionEntity questionEntity, String fileName, InputStream inputStream) {
@@ -169,11 +173,12 @@ public class QuestionService {
 
     public void create(QuestionEntity questionEntity) {
         questionEntity.setDateCreated(new Timestamp(System.currentTimeMillis()));
-        questionEntity.setUser(userService.findById(1)); // TODO : auth
+        UserEntity user = userService.findByName(securityContext.getCallerPrincipal().getName());
+        questionEntity.setUser(user);
 
         em.persist(questionEntity);
         em.flush();
-        logger.info("Question id: {} CREATED by user id: {}", questionEntity.getId(), 5); // TODO: auth
+        logger.info("Question id: {} CREATED by user id: {}", questionEntity.getId(), user.getId());
     }
 
     private Path<?> getPath(String field, Root<QuestionEntity> root) {

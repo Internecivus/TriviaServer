@@ -33,10 +33,6 @@ public class ClientEntity implements Serializable {
     @Column(name = "api_secret")
     private String apiSecret;
 
-    @NotNull
-    @Column(name = "requests")
-    private int requests;
-
     @Basic
     @NotNull
     @Column(name = "date_created")
@@ -74,14 +70,6 @@ public class ClientEntity implements Serializable {
         this.apiKey = apiKey;
     }
 
-    public int getRequests() {
-        return requests;
-    }
-
-    public void setRequests(int requests) {
-        this.requests = requests;
-    }
-
     public Timestamp getDateCreated() {
         return dateCreated;
     }
@@ -96,7 +84,6 @@ public class ClientEntity implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         ClientEntity that = (ClientEntity) o;
         return id == that.id &&
-                requests == that.requests &&
                 Objects.equals(clientId, that.clientId) &&
                 Objects.equals(dateCreated, that.dateCreated);
     }
@@ -104,6 +91,6 @@ public class ClientEntity implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, clientId, requests, dateCreated);
+        return Objects.hash(id, clientId, dateCreated);
     }
 }

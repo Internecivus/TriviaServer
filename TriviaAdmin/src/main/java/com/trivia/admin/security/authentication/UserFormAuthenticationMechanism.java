@@ -6,27 +6,20 @@ import javax.security.enterprise.AuthenticationStatus;
 import javax.security.enterprise.authentication.mechanism.http.*;
 import javax.security.enterprise.credential.Credential;
 import javax.security.enterprise.identitystore.IdentityStore;
-import javax.security.enterprise.identitystore.IdentityStoreHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-/**
- * Created by faust. Part of Trivia Project. All rights reserved. 2018
- */
-@AutoApplySession // For "Is user already logged-in?"
-@RememberMe(
-        cookieSecureOnly = true,
-        cookieMaxAgeSeconds = 60 * 60 * 24 * 7 // 7 days.
-)
+
+@AutoApplySession
 @LoginToContinue(
         loginPage = "/public/login.xhtml?continue=true",
         errorPage = "",
         useForwardToLogin = false
 )
 @ApplicationScoped
-public class AdminFormAuthenticationMechanism implements HttpAuthenticationMechanism {
-    @Inject private IdentityStore identityStore;
+public class UserFormAuthenticationMechanism implements HttpAuthenticationMechanism {
+    private @Inject IdentityStore identityStore;
 
     @Override
     public AuthenticationStatus validateRequest(HttpServletRequest request, HttpServletResponse response, HttpMessageContext context) {

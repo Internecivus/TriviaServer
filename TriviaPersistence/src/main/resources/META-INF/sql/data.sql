@@ -3,7 +3,7 @@ INSERT INTO Trivia.category (name, description, image) VALUES ('Akcija', 'ggdg',
 INSERT INTO Trivia.category (name, description, image) VALUES ('Covjek', 'ggdg', 'ggg');
 
 
-INSERT INTO Trivia.user (password, name, date_created, requests) VALUES ('9999:fRW13T0sacHGM0a8y+sQEZweXaA=:vHoUpDMigcDMXGSd2SAQbnFzWZ4=', 'admin', '2018-05-12', 0);
+INSERT INTO Trivia.user (password, name, date_created) VALUES ('9999:fRW13T0sacHGM0a8y+sQEZweXaA=:vHoUpDMigcDMXGSd2SAQbnFzWZ4=', 'admin', '2018-05-12');
 
 INSERT INTO Trivia.role (name) VALUES ('ADMIN');
 INSERT INTO Trivia.role (name) VALUES ('MODERATOR');

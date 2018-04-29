@@ -11,12 +11,6 @@ import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
- */
-
-// TODO: Create interface for all beans?
-
 @Stateless
 public class CategoryService {
     @PersistenceContext(unitName = "TriviaDB")

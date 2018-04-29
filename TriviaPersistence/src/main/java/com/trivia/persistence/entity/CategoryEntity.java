@@ -1,5 +1,8 @@
 package com.trivia.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ public class CategoryEntity {
     @Column(name = "image")
     private String image;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<QuestionEntity> questions = new ArrayList<>();
 

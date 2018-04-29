@@ -1,5 +1,6 @@
 package com.trivia.api.api.v1;
 
+import com.trivia.core.exception.BusinessException;
 import com.trivia.core.service.CategoryService;
 import com.trivia.persistence.entity.CategoryEntity;
 
@@ -20,10 +21,12 @@ public class CategoriesEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCategories() {
-        List<CategoryEntity> categories = categoryService.getAll();
-
-
-
-        return Response.status(Response.Status.OK).entity(categories).build();
+        try {
+            List<CategoryEntity> categories = categoryService.getAll();
+            return Response.status(Response.Status.OK).entity(categories).build();
+        }
+        catch (BusinessException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

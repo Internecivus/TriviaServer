@@ -51,14 +51,14 @@ public class LoginController implements Serializable {
                         .rememberMe(rememberMe)
         );
 
-        if (authenticationStatus == AuthenticationStatus.SEND_FAILURE) {
+        if (authenticationStatus.equals(AuthenticationStatus.SEND_FAILURE)) {
             Message.addErrorGlobal(i18n.get("failure"),i18n.get("login.failure"));
             facesContext.validationFailed();
         }
-        else if (authenticationStatus == AuthenticationStatus.SEND_CONTINUE) {
+        else if (authenticationStatus.equals(AuthenticationStatus.SEND_CONTINUE)) {
             facesContext.responseComplete();
         }
-        else if (authenticationStatus == AuthenticationStatus.SUCCESS) {
+        else if (authenticationStatus.equals(AuthenticationStatus.SUCCESS)) {
             facesContext.getExternalContext().redirect("/admin/index.xhtml");
         }
     }

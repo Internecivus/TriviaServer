@@ -75,8 +75,15 @@
         <!--</user-data-constraint>-->
     </security-constraint>
 
-    <!--Users only for Admin-->
-
+    <security-role>
+        <role-name>CONTRIBUTOR</role-name>
+    </security-role>
+    <security-role>
+        <role-name>PROVIDER</role-name>
+    </security-role>
+    <security-role>
+        <role-name>MODERATOR</role-name>
+    </security-role>
     <security-role>
         <role-name>ADMIN</role-name>
     </security-role>
