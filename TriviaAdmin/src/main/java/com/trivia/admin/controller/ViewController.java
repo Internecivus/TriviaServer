@@ -8,6 +8,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.security.enterprise.SecurityContext;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * Created by faust. Part of Trivia Project. All rights reserved. 2018
@@ -38,10 +40,6 @@ public class ViewController {
         else {
             userName = securityContext.getCallerPrincipal().getName();
         }
-    }
-
-    public String reset() {
-        return facesContext.getViewRoot().getViewId() + "?faces-redirect=true";
     }
 
     public boolean pathIs(String path) {

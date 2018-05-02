@@ -36,7 +36,7 @@ public class CategoryEntity {
     private String image;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private List<QuestionEntity> questions = new ArrayList<>();
 
     public Integer getId() {

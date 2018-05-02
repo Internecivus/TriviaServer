@@ -66,6 +66,30 @@ public final class Message {
         addFor(clientId);
     }
 
+    public static void addInfoFlashFor(String clientId, String summary, String message) {
+        facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, message);
+        addFlash();
+        addFor(clientId);
+    }
+
+    public static void addWarnFlashFor(String clientId, String summary, String message) {
+        facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN, summary, message);
+        addFlash();
+        addFor(clientId);
+    }
+
+    public static void addErrorFlashFor(String clientId, String summary, String message) {
+        facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, message);
+        addFlash();
+        addFor(clientId);
+    }
+
+    public static void addFatalFlashFor(String clientId, String summary, String message) {
+        facesMessage = new FacesMessage(FacesMessage.SEVERITY_FATAL, summary, message);
+        addFlash();
+        addFor(clientId);
+    }
+
     private static void addGlobalFlash() {
         addFlash();
         addGlobal();

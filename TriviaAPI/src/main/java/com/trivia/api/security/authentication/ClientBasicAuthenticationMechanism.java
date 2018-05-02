@@ -15,7 +15,7 @@ import java.util.List;
 
 
 
-@AutoApplySession
+
 @ApplicationScoped
 public class ClientBasicAuthenticationMechanism implements HttpAuthenticationMechanism {
     @Inject private IdentityStore identityStore;
@@ -38,8 +38,13 @@ public class ClientBasicAuthenticationMechanism implements HttpAuthenticationMec
     private Credential getCredential(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Basic ")) {
-            String[] headerCredential = new String(Base64.getDecoder().decode(authorizationHeader.substring(6))).split(":");
-            return new UsernamePasswordCredential(headerCredential[0], headerCredential[1]);
+            try {
+                String[] headerCredential = new String(Base64.getDecoder().decode(authorizationHeader.substring(6))).split(":");
+                return new UsernamePasswordCredential(headerCredential[0], headerCredential[1]);
+            }
+            catch (ArrayIndexOutOfBoundsException e) {
+                return null;
+            }
         }
         return null;
     }

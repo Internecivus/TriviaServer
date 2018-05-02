@@ -14,23 +14,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 // Limits the request rate per IP in a given time frame.
-@WebFilter(filterName = "RateLimiterFilter", urlPatterns = {"/*"}, initParams = { @WebInitParam(name = "mood", value = "awake")})
+@WebFilter(filterName = "RateLimiterFilter", urlPatterns = {"/*"}, initParams = {@WebInitParam(name = "mood", value = "awake")})
 public class RateLimiterFilter implements Filter {
     private static final Long limitRate = 1_000L;
-    private static final String errorMessage = "Status error code 429: Too Many Requests. The request rate is limited to 1,000 per hour per IP address.";
+    private static final String errorMessage = "Status error code 429: Too Many Requests. Try again later";
     private ConcurrentHashMap<String, Long> visitorsRequests;
-    // TODO: Try securirtContext
-
-    @Override
-    public void destroy() {
-
-    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String userName = request.getRemoteAddr();
 
-        if(visitorsRequests.containsKey(userName)) {
+        if (visitorsRequests.containsKey(userName)) {
 
             visitorsRequests.put(userName, visitorsRequests.get(userName) + 1);
         } else {
@@ -49,6 +43,11 @@ public class RateLimiterFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {
         visitorsRequests = new ConcurrentHashMap<>();
+    }
+
+    @Override
+    public void destroy() {
+
     }
 
     @Schedule(hour = "*")

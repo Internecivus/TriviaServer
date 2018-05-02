@@ -32,9 +32,9 @@ public class ClientService {
     private @Inject Logger logger;
     private @Inject UserService userService;
 
-    public void create() {
+    public ClientEntity create() {
         if (!sessionContext.isCallerInRole(Role.ADMIN.toString())) throw new NotAuthorizedException();
-        UserEntity user = userService.findByName(sessionContext.getCallerPrincipal().getName());
+        UserEntity user = userService.findByField(UserEntity_.name, sessionContext.getCallerPrincipal().getName());
 
         ClientEntity clientEntity = new ClientEntity();
         String apiKey;
@@ -45,7 +45,7 @@ public class ClientService {
         while (getByApiKey(apiKey) != null); // We could've easily have left this check out since the BLOB is large enough.
         String apiSecret = Generator.generateSecureRandomString(Cryptography.API_KEY_LENGTH);
 
-        clientEntity.setApiKey(Cryptography.hashMessage(apiKey));
+        clientEntity.setApiKey(apiKey);
         clientEntity.setApiSecret(Cryptography.hashMessage(apiSecret));
         clientEntity.setDateCreated(new Timestamp(System.currentTimeMillis()));
         clientEntity.setUser(user);
@@ -53,10 +53,13 @@ public class ClientService {
         em.persist(clientEntity);
         em.flush();
         logger.info("Client id: {} CREATED by user id: {}", clientEntity.getId(), user.getId());
+
+        return clientEntity;
     }
 
-    public void register(String providerKey, String providerSecret) {
-        // TODO: validate everything
+    public ClientEntity register(String providerKey, String providerSecret) {
+        userService.validateProvider(providerKey, providerSecret);
+        return create();
     }
 
     public ClientEntity findByApiKey(String apiKey) {
@@ -87,7 +90,6 @@ public class ClientService {
     }
 
     public ClientEntity validateCredential(String apiKey, String apiSecret) {
-        //TODO: check if everything is fine
         ClientEntity user = findByApiKey(apiKey);
         if (Cryptography.validateMessage(apiSecret, user.getApiSecret())) {
             return user;

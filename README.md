@@ -1,18 +1,12 @@
 // Rest
 TODO: Rest exceptions
 TODO: Bean validation
-TODO: Working Auth
 
 // Admin
+TODO: Edit questions
 TODO: Show image, update image, remove image
 TODO: Users, clients, categories CRUD
+TODO: Auth exceptions automagically shows error message
 
-// Core
-TODO: ClientService register, UserService validateProvider
-
-// Persistence
-TODO: Caching
-
-
-
+ImageUtils
 Logging all methods

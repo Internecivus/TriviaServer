@@ -4,6 +4,7 @@ import com.trivia.core.service.QuestionService;
 import com.trivia.persistence.dto.client.QuestionClient;
 
 import javax.inject.Inject;
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -28,7 +29,7 @@ public class QuestionsEndpoint {
     ) {
 
         //List<QuestionEntity> questions = questionService.findAll(page, size, sortField, SortOrder.valueOf(sortOrder), null, false);
-            //throw new com.trivia.api.WebApplicationException(Response.Status.NOT_FOUND);
+            //throw new WebApplicationException(Response.Status.NOT_FOUND);
         category = "Horor";
         List<QuestionClient> questions = questionService.getRandomForClient(pageSize, category);
 

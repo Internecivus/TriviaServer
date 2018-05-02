@@ -48,6 +48,7 @@
                          emptyMessage="#{i18n.notFound}"
                          widgetVar="usersTable"
                          sortBy="#{user.dateCreated}"
+                         sortOrder="descending"
                          lazy="true">
                 <f:facet name="header">
                     <p:outputPanel>
@@ -85,8 +86,6 @@
                     </h:outputText>
                 </p:column>
 
-                <!--TODO: Roles-->
-
                 <p:column headerText="Actions"
                           width="250">
                     <p:button value="#{i18n['action.details']}"
@@ -101,6 +100,7 @@
 
                     <p:commandButton value="#{i18n['action.delete']}"
                                      styleClass="btn-danger"
+                                     update="users_table"
                                      actionListener="#{userController.delete(user.id)}">
                         <p:confirm header="#{i18n['delete.confirmation.header']}"
                                    message="#{i18n['delete.confirmation.message']}"/>

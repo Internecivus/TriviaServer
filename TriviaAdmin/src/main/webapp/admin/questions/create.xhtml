@@ -10,18 +10,14 @@
     </ui:define>
 
     <ui:define name="subnavigation">
-        <div class="container text-center">
-            <ul class="list-inline list-unstyled">
-                <li>
-                    <p:button outcome="list"
-                              value="#{i18n['action.all']}"/>
-                </li>
-                <li>
-                    <p:button outcome="create"
-                              value="#{i18n['action.create']}"/>
-                </li>
-            </ul>
-        </div>
+        <ul class="list-inline list-unstyled">
+            <li class="list-inline-item">
+                <h:button outcome="list" styleClass="btn btn-secondary" value="#{i18n['action.all']}"/>
+            </li>
+            <li class="list-inline-item">
+                <h:button outcome="create" styleClass="btn btn-secondary" value="#{i18n['action.create']}"/>
+            </li>
+        </ul>
     </ui:define>
 
     <ui:define name="main">
@@ -32,81 +28,87 @@
             <p:autoUpdate/>
         </p:growl>
 
-        <p:panel header="#{i18n['page.question.create.name']}">
+        <p:panel styleClass="card">
+            <f:facet name="header">
+                <h5><h:outputFormat value="#{i18n['page.question.create.name']}"/></h5>
+            </f:facet>
+
             <h:form enctype="multipart/form-data">
                 <div class="form-group">
                     <p:outputLabel for="question">#{i18n['question.question']}</p:outputLabel>
-                    <p:inputText value="#{questionCreateController.questionEntity.question}"
+                    <h:inputText value="#{questionCreateController.questionEntity.question}"
                                  styleClass="form-control"
                                  id="question"/>
                     <p:message for="question"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="first_answer">#{i18n['question.firstAnswer']}</p:outputLabel>
-                    <p:inputText value="#{questionCreateController.questionEntity.answerFirst}"
+                    <p:outputLabel for="first_answer">#{i18n['question.answerFirst']}</p:outputLabel>
+                    <h:inputText value="#{questionCreateController.questionEntity.answerFirst}"
                                  styleClass="form-control"
                                  id="first_answer"/>
                     <p:message for="first_answer"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="second_answer">#{i18n['question.secondAnswer']}</p:outputLabel>
-                    <p:inputText value="#{questionCreateController.questionEntity.answerSecond}"
+                    <p:outputLabel for="second_answer">#{i18n['question.answerSecond']}</p:outputLabel>
+                    <h:inputText value="#{questionCreateController.questionEntity.answerSecond}"
                                  styleClass="form-control"
                                  id="second_answer"/>
                     <p:message for="second_answer"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="third_answer">#{i18n['question.thirdAnswer']}</p:outputLabel>
-                    <p:inputText value="#{questionCreateController.questionEntity.answerThird}"
+                    <p:outputLabel for="third_answer">#{i18n['question.answerThird']}</p:outputLabel>
+                    <h:inputText value="#{questionCreateController.questionEntity.answerThird}"
                                  styleClass="form-control"
                                  id="third_answer"/>
                     <p:message for="third_answer"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="fourth_answer">#{i18n['question.fourthAnswer']}</p:outputLabel>
-                    <p:inputText value="#{questionCreateController.questionEntity.answerFourth}"
+                    <p:outputLabel for="fourth_answer">#{i18n['question.answerFourth']}</p:outputLabel>
+                    <h:inputText value="#{questionCreateController.questionEntity.answerFourth}"
                                  styleClass="form-control"
                                  id="fourth_answer"/>
                     <p:message for="fourth_answer"/>
                 </div>
-
-                <!-- The convertMessage is unfortunate since we are doing "validation" on two fronts now - both bean
-                validation and JSF validation. Now, since conversion happens BEFORE validation, there is nothing
-                that can be done about that, outside of changing the type of the entity field to String and doing
-                the conversion there or indeed changing the message somewhere else in the JSF system. -->
                 <div class="form-group">
-                    <p:outputLabel for="correct_answer">#{i18n['question.correctAnswer']}</p:outputLabel>
-                    <p:inputText value="#{questionCreateController.questionEntity.answerCorrect}"
-                                 styleClass="form-control"
-                                 converterMessage="#{i18n['conversion.integer']}"
-                                 id="correct_answer"/>
+                    <p:outputLabel for="correct_answer">#{i18n['question.answerCorrect']}</p:outputLabel>
+                    <h:selectOneMenu value="#{questionCreateController.questionEntity.answerCorrect}"
+                                     styleClass="form-control"
+                                     id="correct_answer">
+                        <f:selectItem itemLabel="#{i18n['select.one']}" itemValue=""/>
+                        <f:selectItems value="#{[1,2,3,4]}"
+                                       var="answerNumber"
+                                       itemLabel="#{answerNumber}"
+                                       itemValue="#{answerNumber}"/>
+                    </h:selectOneMenu>
                     <p:message for="correct_answer"/>
                 </div>
                 <div class="form-group">
                     <p:outputLabel for="comment">#{i18n['question.comment']}</p:outputLabel>
-                    <p:inputTextarea value="#{questionCreateController.questionEntity.comment}"
+                    <h:inputTextarea value="#{questionCreateController.questionEntity.comment}"
                                      styleClass="form-control"
                                      id="comment"/>
                     <p:message for="comment"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="image">#{i18n['question.image']}</p:outputLabel>
+                    <p:graphicImage id="image" value="#{questionCreateController.uploadedImage}"/>
+                    <p:outputLabel for="image_upload">#{i18n['question.image']}</p:outputLabel>
                     <p:fileUpload value="#{questionCreateController.uploadedImage}"
                                   fileLimit="1"
                                   mode="simple"
-                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png|tiff?|w?bmp)$/"
                                   auto="true"
-                                  id="image"
+                                  id="image_upload"
                                   invalidFileMessage="#{i18n['upload.invalidFile']}"
                                   fileLimitMessage="#{i18n['upload.fileLimit']}"
                                   invalidSizeMessage="#{i18n['upload.invalidSize']}"
                                   sizeLimit="500000"
-                                  skinSimple="true"/>
+                                  skinSimple="true"
+                                  update="image"/>
                     <p:messages for="image"/>
                 </div>
                 <div class="form-group">
                     <p:outputLabel for="categories">#{i18n['question.categories']}</p:outputLabel>
-                    <p:selectManyCheckbox id="categories"
+                    <h:selectManyCheckbox id="categories"
                                           styleClass="form-control"
                                           layout="lineDirection"
                                           value="#{questionCreateController.questionEntity.categories}">
@@ -114,15 +116,17 @@
                                        var="category"
                                        itemValue="#{category}"
                                        itemLabel="#{category.name}"/>
-                    </p:selectManyCheckbox>
+                    </h:selectManyCheckbox>
                 </div>
                 <div class="form-group">
-                    <p:commandButton action="#{questionCreateController.create(questionCreateController.questionEntity, questionCreateController.uploadedImage)}"
+                    <h:commandButton action="#{questionCreateController.create()}"
                                      type="submit"
+                                     styleClass="btn btn-primary"
                                      value="#{i18n['action.create']}"
                                      validateClient="true"
                                      ajax="false"/>
-                    <p:commandButton value="#{i18n['action.reset']}"
+                    <h:commandButton value="#{i18n['action.reset']}"
+                                     styleClass="btn btn-secondary"
                                      type="reset"/>
                 </div>
             </h:form>

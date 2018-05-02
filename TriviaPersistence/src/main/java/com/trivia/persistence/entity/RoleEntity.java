@@ -19,7 +19,7 @@ public class RoleEntity {
     @Column(name = "name")
     private Role name;
 
-    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "roles")
     private Set<UserEntity> users = new HashSet<>();
 
     public Integer getId() {

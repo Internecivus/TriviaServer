@@ -1,6 +1,15 @@
-.ui-datatable tbody td {
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-datatable tfoot th {
     padding:4px 10px;
     overflow:hidden;
     border-width:0px;
     border-style:none;
 }
+
+.ui-button-text-only .ui-button-text {
+    padding: 0;
+}
+
+.ui-button {
+    margin-right: inherit;
+}
+

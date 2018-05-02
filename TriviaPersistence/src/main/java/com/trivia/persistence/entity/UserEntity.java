@@ -4,15 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
- */
 
 /**
  * TODO: We are mixing logic in User since it is acting as both a "normal" user and a provider. A separate provider
@@ -24,7 +18,7 @@ public class UserEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Basic
     @NotBlank(message = "{field.required}")
@@ -34,6 +28,7 @@ public class UserEntity implements Serializable {
 
     @Basic
     @NotBlank(message = "{field.required}")
+    @Size(min = 5, max = 20, message = "{name.length}")
     @Column(name = "name")
     private String name;
 
@@ -53,7 +48,7 @@ public class UserEntity implements Serializable {
     private Timestamp dateCreated;
 
     @NotEmpty
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role_map",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
@@ -61,7 +56,7 @@ public class UserEntity implements Serializable {
     )
     private Set<RoleEntity> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "question", targetEntity = QuestionEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<QuestionEntity> questions = new ArrayList<>();
 
     public List<QuestionEntity> getQuestions() {
@@ -76,11 +71,11 @@ public class UserEntity implements Serializable {
         this.password = password;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -100,11 +95,11 @@ public class UserEntity implements Serializable {
         this.providerKey = providerKey;
     }
 
-    public void setDateCreated(Timestamp dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = new Timestamp(dateCreated.getTime());
     }
 
-    public Timestamp getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 

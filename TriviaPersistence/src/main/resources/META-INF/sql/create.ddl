@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `role` (
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `password` char(62) NOT NULL,
-  `name` varchar(45) NOT NULL,
+  `name` varchar(20) NOT NULL,
   `provider_key` varchar(62),
   `provider_secret` varchar(62),
   `date_created` datetime NOT NULL,

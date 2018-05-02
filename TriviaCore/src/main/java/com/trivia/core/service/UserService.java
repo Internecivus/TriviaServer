@@ -7,92 +7,81 @@ import com.trivia.core.security.Cryptography;
 import com.trivia.core.utility.Generator;
 import com.trivia.core.utility.SortOrder;
 import com.trivia.persistence.entity.*;
+import org.slf4j.Logger;
 
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.*;
 import javax.persistence.criteria.*;
+import javax.persistence.metamodel.Metamodel;
+import javax.persistence.metamodel.SingularAttribute;
+import javax.xml.registry.infomodel.User;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Stateless
-public class UserService {
+public class UserService extends Service<UserEntity> {
     @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
     private @Resource SessionContext sessionContext;
-    private final static Integer PAGE_SIZE_DEFAULT = 20;
-    private final static Integer PAGE_SIZE_MAX = 100;
+    private @Inject Logger logger;
 
-    public UserEntity findById(int id) {
-        UserEntity user = em.find(UserEntity.class, id);
-        if (user == null) throw new EntityNotFoundException();
-        return user;
-    }
-
-    public UserEntity findByName(String name) {
-        UserEntity user = getByName(name);
-        if (user == null) throw new EntityNotFoundException();
-        return user;
-    }
-
-    private UserEntity getByName(String name) {
-        UserEntity user;
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<UserEntity> query = builder.createQuery(UserEntity.class);
-        Root<UserEntity> root = query.from(UserEntity.class);
-
-        // TODO: Not sure if we want this to be optimised (it reuses the query if the param is the same type) because of security concerns.
-        ParameterExpression<String> nameParameter = builder.parameter(String.class, UserEntity_.NAME);
-        query.select(root).where(builder.equal(root.get(UserEntity_.NAME), nameParameter));
-        TypedQuery<UserEntity> typedQuery = em.createQuery(query).setParameter(UserEntity_.NAME, name);
-
-        /**
-         * The JPA API really sucks regarding this. The NoResultException is actually the way getSingleResult()
-         * is supposed to alert us no entity has been found.
-         */
-        try {
-            user = typedQuery.getSingleResult();
-        }
-        catch (NoResultException e) {
-            user = null;
-        }
-
-        return user;
+    public UserService() {
+        super.PAGE_SIZE_DEFAULT = 100;
+        super.PAGE_SIZE_MAX = 20;
+        super.DEFAULT_SORT_COLUMN = UserEntity_.dateCreated;
+        super.SEARCHABLE_COLUMNS = SORTABLE_COLUMNS = new ArrayList<>(Arrays.asList(UserEntity_.name, UserEntity_.id));
     }
 
     private UserEntity promoteToProvider(UserEntity user) {
-        if (!user.hasRole(Role.PROVIDER)) {    // Double check.
-            throw new IllegalStateException();
-        }
+        if (!sessionContext.isCallerInRole(Role.ADMIN.toString())) throw new NotAuthorizedException();
+        if (user.hasRole(Role.PROVIDER)) throw new EntityExistsException(); // User already is a provider.
+
         String providerKey = Generator.generateSecureRandomString(Cryptography.API_KEY_LENGTH);
         String providerSecret = Generator.generateSecureRandomString(Cryptography.API_KEY_LENGTH);
 
-        user.setProviderKey(Cryptography.hashMessage(providerKey));
+        user.setProviderKey(providerKey);
         user.setProviderSecret(Cryptography.hashMessage(providerSecret));
 
         return user;
     }
 
-    public void validateProvider(String providerId, String providerSecret) {
-        //TODO: just as validateCrendetial just for providers
-    }
+    private void resetProvider() {
 
-    public void update(UserEntity updatedUser) {
-        UserEntity user = findById(updatedUser.getId());
-        em.persist(updatedUser);
-        em.flush();
     }
 
     public void deleteById(int id) {
         if (!sessionContext.isCallerInRole(Role.ADMIN.toString())) throw new NotAuthorizedException();
-        UserEntity user = findById(id);
-        em.remove(user);
-        em.flush();
+        super.deleteById(id);
+    }
+
+    public UserEntity validateProvider(String providerKey, String providerSecret) {
+        UserEntity user = findByField(UserEntity_.providerKey, providerKey);
+        if (Cryptography.validateMessage(providerSecret, user.getProviderSecret())) {
+            return user;
+        }
+        else {
+            throw new InvalidCredentialException();
+        }
+    }
+
+    public void update(UserEntity updatedUser) {
+        // We check if we only just now added the role of Provider. Hacky, but does the trick.
+        if (updatedUser.hasRole(Role.PROVIDER) && !findById(updatedUser.getId()).hasRole(Role.PROVIDER)) {
+            updatedUser = promoteToProvider(updatedUser);
+        }
+
+        super.update(updatedUser);
     }
 
     public UserEntity validateCredential(String name, String password) {
-        UserEntity user = findByName(name);
+        UserEntity user = findByField(UserEntity_.name, name);
         if (Cryptography.validateMessage(password, user.getPassword())) {
             return user;
         }
@@ -102,91 +91,13 @@ public class UserService {
     }
 
     public void create(UserEntity newUser) {
-        if (getByName(newUser.getName()) != null) throw new EntityExistsException();
+        if (getByField(UserEntity_.name, newUser.getName()) != null) throw new EntityExistsException();
         if (newUser.hasRole(Role.PROVIDER)) {
             newUser = promoteToProvider(newUser);
         }
-
         newUser.setDateCreated(new Timestamp(System.currentTimeMillis()));
         newUser.setPassword(Cryptography.hashMessage(newUser.getPassword()));
 
-        em.persist(newUser);
-        em.flush();
-    }
-
-    public List<UserEntity> findAll(int pageCurrent, int pageSize, String sortField, SortOrder sortOrder, String searchString) {
-        List<UserEntity> questions;
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<UserEntity> query = builder.createQuery(UserEntity.class);
-        Root<UserEntity> root = query.from(UserEntity.class);
-        query.select(root);
-        Path<?> path = getPath(sortField, root);
-
-
-        if (searchString != null && searchString.trim().length() > 0) {
-            Predicate filterCondition = builder.disjunction();
-            if (searchString.chars().allMatch(Character::isDigit)) {
-                filterCondition = builder.or(filterCondition, builder.equal(root.get(UserEntity_.id), Integer.parseInt(searchString)));
-            }
-            filterCondition = builder.or(filterCondition, builder.like(root.get(UserEntity_.name), "%" + searchString + "%"));
-            query.where(filterCondition);
-        }
-
-        switch(sortOrder) {
-            case ASCENDING:
-                query.orderBy(builder.asc(path));
-                break;
-            case DESCENDING:
-                query.orderBy(builder.desc(path));
-                break;
-            case UNSORTED:
-                query.orderBy(builder.desc(path));
-                break;
-        }
-
-        TypedQuery<UserEntity> typedQuery = em.createQuery(query);
-
-        //TODO: TEMPORARY - read below
-        lastCount = typedQuery.getResultList().size();
-
-        pageSize = (pageSize >= 0 && pageSize <= PAGE_SIZE_MAX) ? pageSize : PAGE_SIZE_DEFAULT;
-        typedQuery.setMaxResults(pageSize);
-        pageCurrent = (pageCurrent >= 0) ? pageCurrent : 0;
-        typedQuery.setFirstResult(pageCurrent * pageSize - pageSize);
-
-        questions = typedQuery.getResultList();
-
-        return questions;
-    }
-
-    private Path<?> getPath(String field, Root<UserEntity> root) {
-        Path<?> path;
-        if (field == null) {
-            path = root.get(UserEntity_.dateCreated);
-        }
-        else {
-            switch (field) {
-                case "id":
-                    path = root.get(UserEntity_.id);
-                    break;
-                case "name":
-                    path = root.get(UserEntity_.NAME);
-                    break;
-                case "dateCreated":
-                    path = root.get(UserEntity_.dateCreated);
-                    break;
-                default:
-                    path = root.get(UserEntity_.dateCreated);
-                    break;
-            }
-        }
-        return path;
-    }
-
-    // TODO
-    private int lastCount; public void setLastCount(int lastCount) {
-        this.lastCount = lastCount;
-    }public int getLastCount() {
-        return 1;
+        super.create(newUser);
     }
 }

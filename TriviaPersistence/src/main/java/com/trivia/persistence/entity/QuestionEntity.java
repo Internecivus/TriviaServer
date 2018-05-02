@@ -73,7 +73,7 @@ public class QuestionEntity {
     private UserEntity user;
 
     @NotEmpty
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name="question_category_map",
             joinColumns = {@JoinColumn(name = "question_id", referencedColumnName = "id")},

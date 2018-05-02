@@ -1,5 +1,6 @@
 package com.trivia.api.security.authentication;
 
+import com.trivia.core.exception.BusinessException;
 import com.trivia.core.exception.CredentialException;
 import com.trivia.core.service.ClientService;
 import com.trivia.persistence.entity.ClientEntity;
@@ -32,7 +33,7 @@ public class ClientIdentityStore implements IdentityStore {
         catch (CredentialException e) {
             return CredentialValidationResult.INVALID_RESULT;
         }
-        catch (PersistenceException e) {
+        catch (BusinessException e) {
             return CredentialValidationResult.NOT_VALIDATED_RESULT;
         }
 

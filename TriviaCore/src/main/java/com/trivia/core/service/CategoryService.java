@@ -12,11 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
-public class CategoryService {
+public class CategoryService extends Service<CategoryEntity> {
     @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
-    //@PersistenceContext(properties={@PersistenceProperty(name="javax.persistence.sharedCache.mode", value="ALL")})
     @Inject private Logger logger;
+
+    public CategoryService() {}
 
     public List<CategoryEntity> getAll() {
         List<CategoryEntity> categoryList;

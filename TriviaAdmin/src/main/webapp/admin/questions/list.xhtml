@@ -10,29 +10,25 @@
     </ui:define>
 
     <ui:define name="subnavigation">
-        <div class="container text-center">
-            <ul class="list-inline list-unstyled">
-                <li>
-                    <p:button outcome="list"
-                              value="#{i18n['action.all']}"/>
-                </li>
-                <li>
-                    <p:button outcome="create"
-                              value="#{i18n['action.create']}"/>
-                </li>
-            </ul>
-        </div>
+        <ul class="list-inline list-unstyled">
+            <li class="list-inline-item">
+                <h:button outcome="list" styleClass="btn btn-secondary" value="#{i18n['action.all']}"/>
+            </li>
+            <li class="list-inline-item">
+                <h:button outcome="create" styleClass="btn btn-secondary" value="#{i18n['action.create']}"/>
+            </li>
+        </ul>
     </ui:define>
 
     <ui:define name="main">
-        <h:form>
-            <p:messages id="messages" globalOnly="true" showDetail="true" closable="false">
-                <p:autoUpdate/>
-            </p:messages>
-            <p:growl id="growl" showDetail="true" sticky="true" for="growl">
-                <p:autoUpdate/>
-            </p:growl>
+        <p:messages id="messages" globalOnly="true" showDetail="true" closable="false">
+            <p:autoUpdate/>
+        </p:messages>
+        <p:growl id="growl" showDetail="true" sticky="true" for="growl">
+            <p:autoUpdate/>
+        </p:growl>
 
+        <h:form>
             <p:dataTable id="questions_table"
                          paginator="true"
                          paginatorPosition="bottom"
@@ -43,15 +39,16 @@
                          rowsPerPageTemplate="10,25,100"
                          pageLinks="5"
                          reflow="true"
-                         tableStyleClass="table-striped"
+                         tableStyleClass="table table-striped"
                          rowStyleClass=""
                          emptyMessage="#{i18n.notFound}"
                          widgetVar="questionsTable"
                          sortBy="#{question.dateCreated}"
+                         sortOrder="descending"
                          lazy="true">
                 <f:facet name="header">
                     <p:outputPanel>
-                        <h:outputText value="#{i18n['search']}: "/>
+                        <h:outputLabel for="globalFilter" value="#{i18n['search']}: "/>
                         <p:inputText id="globalFilter"
                                      onkeyup="PF('questionsTable').filter()"
                                      style="width:150px"
@@ -59,28 +56,20 @@
                     </p:outputPanel>
                 </f:facet>
 
-                <p:column sortBy="#{question.id}"
-                          width="70"
-                          styleClass="text-center"
-                          headerText="#{i18n['question.id']}">
+                <p:column sortBy="#{question.id}" width="70" headerText="#{i18n['question.id']}">
                     <h:outputText value="#{question.id}"/>
                 </p:column>
 
-                <p:column sortBy="#{question.question}"
-                          headerText="#{i18n['question.question']}">
+                <p:column sortBy="#{question.question}" headerText="#{i18n['question.question']}">
                     <h:outputText value="#{question.question}"/>
                 </p:column>
 
-                <p:column sortBy="#{question.user.name}"
-                          width="120"
-                          styleClass="text-center"
-                          headerText="#{i18n['question.user']}">
+                <p:column sortBy="#{question.user.name}" width="120" headerText="#{i18n['question.user']}">
                     <h:outputText value="#{question.user.name}"/>
                 </p:column>
 
                 <p:column sortBy="#{question.dateCreated}"
                           width="150"
-                          styleClass="text-center"
                           headerText="#{i18n['question.dateCreated']}">
                     <h:outputText value="#{question.dateCreated}">
                         <f:convertDateTime type="date" pattern="dd. MMMM yyyy"/>
@@ -89,31 +78,30 @@
 
                 <p:column sortBy="#{question.dateLastModified}"
                           width="150"
-                          styleClass="text-center"
                           headerText="#{i18n['question.dateLastModified']}">
                     <h:outputText value="#{question.dateLastModified}">
                         <f:convertDateTime type="date" pattern="dd. MMMM yyyy"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="Actions"
-                          width="250">
-                    <p:button value="#{i18n['action.details']}"
-                              outcome="details">
-                        <f:param name="id" value="#{question.id}"/>
-                    </p:button>
+                <p:column headerText="Actions" width="250">
+                    <div class="btn-group btn-group-toggle">
+                        <p:button value="#{i18n['action.details']}" styleClass="btn btn-secondary" outcome="details">
+                            <f:param name="id" value="#{question.id}"/>
+                        </p:button>
 
-                    <p:button value="#{i18n['action.edit']}"
-                                     outcome="edit">
-                        <f:param name="id" value="#{question.id}"/>
-                    </p:button>
+                        <p:button value="#{i18n['action.edit']}" styleClass="btn btn-secondary" outcome="edit">
+                            <f:param name="id" value="#{question.id}"/>
+                        </p:button>
 
-                    <p:commandButton value="#{i18n['action.delete']}"
-                                     styleClass="btn-danger"
-                                     actionListener="#{questionController.delete(question.id)}">
-                        <p:confirm header="#{i18n['delete.confirmation.header']}"
-                                   message="#{i18n['delete.confirmation.message']}"/>
-                    </p:commandButton>
+                        <p:commandButton value="#{i18n['action.delete']}"
+                                         styleClass="btn btn-danger"
+                                         update="questions_table"
+                                         actionListener="#{questionsListController.delete(question.id)}"> <!--Reset table-->
+                            <p:confirm header="#{i18n['delete.confirmation.header']}"
+                                       message="#{i18n['delete.confirmation.message']}"/>
+                        </p:commandButton>
+                    </div>
 
                     <p:confirmDialog global="true">
                         <p:commandButton value="#{i18n['no']}" type="button" styleClass="ui-confirmdialog-no"/>

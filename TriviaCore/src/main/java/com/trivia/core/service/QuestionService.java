@@ -17,31 +17,38 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import javax.persistence.metamodel.SingularAttribute;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Stateless
-public class QuestionService {
+public class QuestionService extends Service<QuestionEntity> {
     @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
     private @EJB UserService userService;
     private @Inject Logger logger;
     private @Resource SessionContext sessionContext;
-    private final static Integer PAGE_SIZE_DEFAULT = 20;
-    private final static Integer PAGE_SIZE_MAX = 100;
+
     private final static Integer PAGE_SIZE_RANDOM_DEFAULT = 20;
     private final static Integer PAGE_SIZE_RANDOM_MAX = 20;
 
-    public QuestionEntity findById(int id) {
-        QuestionEntity questionEntity = em.find(QuestionEntity.class, id);
-        if (questionEntity == null) throw new EntityNotFoundException();
-        return questionEntity;
+    public QuestionService() {
+        super.PAGE_SIZE_DEFAULT = 100;
+        super.PAGE_SIZE_MAX = 20;
+        super.DEFAULT_SORT_COLUMN = QuestionEntity_.dateCreated;
+        super.SEARCHABLE_COLUMNS = SORTABLE_COLUMNS = new ArrayList<>(Arrays.asList(
+                QuestionEntity_.id, QuestionEntity_.answerFirst, QuestionEntity_.question, QuestionEntity_.dateLastModified,
+                QuestionEntity_.answerSecond, QuestionEntity_.answerThird, QuestionEntity_.answerFourth,
+                QuestionEntity_.answerCorrect, QuestionEntity_.comment, QuestionEntity_.dateCreated
+        ));
     }
 
     public List<QuestionClient> getRandomForClient(int size, String category) {
@@ -71,156 +78,42 @@ public class QuestionService {
         return questionsClient;
     }
 
-    public List<QuestionEntity> findAll(int pageCurrent, int pageSize, String sortField, SortOrder sortOrder, String searchString) {
-        List<QuestionEntity> questions;
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<QuestionEntity> query = builder.createQuery(QuestionEntity.class);
-        Root<QuestionEntity> root = query.from(QuestionEntity.class);
-        query.select(root);
-        Path<?> path = getPath(sortField, root);
-
-
-        if (searchString != null && searchString.trim().length() > 0) {
-            Predicate filterCondition = builder.disjunction();
-            if (searchString.chars().allMatch(Character::isDigit)) {
-                filterCondition = builder.or(filterCondition, builder.equal(root.get(QuestionEntity_.id), Integer.parseInt(searchString)));
-            }
-            filterCondition = builder.or(filterCondition, builder.like(root.get(QuestionEntity_.question), "%" + searchString + "%"));
-            filterCondition = builder.or(filterCondition, builder.like(root.get(QuestionEntity_.answerFirst), "%" + searchString + "%"));
-            filterCondition = builder.or(filterCondition, builder.like(root.get(QuestionEntity_.answerSecond), "%" + searchString + "%"));
-            filterCondition = builder.or(filterCondition, builder.like(root.get(QuestionEntity_.answerThird), "%" + searchString + "%"));
-            filterCondition = builder.or(filterCondition, builder.like(root.get(QuestionEntity_.answerFourth), "%" + searchString + "%"));
-            filterCondition = builder.or(filterCondition, builder.like(root.get(QuestionEntity_.comment), "%" + searchString + "%"));
-            query.where(filterCondition);
-        }
-
-        switch(sortOrder) {
-            case ASCENDING:
-                query.orderBy(builder.asc(path));
-                break;
-            case DESCENDING:
-                query.orderBy(builder.desc(path));
-                break;
-            case UNSORTED:
-                query.orderBy(builder.desc(path));
-                break;
-        }
-
-        TypedQuery<QuestionEntity> typedQuery = em.createQuery(query);
-
-        //TODO: TEMPORARY - read below
-        lastCount = typedQuery.getResultList().size();
-
-        pageSize = (pageSize >= 0 && pageSize <= PAGE_SIZE_MAX) ? pageSize : PAGE_SIZE_DEFAULT;
-        typedQuery.setMaxResults(pageSize);
-        pageCurrent = (pageCurrent >= 0) ? pageCurrent : 0;
-        typedQuery.setFirstResult(pageCurrent * pageSize - pageSize);
-
-        questions = typedQuery.getResultList();
-
-        return questions;
-    }
-
-    public Long count() {
-        Long count;
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<Long> query = builder.createQuery(Long.class);
-        Root<QuestionEntity> root = query.from(QuestionEntity.class);
-        query.select(builder.count(root));
-        TypedQuery<Long> typedQuery = em.createQuery(query);
-        count = typedQuery.getSingleResult();
-
-        return count;
-    }
-
     public void update(QuestionEntity updatedQuestion) {
-        UserEntity user = userService.findByName(sessionContext.getCallerPrincipal().getName());
-        QuestionEntity question = findById(updatedQuestion.getId());
+        UserEntity user = userService.findByField(UserEntity_.name, sessionContext.getCallerPrincipal().getName());
         updatedQuestion.setDateLastModified(new Timestamp(System.currentTimeMillis()));
-        em.merge(updatedQuestion);
-        em.flush();
-        logger.info("Question id: {} UPDATED by user id: {}", question.getId(), user.getId());
+
+        super.update(updatedQuestion);
+        logger.info("Question id: {} UPDATED by user id: {}", updatedQuestion.getId(), user.getId());
     }
 
     //TODO: use @RolesAllowed("ADMIN") and @DeclareRoles({"ADMIN", "PROVIDER", etc}) for authorization
     public void deleteById(int id) {
         if (!sessionContext.isCallerInRole(Role.ADMIN.toString())) throw new NotAuthorizedException();
+        UserEntity user = userService.findByField(UserEntity_.name, sessionContext.getCallerPrincipal().getName());
 
-        UserEntity user = userService.findByName(sessionContext.getCallerPrincipal().getName());
-        QuestionEntity question = findById(id);
-        em.remove(question);
-        em.flush();
-        logger.info("Question id: {} DELETED by user id: {}", question.getId(), user.getId());
+        super.deleteById(id);
+        logger.info("Question id: {} DELETED by user id: {}", id, user.getId());
     }
 
-    public void createWithImage(QuestionEntity questionEntity, String fileName, InputStream inputStream) {
+    public void createWithImage(QuestionEntity newQuestion, String fileName, InputStream inputStream) {
         try {
             java.nio.file.Path imagePath = ImageUtil.saveImageAndGetPath(fileName, inputStream);
             String imageFileName = imagePath.getFileName().toString();
-            questionEntity.setImage(imageFileName);
+            newQuestion.setImage(imageFileName);
         }
         catch (IOException e) {
-            throw new SystemException();
+            throw new SystemException(e);
         }
 
-        create(questionEntity);
+        create(newQuestion);
     }
 
-    public void create(QuestionEntity questionEntity) {
-        questionEntity.setDateCreated(new Timestamp(System.currentTimeMillis()));
-        UserEntity user = userService.findByName(sessionContext.getCallerPrincipal().getName());
-        questionEntity.setUser(user);
+    public void create(QuestionEntity newQuestion) {
+        newQuestion.setDateCreated(new Timestamp(System.currentTimeMillis()));
+        UserEntity user = userService.findByField(UserEntity_.name, sessionContext.getCallerPrincipal().getName());
+        newQuestion.setUser(user);
 
-        em.persist(questionEntity);
-        em.flush();
-        logger.info("Question id: {} CREATED by user id: {}", questionEntity.getId(), user.getId());
+        super.create(newQuestion);
+        logger.info("Question id: {} CREATED by user id: {}", newQuestion.getId(), user.getId());
     }
-
-    private Path<?> getPath(String field, Root<QuestionEntity> root) {
-        Path<?> path;
-        if (field == null) {
-            path = root.get(QuestionEntity_.dateCreated);
-        }
-        else {
-            switch (field) {
-                case "id":
-                    path = root.get(QuestionEntity_.id);
-                    break;
-                case "question":
-                    path = root.get(QuestionEntity_.question);
-                    break;
-                case "answerFirst":
-                    path = root.get(QuestionEntity_.answerFirst);
-                    break;
-                case "answerSecond":
-                    path = root.get(QuestionEntity_.answerSecond);
-                    break;
-                case "answerThird":
-                    path = root.get(QuestionEntity_.answerThird);
-                    break;
-                case "answerFourth":
-                    path = root.get(QuestionEntity_.answerFourth);
-                    break;
-                case "comment":
-                    path = root.get(QuestionEntity_.comment);
-                    break;
-                case "dateCreated":
-                    path = root.get(QuestionEntity_.dateCreated);
-                    break;
-                case "dateUpdated":
-                    path = root.get(QuestionEntity_.dateLastModified);
-                    break;
-                case "answerCorrect":
-                    path = root.get(QuestionEntity_.answerCorrect);
-                    break;
-                default:
-                    path = root.get(QuestionEntity_.dateCreated);
-                    break;
-            }
-        }
-        return path;
-    }
-
-    //TODO: TEMPORARY - This is crazy. Wrap the list inside a data structure (e.g. EntityPage -- has page out of x, randomized, sort field, sort order, count, etc.) to fix this.
-    private int lastCount; public int getLastCount() {return lastCount;} public void setLastCount(int lastCount) { this.lastCount = lastCount; }
 }

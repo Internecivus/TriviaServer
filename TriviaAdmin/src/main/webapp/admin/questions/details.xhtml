@@ -10,18 +10,14 @@
     </ui:define>
 
     <ui:define name="subnavigation">
-        <div class="container text-center">
-            <ul class="list-inline list-unstyled">
-                <li>
-                    <p:button outcome="list"
-                              value="#{i18n['action.all']}"/>
-                </li>
-                <li>
-                    <p:button outcome="create"
-                              value="#{i18n['action.create']}"/>
-                </li>
-            </ul>
-        </div>
+        <ul class="list-inline list-unstyled">
+            <li class="list-inline-item">
+                <h:button outcome="list" styleClass="btn btn-secondary" value="#{i18n['action.all']}"/>
+            </li>
+            <li class="list-inline-item">
+                <h:button outcome="create" styleClass="btn btn-secondary" value="#{i18n['action.create']}"/>
+            </li>
+        </ul>
     </ui:define>
 
     <ui:define name="main">
@@ -32,91 +28,85 @@
             <p:autoUpdate/>
         </p:growl>
 
-        <p:panel header="#{i18n['page.question.details.name']}">
-            <h:form enctype="multipart/form-data">
-                <div class="form-group">
-                    <p:outputLabel for="date_created">#{i18n['question.dateCreated']}</p:outputLabel>
-                    <p><h:outputText id="date_created"
-                                     value="#{questionEditController.questionEntity.dateCreated}">
-                        <f:convertDateTime type="date" pattern="dd. MMMM yyyy HH:mm"/>
-                    </h:outputText></p>
-                </div>
-                <div class="form-group">
-                    <p:outputLabel for="date_last_modified">#{i18n['question.dateLastModified']}</p:outputLabel>
-                    <p><h:outputText id="date_last_modified"
-                                     value="#{questionEditController.questionEntity.dateLastModified}">
-                        <f:convertDateTime type="date" pattern="dd. MMMM yyyy HH:mm"/>
-                    </h:outputText></p>
-                </div>
-                <div class="form-group">
-                    <p:outputLabel for="question">#{i18n['question.question']}</p:outputLabel>
-                    <p><h:outputText value="#{questionEditController.questionEntity.question}"
-                                     id="question"/></p>
-                </div>
-                <div class="form-group">
-                    <p:outputLabel for="first_answer">#{i18n['question.firstAnswer']}</p:outputLabel>
-                    <p><h:outputText value="#{questionEditController.questionEntity.answerFirst}"
-                                     id="first_answer"/></p>
-                </div>
-                <div class="form-group">
-                    <p:outputLabel for="second_answer">#{i18n['question.secondAnswer']}</p:outputLabel>
-                    <p><h:outputText value="#{questionEditController.questionEntity.answerSecond}"
-                                     id="second_answer"/></p>
-                </div>
-                <div class="form-group">
-                    <p:outputLabel for="third_answer">#{i18n['question.thirdAnswer']}</p:outputLabel>
-                    <p><h:outputText value="#{questionEditController.questionEntity.answerThird}"
-                                     id="third_answer"/></p>
-                </div>
-                <div class="form-group">
-                    <p:outputLabel for="fourth_answer">#{i18n['question.fourthAnswer']}</p:outputLabel>
-                    <p><h:outputText value="#{questionEditController.questionEntity.answerFourth}"
-                                     id="fourth_answer"/></p>
-                </div>
+        <p:panel columns="2" styleClass="card">
+            <f:facet name="header">
+                <h5><h:outputFormat value="#{i18n['page.question.details.name']}"/></h5>
+            </f:facet>
 
-                <div class="form-group">
-                    <p:outputLabel for="correct_answer">#{i18n['question.correctAnswer']}</p:outputLabel>
-                    <p><h:outputText value="#{questionEditController.questionEntity.answerCorrect}"
-                                     converterMessage="#{i18n['conversion.integer']}"
-                                     id="correct_answer"/></p>
-                </div>
-                <div class="form-group">
-                    <p:outputLabel for="comment">#{i18n['question.comment']}</p:outputLabel>
-                    <p><h:outputText value="#{questionEditController.questionEntity.comment}"
-                                     id="comment"/></p>
-                </div>
-                <div class="form-group">
-                    <!--TODO: Show image-->
-                    <p:outputLabel for="image">#{i18n['action.change']} #{i18n['question.image']}</p:outputLabel>
-                    <h:graphicImage id="image" value=""/>
-                </div>
-                <div class="form-group">
-                    <p:outputLabel for="categories">#{i18n['question.categories']}</p:outputLabel>
-                    <!--TODO Remove the required (*) symbol-->
-                    <p:selectManyCheckbox id="categories"
-                                          styleClass="form-control"
-                                          layout="lineDirection"
-                                          value="#{questionEditController.questionEntity.categories}">
-                        <f:selectItems value="#{questionEditController.categoriesAvailable}"
-                                       var="category"
-                                       itemDisabled="true"
-                                       itemValue="#{category}"
-                                       itemLabel="#{category.name}"/>
-                    </p:selectManyCheckbox>
-                </div>
-                <div class="form-group">
-                    <p:button value="#{i18n['action.edit']}"
-                              styleClass="btn btn-primary btn-sm"
-                              outcome="edit">
-                        <f:param name="id" value="#{questionDetailController.questionEntity.id}"/>
-                    </p:button>
+            <div class="row">
+                <h:outputLabel styleClass="col-sm-2 col-form-label" for="date_created">
+                    #{i18n['question.dateCreated']}
+                </h:outputLabel>
 
-                    <p:confirmDialog global="true">
-                        <p:commandButton value="#{i18n['no']}" type="button" styleClass="ui-confirmdialog-no"/>
-                        <p:commandButton value="#{i18n['yes']}" type="button" styleClass="ui-confirmdialog-yes"/>
-                    </p:confirmDialog>
-                </div>
-            </h:form>
+                <h:outputText styleClass="col-sm-10 form-control" id="date_created"
+                         value="#{questionDetailsController.questionEntity.dateCreated}">
+                    <f:convertDateTime type="date" pattern="dd. MMMM yyyy HH:mm"/>
+                </h:outputText>
+            </div>
+
+            <div class="row">
+                <h:outputLabel styleClass="col-sm-2 col-form-label" for="date_last_modified">
+                    #{i18n['question.dateLastModified']}
+                </h:outputLabel>
+
+                <h:outputText styleClass="col-sm-10 form-control" id="date_last_modified"
+                              value="#{questionDetailsController.questionEntity.dateLastModified}">
+                    <f:convertDateTime type="date" pattern="dd. MMMM yyyy HH:mm"/>
+                </h:outputText>
+            </div>
+
+
+            <h:outputLabel for="question">#{i18n['question.question']}</h:outputLabel>
+            <p><h:outputText value="#{questionDetailsController.questionEntity.question}"
+                                 id="question"/></p>
+
+            <h:outputLabel for="first_answer">#{i18n['question.answerFirst']}</h:outputLabel>
+            <p><h:outputText value="#{questionDetailsController.questionEntity.answerFirst}"
+                             id="first_answer"/></p>
+
+            <h:outputLabel for="second_answer">#{i18n['question.answerSecond']}</h:outputLabel>
+            <p><h:outputText value="#{questionDetailsController.questionEntity.answerSecond}"
+                                 id="second_answer"/></p>
+
+            <h:outputLabel for="third_answer">#{i18n['question.answerThird']}</h:outputLabel>
+            <p><h:outputText value="#{questionDetailsController.questionEntity.answerThird}"
+                                 id="third_answer"/></p>
+
+            <h:outputLabel for="fourth_answer">#{i18n['question.answerFourth']}</h:outputLabel>
+            <p><h:outputText value="#{questionDetailsController.questionEntity.answerFourth}"
+                                 id="fourth_answer"/></p>
+
+            <h:outputLabel for="correct_answer">#{i18n['question.answerCorrect']}</h:outputLabel>
+            <p><h:outputText value="#{questionDetailsController.questionEntity.answerCorrect}"
+                                 converterMessage="#{i18n['conversion.integer']}"
+                                 id="correct_answer"/></p>
+
+            <h:outputLabel for="comment">#{i18n['question.comment']}</h:outputLabel>
+            <p><h:outputText value="#{questionDetailsController.questionEntity.comment}" id="comment"/></p>
+
+            <!--TODO: Show image-->
+            <h:outputLabel for="image">#{i18n['question.image']}</h:outputLabel>
+            <p:graphicImage id="image" value="/images/#{questionDetailsController.questionEntity.image}}"/>
+
+            <h:outputLabel>#{i18n['question.categories']}</h:outputLabel>
+            <div id="categories">
+                <ui:repeat value="#{questionDetailsController.questionEntity.categories}" var="category">
+                    <h:outputText styleClass="d-inline p-2" value="#{category.name}"/>
+                </ui:repeat>
+            </div>
+
+            <ul>
+                <li>
+                    <h:button value="#{i18n['action.edit']}" styleClass="btn btn-primary" outcome="edit">
+                        <f:param name="id" value="#{questionDetailsController.questionEntity.id}"/>
+                    </h:button>
+                </li>
+
+                <p:confirmDialog global="true">
+                    <p:commandButton value="#{i18n['no']}" type="button" styleClass="ui-confirmdialog-no"/>
+                    <p:commandButton value="#{i18n['yes']}" type="button" styleClass="ui-confirmdialog-yes"/>
+                </p:confirmDialog>
+            </ul>
         </p:panel>
     </ui:define>
 </ui:composition>
