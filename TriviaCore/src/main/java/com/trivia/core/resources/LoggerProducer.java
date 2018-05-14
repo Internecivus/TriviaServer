@@ -8,9 +8,7 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-/**
- * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
- */
+
 
 @Dependent
 public class LoggerProducer {

@@ -22,10 +22,21 @@
         <param-value>true</param-value>
     </context-param>
     <context-param>
-        <param-name>primefaces.THEME</param-name>
-        <param-value>none</param-value>
+        <param-name>primefaces.FONT_AWESOME</param-name>
+        <param-value>true</param-value>
     </context-param>
-
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>admin</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+        <param-value>/WEB-INF/admin.taglib.xhtml</param-value>
+    </context-param>
+    <context-param>
+        <param-name>org.omnifaces.FACES_VIEWS_SCAN_PATHS</param-name> <!--Removes the .xhtml extension-->
+        <param-value>/*.xhtml</param-value>
+    </context-param>
 
 
     <welcome-file-list>
@@ -36,6 +47,10 @@
 
     <!--Error pages-->
 
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/WEB-INF/errors/expired.xhtml</location>
+    </error-page>
     <error-page>
         <error-code>403</error-code>
         <location>/WEB-INF/errors/404.xhtml</location> <!--Does not expose secured resources.-->

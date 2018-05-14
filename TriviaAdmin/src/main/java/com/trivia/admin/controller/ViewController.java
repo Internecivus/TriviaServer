@@ -1,5 +1,6 @@
 package com.trivia.admin.controller;
 
+import org.omnifaces.facesviews.FacesViews;
 import org.omnifaces.util.Faces;
 
 import javax.annotation.PostConstruct;
@@ -10,10 +11,10 @@ import javax.inject.Named;
 import javax.security.enterprise.SecurityContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Arrays;
 
-/**
- * Created by faust. Part of Trivia Project. All rights reserved. 2018
- */
+
+
 @Named
 @Dependent
 public class ViewController {
@@ -21,25 +22,39 @@ public class ViewController {
     private @Inject FacesContext facesContext;
 
     private String path;
-    private String fullName;
+    private String fullName; // Uses dot ('.') as a delimiter.
     private String name;
     private String userName;
+
+    private String[] folders = {"admin", "public"};
 
     public ViewController() {}
 
     @PostConstruct
     public void init() {
-        String viewId = Faces.getViewId();
-        path = viewId.substring(1, viewId.lastIndexOf('.'));
-        fullName = path.replaceFirst("WEB-INF/", "").replaceAll("\\W+", "_");
-        name = fullName.substring(fullName.lastIndexOf('_') + 1, fullName.length());
+        path = getPathFromUri(Faces.getViewId());
+        fullName = path
+            .substring(1)
+            .replaceFirst("WEB-INF/", "")
+            .replaceFirst("(" + String.join("|", folders) + ")/", "")
+            .replaceAll("/", ".");
+        name = fullName.substring(fullName.lastIndexOf('.') + 1);
 
         if (securityContext.getCallerPrincipal() == null) {
-            userName = "";
+            userName = null;
         }
         else {
             userName = securityContext.getCallerPrincipal().getName();
         }
+    }
+
+    public String getPathFromUri(String uri) {
+        return uri.substring(0, uri.lastIndexOf('.'));
+    }
+
+    public String getPathFromOutcome(String outcome) {
+        String pathWithoutName = path.substring(0, path.lastIndexOf(name) - 1);
+        return pathWithoutName + "/" + outcome;
     }
 
     public boolean pathIs(String path) {

@@ -1,11 +1,19 @@
 package com.trivia.core.utility;
 
-/**
- * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
- */
+
 
 public enum SortOrder {
-    ASCENDING,
-    DESCENDING,
-    UNSORTED
+    ASCENDING("ASCENDING"),
+    DESCENDING("DESCENDING"),
+    DEFAULT("DEFAULT");
+
+    private String sortName;
+
+    SortOrder(String sortName) {
+        this.sortName = sortName;
+    }
+
+    public String sortName() {
+        return sortName;
+    }
 }

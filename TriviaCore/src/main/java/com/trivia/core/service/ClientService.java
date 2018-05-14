@@ -1,6 +1,5 @@
 package com.trivia.core.service;
 
-import com.trivia.core.exception.EntityNotFoundException;
 import com.trivia.core.exception.InvalidCredentialException;
 import com.trivia.core.exception.NotAuthorizedException;
 import com.trivia.core.security.Cryptography;
@@ -9,93 +8,98 @@ import com.trivia.persistence.entity.*;
 import org.slf4j.Logger;
 
 import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.Root;
-import javax.security.enterprise.SecurityContext;
 import java.sql.Timestamp;
-import java.util.Base64;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 @Stateless
-public class ClientService {
+@RolesAllowed(RoleType.Name.PRINCIPAL)
+public class ClientService extends Service<Client> {
     @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
     private @Resource SessionContext sessionContext;
     private @Inject Logger logger;
     private @Inject UserService userService;
 
-    public ClientEntity create() {
-        if (!sessionContext.isCallerInRole(Role.ADMIN.toString())) throw new NotAuthorizedException();
-        UserEntity user = userService.findByField(UserEntity_.name, sessionContext.getCallerPrincipal().getName());
+    public ClientService() {
+        super.DEFAULT_SORT_COLUMN = Client_.dateCreated;
+        super.SEARCHABLE_COLUMNS = SORTABLE_COLUMNS = new ArrayList<>(Arrays.asList(Client_.dateCreated, Client_.id));
+    }
 
-        ClientEntity clientEntity = new ClientEntity();
+    @RolesAllowed(RoleType.Name.PROVIDER)
+    public Client create() {
+        User user = userService.findByField(User_.name, sessionContext.getCallerPrincipal().getName());
+
+        Client newClient = new Client();
         String apiKey;
 
         do {
             apiKey = Generator.generateSecureRandomString(Cryptography.API_KEY_LENGTH);
         }
-        while (getByApiKey(apiKey) != null); // We could've easily have left this check out since the BLOB is large enough.
+        while (getByField(Client_.apiKey, apiKey) != null); // We could've easily have left this check out since the BLOB is large enough.
         String apiSecret = Generator.generateSecureRandomString(Cryptography.API_KEY_LENGTH);
 
-        clientEntity.setApiKey(apiKey);
-        clientEntity.setApiSecret(Cryptography.hashMessage(apiSecret));
-        clientEntity.setDateCreated(new Timestamp(System.currentTimeMillis()));
-        clientEntity.setUser(user);
+        newClient.setApiKey(apiKey);
+        newClient.setApiSecret(Cryptography.hashMessage(apiSecret));
+        newClient.setDateCreated(new Timestamp(System.currentTimeMillis()));
+        newClient.setUser(user);
 
-        em.persist(clientEntity);
-        em.flush();
-        logger.info("Client id: {} CREATED by user id: {}", clientEntity.getId(), user.getId());
+        super.create(newClient);
+        logger.info("Client id: {} was CREATED by user id: {}", newClient.getId(), sessionContext.getCallerPrincipal().getName());
 
-        return clientEntity;
+        return newClient;
     }
 
-    public ClientEntity register(String providerKey, String providerSecret) {
+    @PermitAll
+    public Client register(String providerKey, String providerSecret) {
         userService.validateProvider(providerKey, providerSecret);
-        return create();
+        return create();  // TODO: but this has RolesAllowed PROVIDER????
     }
 
-    public ClientEntity findByApiKey(String apiKey) {
-        ClientEntity user = getByApiKey(apiKey);
-        if (user == null) throw new EntityNotFoundException();
-        return user;
-    }
-
-    private ClientEntity getByApiKey(String apiKey) {
-        ClientEntity client;
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<ClientEntity> query = builder.createQuery(ClientEntity.class);
-        Root<ClientEntity> root = query.from(ClientEntity.class);
-
-        // TODO: Not sure if we want this to be optimised (it reuses the query if the param is the same type) because of security concerns.
-        ParameterExpression<String> nameParameter = builder.parameter(String.class, ClientEntity_.API_KEY);
-        query.select(root).where(builder.equal(root.get(ClientEntity_.API_KEY), nameParameter));
-        TypedQuery<ClientEntity> typedQuery = em.createQuery(query).setParameter(ClientEntity_.API_KEY, apiKey);
-
-        try {
-            client = typedQuery.getSingleResult();
-        }
-        catch (NoResultException e) {
-            client = null;
-        }
-
-        return client;
-    }
-
-    public ClientEntity validateCredential(String apiKey, String apiSecret) {
-        ClientEntity user = findByApiKey(apiKey);
+    @PermitAll
+    public Client validateCredential(String apiKey, String apiSecret) {
+        Client user = findByField(Client_.apiKey, apiKey);
         if (Cryptography.validateMessage(apiSecret, user.getApiSecret())) {
             return user;
         }
         else {
             throw new InvalidCredentialException();
         }
+    }
+
+    @Override
+    @RolesAllowed({ RoleType.Name.PROVIDER, RoleType.Name.ADMIN })
+    public void update(Client updatedClient) {
+        Client client = findById(updatedClient.getId());
+        if (sessionContext.isCallerInRole(RoleType.Name.PROVIDER)) {
+            User user = userService.getByField(User_.name, sessionContext.getCallerPrincipal().getName());
+            if (user.isOwnerOf(client)) throw new NotAuthorizedException();
+        }
+
+        em.merge(client);
+        em.flush();
+        logger.info("Client id: {} was DELETED by user id: {}", updatedClient.getId(), sessionContext.getCallerPrincipal().getName());
+    }
+
+    @Override
+    @RolesAllowed({ RoleType.Name.PROVIDER, RoleType.Name.ADMIN })
+    public void deleteById(Object id) {
+        Client client = findById(id);
+        if (sessionContext.isCallerInRole(RoleType.Name.PROVIDER)) {
+            User user = userService.getByField(User_.name, sessionContext.getCallerPrincipal().getName());
+            if (user.isOwnerOf(client)) throw new NotAuthorizedException();
+        }
+
+        em.remove(client);
+        em.flush();
+        logger.info("Client id: {} was DELETED by user id: {}", id, sessionContext.getCallerPrincipal().getName());
     }
 }

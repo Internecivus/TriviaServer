@@ -1,18 +1,15 @@
 package com.trivia.api.api.v1;
 
 import com.trivia.core.service.QuestionService;
-import com.trivia.persistence.dto.client.QuestionClient;
+import com.trivia.core.utility.SortOrder;
 
 import javax.inject.Inject;
-import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-/**
- * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
- */
+
 
 @Path("/questions")
 public class QuestionsEndpoint {
@@ -21,22 +18,21 @@ public class QuestionsEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getQuestions(
-            @DefaultValue("") @MatrixParam("category") String category,
-            @DefaultValue("dateCreated") @MatrixParam("sortField") String sortField,
-            @DefaultValue("1") @QueryParam("page") int pageCurrent,
-            @DefaultValue("10") @QueryParam("size") int pageSize,
-            @DefaultValue("") @QueryParam("sortOrder") String sortOrder
+            @MatrixParam("category") String category,
+            @MatrixParam("sortField") String sortField,
+            @QueryParam("page") Integer pageCurrent,
+            @QueryParam("size") Integer pageSize,
+            @QueryParam("sortOrder") SortOrder sortOrder,
+            @DefaultValue("false") @QueryParam("random") boolean random
     ) {
-
-        //List<QuestionEntity> questions = questionService.findAll(page, size, sortField, SortOrder.valueOf(sortOrder), null, false);
-            //throw new WebApplicationException(Response.Status.NOT_FOUND);
-        category = "Horor";
-        List<QuestionClient> questions = questionService.getRandomForClient(pageSize, category);
-
-
+        List<?> questions;
+        if (random) {
+            questions = questionService.toDto(questionService.getRandomFromCategory(pageSize, category));
+        }
+        else {
+            questions = questionService.findAll(pageCurrent, pageSize, sortField, sortOrder, null);
+        }
 
         return Response.status(Response.Status.OK).entity(questions).build();
     }
 }
-
-

@@ -5,70 +5,52 @@
                 xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/admin.xhtml">
-    <ui:define name="title">
-        <h:outputText value="#{i18n['page.user.create.name']} - #{i18n['this.name']}"/>
-    </ui:define>
-
-    <ui:define name="subnavigation">
-        <div class="container text-center">
-            <ul class="list-inline list-unstyled">
-                <li>
-                    <p:button outcome="list"
-                              value="#{i18n['action.all']}"/>
-                </li>
-                <li>
-                    <p:button outcome="create"
-                              value="#{i18n['action.create']}"/>
-                </li>
-            </ul>
-        </div>
-    </ui:define>
+    <ui:param name="subnavigationLinks" value="#{['list', 'create']}"/>
+    <ui:param name="mainSizes" value="col-sm-12 col-sm-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2"/>
 
     <ui:define name="main">
-        <p:messages id="messages" globalOnly="true" showDetail="true" closable="false">
-            <p:autoUpdate/>
-        </p:messages>
-        <p:growl id="growl" showDetail="true" sticky="true" for="growl">
-            <p:autoUpdate/>
-        </p:growl>
-
-        <p:panel header="#{i18n['page.user.create.name']}">
-            <h:form enctype="multipart/form-data">
+        <h:form id="user_create" enctype="multipart/form-data">
+            <p:panel header="#{i18n['page.users.create']}">
                 <div class="form-group">
-                    <p:outputLabel for="name">#{i18n['user.name']}</p:outputLabel>
-                    <p:inputText value="#{userCreateController.userEntity.name}"
-                                 styleClass="form-control"
-                                 id="name"/>
+                    <p:outputLabel styleClass="control-label" for="name"
+                                   value="#{i18n['user.name']}"/>
+                    <p:inputText value="#{userCreateController.user.name}"
+                                 styleClass="form-control" id="name"/>
                     <p:message for="name"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="password">#{i18n['user.password']}</p:outputLabel>
-                    <p:password value="#{userCreateController.userEntity.password}"
-                                styleClass="form-control"
-                                id="password"/>
-                    <p:message for="password"/>
+                    <p:outputLabel for="provider_key" value="#{i18n['user.providerKey']}"/>
+                    <p:inputText value="#{userCreateController.user.providerKey}"
+                                 styleClass="form-control" id="provider_key"/>
+                    <p:message for="provider_key"/>
                 </div>
-                <!--<div class="form-group">-->
-                    <!--<p:outputLabel for="roles">#{i18n['user.roles']}</p:outputLabel>-->
-                    <!--<p:selectManyCheckbox id="roles"-->
-                                          <!--styleClass="form-control"-->
-                                          <!--layout="lineDirection"-->
-                                          <!--value="#{userCreateController.userEntity.roles}">-->
-                        <!--<f:selectItems value="#{userCreateController}"-->
-                                       <!--itemValue="#{status}"-->
-                                       <!--itemLabel="#{status.label}"/>-->
-                    <!--</p:selectManyCheckbox>-->
-                <!--</div>-->
                 <div class="form-group">
-                    <p:commandButton action="#{userController.create(userCreateController.userEntity)}"
+                    <p:outputLabel for="roles" value="#{i18n['user.roles']}"/>
+                    <p:selectManyCheckbox id="roles"
+                                          styleClass="form-control"
+                                          layout="lineDirection"
+                                          value="#{userCreateController.user.roles}">
+                        <f:attribute name="collectionType" value="java.util.ArrayList"/>
+                        <f:selectItems value="#{userCreateController.rolesAvailable}"
+                                       var="roleType"
+                                       itemValue="#{roleType}"
+                                       itemLabel="#{roleType.name}"/>
+                    </p:selectManyCheckbox>
+                    <p:message for="roles"/>
+                </div>
+                <div class="form-group">
+                    <p:commandButton action="#{userCreateController.create()}"
+                                     styleClass="btn btn-primary"
                                      type="submit"
                                      value="#{i18n['action.create']}"
-                                     validateClient="true"
-                                     ajax="false"/>
+                                     ajax="false"
+                                     validateClient="true"/>
                     <p:commandButton value="#{i18n['action.reset']}"
-                                     type="reset"/>
+                                     styleClass="btn btn-secondary">
+                        <p:ajax update="question_create" resetValues="true"/>
+                    </p:commandButton>
                 </div>
-            </h:form>
-        </p:panel>
+            </p:panel>
+        </h:form>
     </ui:define>
 </ui:composition>

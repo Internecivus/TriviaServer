@@ -13,8 +13,6 @@ import java.util.stream.Stream;
 
 public final class LogUtil extends FileUtil {
     public final static Path LOG_DIR = Paths.get(SERVER_DIR + "/log");
-    public final static Path ADMIN_LOG_PATH = Paths.get(LOG_DIR + "/" + LogType.ADMIN);
-    public final static Path SERVER_LOG_PATH = Paths.get(LOG_DIR + "/" + LogType.SERVER);
     private final static Integer LOGS_PAGE_MAX = 100;
 
     private LogUtil() {}
@@ -31,7 +29,6 @@ public final class LogUtil extends FileUtil {
         start = start > LOGS_PAGE_MAX ? LOGS_PAGE_MAX : start;
 
         List<Log> logsObj = new ArrayList<>();
-        List<String> logsStr = new ArrayList<>();
 
         // A try block is used as a try-with-resources for an autocloseable object.
         try (Stream<String> logsRaw = Files.lines(getLogTypePath(logType), CHARSET_DEFAULT)) {
@@ -55,7 +52,7 @@ public final class LogUtil extends FileUtil {
      * a reconstruction if the scale gets large enough.
      */
     public static Long getLineCount(LogType logType) throws IOException {
-        Long lineCount = 0L;
+        Long lineCount;
 
         try (Stream<String> logsRaw = Files.lines(getLogTypePath(logType), CHARSET_DEFAULT)) {
             lineCount = logsRaw.count();

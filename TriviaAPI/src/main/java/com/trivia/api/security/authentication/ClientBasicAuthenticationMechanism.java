@@ -14,8 +14,7 @@ import java.util.Base64;
 import java.util.List;
 
 
-
-
+@AutoApplySession
 @ApplicationScoped
 public class ClientBasicAuthenticationMechanism implements HttpAuthenticationMechanism {
     @Inject private IdentityStore identityStore;
@@ -27,7 +26,7 @@ public class ClientBasicAuthenticationMechanism implements HttpAuthenticationMec
         if (credential != null) {
             CredentialValidationResult credentialValidationResult = identityStore.validate(credential);
             if (credentialValidationResult.getStatus() == CredentialValidationResult.Status.VALID) {
-                context.notifyContainerAboutLogin(credentialValidationResult);
+                return context.notifyContainerAboutLogin(credentialValidationResult);
             }
         }
 

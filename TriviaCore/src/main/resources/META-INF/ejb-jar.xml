@@ -9,6 +9,7 @@
             <interceptor-class>com.trivia.core.exception.ExceptionInterceptor</interceptor-class>
         </interceptor>
     </interceptors>
+
     <assembly-descriptor>
         <interceptor-binding>
             <ejb-name>*</ejb-name>

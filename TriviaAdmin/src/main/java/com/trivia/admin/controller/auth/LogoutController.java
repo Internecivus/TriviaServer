@@ -1,6 +1,6 @@
 package com.trivia.admin.controller.auth;
 
-import com.trivia.admin.utility.Message;
+import com.trivia.admin.utility.Messages;
 import org.omnifaces.util.Faces;
 
 import javax.annotation.PostConstruct;
@@ -14,9 +14,8 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.Serializable;
 
-/**
- * Created by faust. Part of Trivia Project. All rights reserved. 2018
- */
+
+
 @Named
 @ViewScoped
 public class LogoutController implements Serializable {
@@ -30,7 +29,7 @@ public class LogoutController implements Serializable {
 
     public void logout() throws ServletException, IOException {
         Faces.logout();
-        Message.addWarnGlobalFlash(i18n.get("warning"), i18n.get("logout.message"));
+        Messages.addWarnGlobalFlash(i18n.get("warning"), i18n.get("logout.message"));
         facesContext.getExternalContext().redirect("/public/login.xhtml");
     }
 }

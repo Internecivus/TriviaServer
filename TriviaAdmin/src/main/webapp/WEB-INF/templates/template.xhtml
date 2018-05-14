@@ -10,26 +10,24 @@
       xmlns:p="http://primefaces.org/ui">
 <f:view locale="#{localeController.locale}">
     <h:head>
+        <h:outputScript library="javascript" name="utility.js"/>
         <title>
             <ui:insert name="title">
+                <h:outputText value="#{i18n['page.' += viewController.fullName]} - #{i18n['this.name']}"/>
             </ui:insert>
         </title>
     </h:head>
 
     <h:body>
-        <h:outputStylesheet library="css" name="components.css"/>
-        <h:outputStylesheet library="css" name="primefaces-override.css"/>
-        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
-        <h:outputStylesheet library="css" name="mainStyle.less"/>
-        <h:outputScript library="javascript" name="less.min.js"/>
+        <h:outputStylesheet library="css" name="override.css"/>
 
         <div id="header" class="container text-center">
             <h:link outcome="/public/login.xhtml"><h1>#{i18n['this.name']} #{i18n['this.admin']}</h1></h:link>
 
-            <h:form>
+            <h:form styleClass="pull-right sm-block">
                 <h:selectOneMenu value="#{localeController.language}" onchange="submit()">
-                    <f:selectItem itemValue="en" itemLabel="#{i18n['language.en']}" />
-                    <f:selectItem itemValue="hr" itemLabel="#{i18n['language.hr']}" />
+                    <f:selectItem itemValue="en" itemLabel="#{i18n['language.en']}"/>
+                    <f:selectItem itemValue="hr" itemLabel="#{i18n['language.hr']}"/>
                 </h:selectOneMenu>
             </h:form>
 
@@ -37,7 +35,21 @@
             </ui:insert>
         </div>
 
-        <div id="main" class="container col-md-12 col-md-offset-0 col-lg-10 col-lg-offset-1">
+        <p:confirmDialog global="true">
+            <p:commandButton value="#{i18n['no']}" type="button" styleClass="ui-confirmdialog-no"/>
+            <p:commandButton value="#{i18n['yes']}" type="button" styleClass="ui-confirmdialog-yes"/>
+        </p:confirmDialog>
+
+        <div id="main"
+             class="#{not empty mainSizes ? mainSizes : 'col-md-12 col-md-offset-0 col-lg-10 col-lg-offset-1'}"
+             style="padding-top: 30px">
+            <p:messages id="messages" globalOnly="true" showDetail="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+            <p:growl id="growl" showDetail="true" sticky="true" for="growl">
+                <p:autoUpdate/>
+            </p:growl>
+
             <ui:insert name="main">
             </ui:insert>
         </div>

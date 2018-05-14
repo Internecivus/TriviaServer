@@ -1,12 +1,10 @@
-// Rest
-TODO: Rest exceptions
-TODO: Bean validation
+// JSF & Image utils
+TODO: Show image, update image, thumbnail image, remove image
 
 // Admin
-TODO: Edit questions
-TODO: Show image, update image, remove image
 TODO: Users, clients, categories CRUD
-TODO: Auth exceptions automagically shows error message
 
-ImageUtils
-Logging all methods
+// Api
+TODO: Fix REST API methods
+
+// Vet ADMIN, API, CORE, PERSISTENCE

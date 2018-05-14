@@ -1,7 +1,7 @@
 package com.trivia.admin.controller.auth;
 
-import com.trivia.admin.utility.Message;
-import com.trivia.persistence.entity.UserEntity;
+import com.trivia.admin.utility.Messages;
+import com.trivia.persistence.entity.User;
 import com.trivia.admin.resources.i18n;
 
 import javax.annotation.PostConstruct;
@@ -18,23 +18,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
 
-/**
- * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
- */
+
 
 @Named
 @ViewScoped
 public class LoginController implements Serializable {
     @Inject private FacesContext facesContext;
     @Inject private SecurityContext securityContext;
-    private UserEntity userEntity;
+    private User user;
     private boolean rememberMe;
 
     @PostConstruct
     // For some way this throws a warning about init() using IOException, but a return of String (as in using the String
     // redirect) is not even going to deploy. Is init() not supposed to redirect?
     public void init() throws IOException {
-        userEntity = new UserEntity();
+        user = new User();
 
         if (securityContext.getCallerPrincipal() != null) {
             facesContext.getExternalContext().redirect("/admin/index.xhtml");
@@ -46,13 +44,13 @@ public class LoginController implements Serializable {
                 (HttpServletRequest) facesContext.getExternalContext().getRequest(),
                 (HttpServletResponse) facesContext.getExternalContext().getResponse(),
                 AuthenticationParameters.withParams()
-                        .credential(new UsernamePasswordCredential(userEntity.getName(), userEntity.getPassword()))
+                        .credential(new UsernamePasswordCredential(user.getName(), user.getPassword()))
                         .newAuthentication(true)
                         .rememberMe(rememberMe)
         );
 
         if (authenticationStatus.equals(AuthenticationStatus.SEND_FAILURE)) {
-            Message.addErrorGlobal(i18n.get("failure"),i18n.get("login.failure"));
+            Messages.addErrorGlobal(i18n.get("failure"),i18n.get("login.failure"));
             facesContext.validationFailed();
         }
         else if (authenticationStatus.equals(AuthenticationStatus.SEND_CONTINUE)) {
@@ -63,12 +61,12 @@ public class LoginController implements Serializable {
         }
     }
 
-    public UserEntity getUserEntity() {
-        return userEntity;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public boolean getRememberMe() {

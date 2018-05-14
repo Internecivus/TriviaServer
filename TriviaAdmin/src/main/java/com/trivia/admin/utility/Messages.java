@@ -6,15 +6,14 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
- * Created by faust. Part of Trivia Project. All rights reserved. 2018
- */
+
+
 // This is basically stolen from Omnifaces :-)
 // The only reason why we are using this instead of Omnifaces is that we want both details and the summary of the messages.
-public final class Message {
+public final class Messages {
     private static FacesMessage facesMessage;
 
-    private Message() {};
+    private Messages() {};
 
     public static void addErrorGlobalFlash(String summary, String message) {
         facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, message);
@@ -36,6 +35,30 @@ public final class Message {
         addGlobalFlash();
     }
 
+    public static void addErrorGlobalFlashFor(String clientId, String summary, String message) {
+        facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, message);
+        addFlash();
+        addFor(clientId);
+    }
+
+    public static void addFatalGlobalFlashFor(String clientId, String summary, String message) {
+        facesMessage = new FacesMessage(FacesMessage.SEVERITY_FATAL, summary, message);
+        addFlash();
+        addFor(clientId);
+    }
+
+    public static void addInfoGlobalFlashFor(String clientId, String summary, String message) {
+        facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, message);
+        addFlash();
+        addFor(clientId);
+    }
+
+    public static void addWarnGlobalFlashFor(String clientId, String summary, String message) {
+        facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN, summary, message);
+        addFlash();
+        addFor(clientId);
+    }
+
     public static void addErrorGlobal(String summary, String message) {
         facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, message);
         addGlobal();
@@ -43,6 +66,16 @@ public final class Message {
 
     public static void addInfoGlobal(String summary, String message) {
         facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, message);
+        addGlobal();
+    }
+
+    public static void addWarnGlobal(String summary, String message) {
+        facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN, summary, message);
+        addGlobal();
+    }
+
+    public static void addFatalGlobal(String summary, String message) {
+        facesMessage = new FacesMessage(FacesMessage.SEVERITY_FATAL, summary, message);
         addGlobal();
     }
 

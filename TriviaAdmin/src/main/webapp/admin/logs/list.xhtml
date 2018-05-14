@@ -5,19 +5,8 @@
                 xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/admin.xhtml">
-    <ui:define name="title">
-        <h:outputText value="#{i18n['page.logs.list.name']} - #{i18n['this.name']}"/>
-    </ui:define>
-
     <ui:define name="main">
         <h:form>
-            <p:messages id="messages" globalOnly="true" showDetail="true" closable="false">
-                <p:autoUpdate/>
-            </p:messages>
-            <p:growl id="growl" showDetail="true" sticky="true" for="growl">
-                <p:autoUpdate/>
-            </p:growl>
-
             <p:dataTable id="log_table"
                          paginator="true"
                          paginatorPosition="bottom"
@@ -30,7 +19,7 @@
                          reflow="true"
                          tableStyleClass="table-striped"
                          rowStyleClass=""
-                         emptyMessage="#{i18n.notFound}"
+                         emptyMessage="#{i18n.notFound.message}"
                          widgetVar="logTable"
                          lazy="true">
                 <f:facet name="header">

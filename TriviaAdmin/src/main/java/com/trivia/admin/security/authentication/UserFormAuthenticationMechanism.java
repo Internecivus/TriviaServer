@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @AutoApplySession
 @LoginToContinue(
-        loginPage = "/public/login.xhtml?continue=true",
+        loginPage = "/public/login.xhtml",
         errorPage = "",
         useForwardToLogin = false
 )

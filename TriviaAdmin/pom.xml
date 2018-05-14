@@ -16,14 +16,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.adminfaces</groupId>
-            <artifactId>admin-theme</artifactId>
-            <version>1.0.0-RC13</version>
-        </dependency>
-        <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.adminfaces</groupId>
+            <artifactId>admin-theme</artifactId>
+            <version>1.0.0-RC15</version>
+            <!--<classifier>without-bootstrap</classifier>-->
         </dependency>
         <dependency>
             <groupId>org.omnifaces</groupId>
@@ -44,8 +45,8 @@
 
             <exclusions>
                 <exclusion>
-                    <groupId>org.glassfish.soteria</groupId>
-                    <artifactId>javax.security.enterprise</artifactId>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

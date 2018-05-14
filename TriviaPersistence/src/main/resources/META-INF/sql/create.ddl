@@ -1,12 +1,12 @@
 CREATE TABLE IF NOT EXISTS `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
-  `description` varchar(45) NOT NULL,
-  `image` varchar(45) DEFAULT NULL,
+  `name` varchar(32) NOT NULL,
+  `description` varchar(64) NOT NULL,
+  `image` varchar(27) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `role` (
+CREATE TABLE IF NOT EXISTS `roleType` (
   `name` varchar(15) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
@@ -35,13 +35,13 @@ CREATE TABLE IF NOT EXISTS `client` (
 
 CREATE TABLE IF NOT EXISTS `question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question` varchar(45) NOT NULL,
-  `answer_first` varchar(45) NOT NULL,
-  `answer_second` varchar(45) NOT NULL,
-  `answer_third` varchar(45) NOT NULL,
-  `answer_fourth` varchar(45) NOT NULL,
+  `question` varchar(256) NOT NULL,
+  `answer_first` varchar(64) NOT NULL,
+  `answer_second` varchar(64) NOT NULL,
+  `answer_third` varchar(64) NOT NULL,
+  `answer_fourth` varchar(64) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `comment` varchar(255) DEFAULT NULL,
+  `comment` varchar(1024) DEFAULT NULL,
   `date_created` datetime NOT NULL,
   `answer_correct` tinyint(4) NOT NULL,
   `date_last_modified` datetime DEFAULT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `user_role_map` (
   PRIMARY KEY (`user_id`,`role_id`),
   KEY `role_fk_idx` (`role_id`),
   CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE ,
-  CONSTRAINT `role_fk` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `role_fk` FOREIGN KEY (`role_id`) REFERENCES `roleType` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

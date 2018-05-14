@@ -1,23 +1,69 @@
 package com.trivia.persistence.entity;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
-/**
- * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
- */
-public enum Role {
-    CONTRIBUTOR("CONTRIBUtor"),
-    PROVIDER("PROVIDER"),
-    MODERATOR("MODERATOR"),
-    ADMIN("ADMIN");
 
-    private String roleName;
 
-    Role(String roleName) {
-        this.roleName = roleName;
+@Entity
+@Table(name = "role", schema = "Trivia")
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "name")
+    private RoleType name;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users = new HashSet<>();
+
+    public Integer getId() {
+        return id;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
+    public RoleType getName() {
+        return name;
     }
+
+    public void setName(RoleType name) {
+        this.name = name;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role that = (Role) o;
+        return Objects.equals(id, that.id) &&
+                name == that.name;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name=" + name +
+                '}';
+    }
+}

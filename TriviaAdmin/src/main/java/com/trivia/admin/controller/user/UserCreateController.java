@@ -1,41 +1,53 @@
 package com.trivia.admin.controller.user;
 
+import com.trivia.admin.resources.i18n;
+import com.trivia.admin.utility.Messages;
+import com.trivia.core.exception.BusinessException;
+import com.trivia.core.service.RoleService;
 import com.trivia.core.service.UserService;
 import com.trivia.persistence.entity.Role;
-import com.trivia.persistence.entity.UserEntity;
+import com.trivia.persistence.entity.User;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityExistsException;
 import java.io.Serializable;
+import java.util.List;
+
 
 @Named
 @ViewScoped
 public class UserCreateController implements Serializable {
     private @Inject UserService userService;
-    private UserEntity userEntity;
-    private Role roleNames;
+    private @Inject RoleService roleService;
+    private transient @Inject FacesContext facesContext;
+    private User user;
+    private List<Role> rolesAvailable;
 
     @PostConstruct
     public void init() {
-        this.userEntity = new UserEntity();
-       // this.categoriesAvailable = user.getAll(); TODO:ROLES
+        this.user = new User();
+        this.rolesAvailable = roleService.getAll();
     }
 
-    public UserEntity getUserEntity() {
-        return userEntity;
+    public String create() {
+        userService.create(user);
+        Messages.addInfoGlobalFlash(i18n.get("success"), i18n.get("create.success"));
+        return facesContext.getViewRoot().getViewId() + "?faces-redirect=true";
     }
 
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
+    public User getUser() {
+        return user;
     }
 
-    public Role getRoleNames() {
-        return roleNames;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setRoleNames(Role roleNames) {
-        this.roleNames = roleNames;
+    public List<Role> getRolesAvailable() {
+        return rolesAvailable;
     }
 }

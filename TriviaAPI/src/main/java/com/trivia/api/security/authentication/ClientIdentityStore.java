@@ -3,14 +3,11 @@ package com.trivia.api.security.authentication;
 import com.trivia.core.exception.BusinessException;
 import com.trivia.core.exception.CredentialException;
 import com.trivia.core.service.ClientService;
-import com.trivia.persistence.entity.ClientEntity;
-import com.trivia.persistence.entity.UserEntity;
+import com.trivia.persistence.entity.Client;
+import com.trivia.persistence.entity.RoleType;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.PersistenceException;
-import javax.security.enterprise.credential.CallerOnlyCredential;
-import javax.security.enterprise.credential.Credential;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
@@ -22,7 +19,7 @@ public class ClientIdentityStore implements IdentityStore {
     @Inject private ClientService clientService;
 
     public CredentialValidationResult validate(UsernamePasswordCredential credential) {
-        ClientEntity client;
+        Client client;
 
         String username = credential.getCaller();
         String password = credential.getPasswordAsString();
@@ -37,6 +34,6 @@ public class ClientIdentityStore implements IdentityStore {
             return CredentialValidationResult.NOT_VALIDATED_RESULT;
         }
 
-        return new CredentialValidationResult(new ClientCallerPrincipal(client), new HashSet<>(Arrays.asList("CLIENT")));
+        return new CredentialValidationResult(new ClientCallerPrincipal(client), new HashSet<>(Arrays.asList(RoleType.Name.CLIENT, RoleType.Name.PRINCIPAL)));
     }
 }

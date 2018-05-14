@@ -1,20 +1,20 @@
 package com.trivia.admin.security.authentication;
 
-import com.trivia.persistence.entity.UserEntity;
+import com.trivia.persistence.entity.User;
 
 import javax.security.enterprise.CallerPrincipal;
 
 
 
 public class UserCallerPrincipal extends CallerPrincipal {
-    private final UserEntity user;
+    private final User user;
 
-    public UserCallerPrincipal(UserEntity user) {
+    public UserCallerPrincipal(User user) {
         super(user.getName());
         this.user = user;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 }

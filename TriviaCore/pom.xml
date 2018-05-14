@@ -15,15 +15,10 @@
     <name>Trivia Core</name>
 
     <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>org.hibernate</groupId>-->
-            <!--<artifactId>hibernate-core</artifactId>-->
-            <!--<version>5.3.0.CR1</version>-->
-        <!--</dependency>-->
         <dependency>
-            <groupId>org.glassfish.soteria</groupId>
-            <artifactId>javax.security.enterprise</artifactId>
-            <version>1.0</version>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
         </dependency>
         <dependency>
             <groupId>com.trivia</groupId>

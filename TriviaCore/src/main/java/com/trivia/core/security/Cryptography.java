@@ -1,5 +1,6 @@
 package com.trivia.core.security;
 
+import com.trivia.core.exception.SystemException;
 import com.trivia.core.utility.Generator;
 
 import javax.crypto.SecretKeyFactory;
@@ -11,9 +12,7 @@ import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-/**
- * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
- */
+
 
 // Reference implementation is Soteria.
 public final class Cryptography {
@@ -35,7 +34,7 @@ public final class Cryptography {
             return slowEquals(providedDigest, storedDigest);
         }
         catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new IllegalStateException(e);
+            throw new SystemException(e);
         }
     }
 
@@ -63,7 +62,7 @@ public final class Cryptography {
             return storedHash;
         }
         catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new IllegalStateException(e);
+            throw new SystemException(e);
         }
     }
 }

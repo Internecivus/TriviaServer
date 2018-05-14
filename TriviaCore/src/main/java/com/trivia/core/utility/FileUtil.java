@@ -8,9 +8,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-/**
- * Created by faust. Part of Trivia Project. All rights reserved. 2018
- */
+
 
 public class FileUtil {
     public final static Path SERVER_DIR = Paths.get(System.getProperty("jboss.server.base.dir"));

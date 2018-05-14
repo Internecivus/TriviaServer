@@ -15,8 +15,6 @@
     <name>Trivia API</name>
 
     <dependencies>
-        <!--This has been deprecated since Java 9, but can be added manually via -//-add-modules
-        https://stackoverflow.com/questions/43574426/how-to-resolve-java-lang-noclassdeffounderror-javax-xml-bind-jaxbexception-in-j-->
         <dependency>
             <groupId>com.trivia</groupId>
             <artifactId>TriviaPersistence</artifactId>
@@ -31,8 +29,8 @@
 
             <exclusions>
                 <exclusion>
-                    <groupId>org.glassfish.soteria</groupId>
-                    <artifactId>javax.security.enterprise</artifactId>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

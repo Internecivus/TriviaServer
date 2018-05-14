@@ -1,43 +1,46 @@
 package com.trivia.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
- */
+
+
 @Entity
 @Table(name = "category", schema = "Trivia")
-public class CategoryEntity {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(name = "id")
+    @NotNull
     private Integer id;
 
     @Basic
-    @NotNull
     @Column(name = "name")
+    @NotBlank(message = "{field.required}")
+    @Size(max = 32, message = "{field.lengthMax}")
     private String name;
 
     @Basic
-    @NotNull
     @Column(name = "description")
+    @NotBlank(message = "{field.required}")
+    @Size(max = 64, message = "{field.lengthMax}")
     private String description;
 
     @Basic
-    @NotNull
     @Column(name = "image")
+    @Size(max = 27, message = "{field.lengthMax}")
     private String image;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
-    private List<QuestionEntity> questions = new ArrayList<>();
+    private List<Question> questions = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -71,33 +74,37 @@ public class CategoryEntity {
         this.image = image;
     }
 
-    public List<QuestionEntity> getQuestions() {
-        return questions;
-    }
+//    public List<Question> getQuestions() {
+//        return questions;
+//    }
+//
+//    public void setQuestions(List<Question> questions) {
+//        this.questions = questions;
+//    }
 
-    public void setQuestions(List<QuestionEntity> questions) {
-        this.questions = questions;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        CategoryEntity that = (CategoryEntity) o;
-
-        if (id != that.id) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        return image != null ? image.equals(that.image) : that.image == null;
+        Category that = (Category) o;
+        return Objects.equals(id, that.id) &&
+            Objects.equals(name, that.name) &&
+            Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (image != null ? image.hashCode() : 0);
-        return result;
+
+        return Objects.hash(id, name, description);
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            '}';
     }
 }

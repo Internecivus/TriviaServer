@@ -1,13 +1,25 @@
 package com.trivia.persistence.dto.client;
 
 
+
+import java.util.List;
+
 public class QuestionClient {
     private String question;
     private String answerFirst;
     private String answerSecond;
     private String answerThird;
     private String answerFourth;
+    private int answerCorrect;
     private String image;
+
+    public int getAnswerCorrect() {
+        return answerCorrect;
+    }
+
+    public void setAnswerCorrect(int answerCorrect) {
+        this.answerCorrect = answerCorrect;
+    }
 
     public String getQuestion() {
         return question;

@@ -2,18 +2,31 @@ package com.trivia.persistence.entity;
 
 
 
+import com.trivia.persistence.EntityView;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import javax.xml.registry.infomodel.User;
 import java.sql.Timestamp;
 import java.util.*;
 
-/**
- * Created by faust. Part of MorbidTrivia Project. All rights reserved. 2018
- */
+
+
 @Entity
+@NamedEntityGraph(
+    name = EntityView.Name.QUESTION_DETAILS,
+    attributeNodes = {
+        @NamedAttributeNode(value = "categories"),
+        @NamedAttributeNode(value = "user")
+    }
+)
+@NamedEntityGraph(
+    name = EntityView.Name.QUESTION_LIST,
+    attributeNodes = {
+        @NamedAttributeNode(value = "user")
+    }
+)
 @Table(name = "question", schema = "Trivia")
-public class QuestionEntity {
+public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,30 +35,36 @@ public class QuestionEntity {
     @Basic
     @Column(name = "question")
     @NotBlank(message = "{field.required}")
+    @Size(max = 256, message = "{field.lengthMax}")
     private String question;
 
     @Basic
     @Column(name = "answer_first")
     @NotBlank(message = "{field.required}")
+    @Size(max = 64, message = "{field.lengthMax}")
     private String answerFirst;
 
     @Basic
     @Column(name = "answer_second")
     @NotBlank(message = "{field.required}")
+    @Size(max = 64, message = "{field.lengthMax}")
     private String answerSecond;
 
     @Basic
     @Column(name = "answer_third")
     @NotBlank(message = "{field.required}")
+    @Size(max = 64, message = "{field.lengthMax}")
     private String answerThird;
 
     @Basic
     @Column(name = "answer_fourth")
     @NotBlank(message = "{field.required}")
+    @Size(max = 64, message = "{field.lengthMax}")
     private String answerFourth;
 
     @Basic
     @Column(name = "comment")
+    @Size(max = 1024, message = "{field.lengthMax}")
     private String comment;
 
     @Basic
@@ -54,10 +73,10 @@ public class QuestionEntity {
     private Timestamp dateCreated;
 
     @Basic
-    @NotNull(message = "{field.required}")
-    @Min(value = 1, message = "{answerCorrect.between}")
-    @Max(value = 4, message = "{answerCorrect.between}")
     @Column(name = "answer_correct")
+    @NotNull(message = "{field.required}")
+    @Min(value = 1, message = "{field.valueMin}")
+    @Max(value = 4, message = "{field.valueMax}")
     private Integer answerCorrect;
 
     @Basic
@@ -66,27 +85,38 @@ public class QuestionEntity {
 
     @Basic
     @Column(name = "image")
+    @Size(max = 27, message = "{field.lengthMax}")
     private String image;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)// insertable nullable
-    private UserEntity user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
 
-    @NotEmpty
-    @ManyToMany(fetch = FetchType.EAGER)
+    @NotEmpty(message = "{collection.required}")
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name="question_category_map",
             joinColumns = {@JoinColumn(name = "question_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")}
     )
-    private List<CategoryEntity> categories = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
 
-    public UserEntity getUser() {
+    @PrePersist
+    public void preCreate() {
+        this.dateCreated = new Timestamp(System.currentTimeMillis());
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.dateLastModified = new Timestamp(System.currentTimeMillis());
+    }
+
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity userEntity) {
-        this.user = userEntity;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getId() {
@@ -177,11 +207,11 @@ public class QuestionEntity {
         this.image = image;
     }
 
-    public List<CategoryEntity> getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<CategoryEntity> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 
@@ -189,36 +219,44 @@ public class QuestionEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        QuestionEntity that = (QuestionEntity) o;
-
-        if (id != that.id) return false;
-        if (answerCorrect != that.answerCorrect) return false;
-        if (question != null ? !question.equals(that.question) : that.question != null) return false;
-        if (answerFirst != null ? !answerFirst.equals(that.answerFirst) : that.answerFirst != null) return false;
-        if (answerSecond != null ? !answerSecond.equals(that.answerSecond) : that.answerSecond != null) return false;
-        if (answerThird != null ? !answerThird.equals(that.answerThird) : that.answerThird != null) return false;
-        if (answerFourth != null ? !answerFourth.equals(that.answerFourth) : that.answerFourth != null) return false;
-        if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
-        if (dateCreated != null ? !dateCreated.equals(that.dateCreated) : that.dateCreated != null) return false;
-        if (dateLastModified != null ? !dateLastModified.equals(that.dateLastModified) : that.dateLastModified != null)
-            return false;
-        return image != null ? image.equals(that.image) : that.image == null;
+        Question question1 = (Question) o;
+        return Objects.equals(id, question1.id) &&
+            Objects.equals(question, question1.question) &&
+            Objects.equals(answerFirst, question1.answerFirst) &&
+            Objects.equals(answerSecond, question1.answerSecond) &&
+            Objects.equals(answerThird, question1.answerThird) &&
+            Objects.equals(answerFourth, question1.answerFourth) &&
+            Objects.equals(comment, question1.comment) &&
+            Objects.equals(dateCreated, question1.dateCreated) &&
+            Objects.equals(answerCorrect, question1.answerCorrect) &&
+            Objects.equals(dateLastModified, question1.dateLastModified) &&
+            Objects.equals(image, question1.image) &&
+            Objects.equals(user, question1.user) &&
+            Objects.equals(categories, question1.categories);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (question != null ? question.hashCode() : 0);
-        result = 31 * result + (answerFirst != null ? answerFirst.hashCode() : 0);
-        result = 31 * result + (answerSecond != null ? answerSecond.hashCode() : 0);
-        result = 31 * result + (answerThird != null ? answerThird.hashCode() : 0);
-        result = 31 * result + (answerFourth != null ? answerFourth.hashCode() : 0);
-        result = 31 * result + (comment != null ? comment.hashCode() : 0);
-        result = 31 * result + (dateCreated != null ? dateCreated.hashCode() : 0);
-        result = 31 * result + answerCorrect;
-        result = 31 * result + (dateLastModified != null ? dateLastModified.hashCode() : 0);
-        result = 31 * result + (image != null ? image.hashCode() : 0);
-        return result;
+
+        return Objects.hash(id, question, answerFirst, answerSecond, answerThird, answerFourth, comment, dateCreated, answerCorrect, dateLastModified, image, user, categories);
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+            "id=" + id +
+            ", question='" + question + '\'' +
+            ", answerFirst='" + answerFirst + '\'' +
+            ", answerSecond='" + answerSecond + '\'' +
+            ", answerThird='" + answerThird + '\'' +
+            ", answerFourth='" + answerFourth + '\'' +
+            ", comment='" + comment + '\'' +
+            ", dateCreated=" + dateCreated +
+            ", answerCorrect=" + answerCorrect +
+            ", dateLastModified=" + dateLastModified +
+            ", image='" + image + '\'' +
+            ", user=" + user +
+            ", categories=" + categories +
+            '}';
     }
 }

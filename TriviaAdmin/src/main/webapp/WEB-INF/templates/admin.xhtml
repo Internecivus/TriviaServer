@@ -4,39 +4,16 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://www.trivia.com/admin-ui"
                 template="/WEB-INF/templates/template.xhtml">
-    <ui:define name="title">
-    </ui:define>
-
     <ui:define name="navigation">
-        <ul id="navigation" class="list-inline list-unstyled">
-            <li class="list-inline-item">
-                <!--TODO: Create custom tag to avoid repetition. See a BalusC example.-->
-                <h:link outcome="/admin/questions/list"
-                        styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/admin/questions') ? 'active' : ''}"
-                        value="#{i18n['page.questions.name']}"/>
-            </li>
-            <li class="list-inline-item">
-                <h:link outcome="/admin/categories/list"
-                        styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/admin/categories') ? 'active' : ''}"
-                        value="#{i18n['page.categories.name']}"/>
-            </li>
-            <li class="list-inline-item">
-                <h:link outcome="/admin/users/list"
-                        styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/admin/users') ? 'active' : ''}"
-                        value="#{i18n['page.users.name']}"/>
-            </li>
-            <li class="list-inline-item">
-                <h:link outcome="/admin/clients/list"
-                        styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/admin/clients') ? 'active' : ''}"
-                        value="#{i18n['page.clients.name']}"/>
-            </li>
-            <li class="list-inline-item">
-                <h:link outcome="/admin/logs/list"
-                        styleClass="btn btn-primary #{fn:startsWith(view.viewId, '/admin/logs') ? 'active' : ''}"
-                        value="#{i18n['page.logs.name']}"/>
-            </li>
-            <li class="list-inline-item">
+        <ul id="navigation" class="list-inline list-unstyled sm-block" style="padding-bottom: 15px">
+            <li><a:link outcome="/admin/questions/list" value="#{i18n['page.questions']}" partialMatch="questions"/></li>
+            <li><a:link outcome="/admin/categories/list" value="#{i18n['page.categories']}" partialMatch="categories"/></li>
+            <li><a:link outcome="/admin/users/list" value="#{i18n['page.users']}" partialMatch="users"/></li>
+            <li><a:link outcome="/admin/logs/list" value="#{i18n['page.logs']}" partialMatch="logs"/></li>
+            <li><a:link outcome="/admin/clients/list" value="#{i18n['page.clients']}" partialMatch="clients"/></li>
+            <li>
                 <h:form>
                     <h:commandButton id="logout"
                                      value="#{i18n.logout}"
@@ -46,10 +23,12 @@
             </li>
         </ul>
 
-        <ui:insert name="subnavigation">
-        </ui:insert>
-    </ui:define>
-
-    <ui:define name="main">
+        <c:if test="#{not empty subnavigationLinks}">
+            <ul id="subnavigation" class="list-inline list-unstyled sm-block">
+                <c:forEach items="#{subnavigationLinks}" var="link">
+                    <li><a:link outcome="#{link}" value="#{i18n['action.' += link]}" btnStyle="default"/></li>
+                </c:forEach>
+            </ul>
+        </c:if>
     </ui:define>
 </ui:composition>

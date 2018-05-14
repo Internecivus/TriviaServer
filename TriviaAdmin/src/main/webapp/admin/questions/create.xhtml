@@ -5,96 +5,67 @@
                 xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/admin.xhtml">
-    <ui:define name="title">
-        <h:outputText value="#{i18n['page.question.create.name']} - #{i18n['this.name']}"/>
-    </ui:define>
-
-    <ui:define name="subnavigation">
-        <ul class="list-inline list-unstyled">
-            <li class="list-inline-item">
-                <h:button outcome="list" styleClass="btn btn-secondary" value="#{i18n['action.all']}"/>
-            </li>
-            <li class="list-inline-item">
-                <h:button outcome="create" styleClass="btn btn-secondary" value="#{i18n['action.create']}"/>
-            </li>
-        </ul>
-    </ui:define>
+    <ui:param name="subnavigationLinks" value="#{['list', 'create']}"/>
+    <ui:param name="mainSizes" value="col-sm-12 col-sm-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2"/>
 
     <ui:define name="main">
-        <p:messages id="messages" globalOnly="true" showDetail="true" closable="false">
-            <p:autoUpdate/>
-        </p:messages>
-        <p:growl id="growl" showDetail="true" sticky="true" for="growl">
-            <p:autoUpdate/>
-        </p:growl>
-
-        <p:panel styleClass="card">
-            <f:facet name="header">
-                <h5><h:outputFormat value="#{i18n['page.question.create.name']}"/></h5>
-            </f:facet>
-
-            <h:form enctype="multipart/form-data">
+        <h:form id="question_create" enctype="multipart/form-data">
+            <p:panel header="#{i18n['page.questions.create']}">
                 <div class="form-group">
-                    <p:outputLabel for="question">#{i18n['question.question']}</p:outputLabel>
-                    <h:inputText value="#{questionCreateController.questionEntity.question}"
-                                 styleClass="form-control"
-                                 id="question"/>
+                    <p:outputLabel styleClass="control-label" for="question"
+                                   value="#{i18n['question.question']}"/>
+                    <p:inputText value="#{questionCreateController.question.question}"
+                                 styleClass="form-control" id="question"/>
                     <p:message for="question"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="first_answer">#{i18n['question.answerFirst']}</p:outputLabel>
-                    <h:inputText value="#{questionCreateController.questionEntity.answerFirst}"
-                                 styleClass="form-control"
-                                 id="first_answer"/>
-                    <p:message for="first_answer"/>
+                    <p:outputLabel for="answer_first" value="#{i18n['question.answerFirst']}"/>
+                    <p:inputText value="#{questionCreateController.question.answerFirst}"
+                                 styleClass="form-control" id="answer_first"/>
+                    <p:message for="answer_first"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="second_answer">#{i18n['question.answerSecond']}</p:outputLabel>
-                    <h:inputText value="#{questionCreateController.questionEntity.answerSecond}"
-                                 styleClass="form-control"
-                                 id="second_answer"/>
-                    <p:message for="second_answer"/>
+                    <p:outputLabel for="answer_second" value="#{i18n['question.answerSecond']}"/>
+                    <p:inputText value="#{questionCreateController.question.answerSecond}"
+                                 styleClass="form-control" id="answer_second"/>
+                    <p:message for="answer_second"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="third_answer">#{i18n['question.answerThird']}</p:outputLabel>
-                    <h:inputText value="#{questionCreateController.questionEntity.answerThird}"
-                                 styleClass="form-control"
-                                 id="third_answer"/>
-                    <p:message for="third_answer"/>
+                    <p:outputLabel for="answer_third" value="#{i18n['question.answerThird']}"/>
+                    <p:inputText value="#{questionCreateController.question.answerThird}"
+                                 styleClass="form-control" id="answer_third"/>
+                    <p:message for="answer_third"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="fourth_answer">#{i18n['question.answerFourth']}</p:outputLabel>
-                    <h:inputText value="#{questionCreateController.questionEntity.answerFourth}"
-                                 styleClass="form-control"
-                                 id="fourth_answer"/>
-                    <p:message for="fourth_answer"/>
+                    <p:outputLabel for="answer_fourth" value="#{i18n['question.answerFourth']}"/>
+                    <p:inputText value="#{questionCreateController.question.answerFourth}"
+                                 styleClass="form-control" id="answer_fourth"/>
+                    <p:message for="answer_fourth"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="correct_answer">#{i18n['question.answerCorrect']}</p:outputLabel>
-                    <h:selectOneMenu value="#{questionCreateController.questionEntity.answerCorrect}"
-                                     styleClass="form-control"
-                                     id="correct_answer">
-                        <f:selectItem itemLabel="#{i18n['select.one']}" itemValue=""/>
+                    <p:outputLabel for="answer_correct" value="#{i18n['question.answerCorrect']}"/>
+                    <h:selectOneMenu value="#{questionCreateController.question.answerCorrect}"
+                                     styleClass="form-control" id="answer_correct">
+                        <f:selectItem itemLabel="#{i18n['select.one']}" noSelectionOption="true"/>
                         <f:selectItems value="#{[1,2,3,4]}"
                                        var="answerNumber"
                                        itemLabel="#{answerNumber}"
                                        itemValue="#{answerNumber}"/>
                     </h:selectOneMenu>
-                    <p:message for="correct_answer"/>
+                    <p:message for="answer_correct"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="comment">#{i18n['question.comment']}</p:outputLabel>
-                    <h:inputTextarea value="#{questionCreateController.questionEntity.comment}"
-                                     styleClass="form-control"
-                                     id="comment"/>
+                    <p:outputLabel for="comment" value="#{i18n['question.comment']}"/>
+                    <p:inputTextarea value="#{questionCreateController.question.comment}"
+                                     styleClass="form-control" id="comment"/>
                     <p:message for="comment"/>
                 </div>
                 <div class="form-group">
                     <p:graphicImage id="image" value="#{questionCreateController.uploadedImage}"/>
-                    <p:outputLabel for="image_upload">#{i18n['question.image']}</p:outputLabel>
+                    <p:outputLabel for="image_upload" value="#{i18n['question.image']}"/>
                     <p:fileUpload value="#{questionCreateController.uploadedImage}"
                                   fileLimit="1"
-                                  mode="simple"
+                                  mode="advanced"
                                   allowTypes="/(\.|\/)(gif|jpe?g|png|tiff?|w?bmp)$/"
                                   auto="true"
                                   id="image_upload"
@@ -104,32 +75,35 @@
                                   sizeLimit="500000"
                                   skinSimple="true"
                                   update="image"/>
-                    <p:messages for="image"/>
+                    <p:message for="image_upload"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="categories">#{i18n['question.categories']}</p:outputLabel>
-                    <h:selectManyCheckbox id="categories"
+                    <p:outputLabel for="categories" value="#{i18n['question.categories']}"/>
+                    <p:selectManyCheckbox id="categories"
                                           styleClass="form-control"
                                           layout="lineDirection"
-                                          value="#{questionCreateController.questionEntity.categories}">
+                                          value="#{questionCreateController.question.categories}">
+                        <f:attribute name="collectionType" value="java.util.ArrayList"/>
                         <f:selectItems value="#{questionCreateController.categoriesAvailable}"
                                        var="category"
                                        itemValue="#{category}"
                                        itemLabel="#{category.name}"/>
-                    </h:selectManyCheckbox>
+                    </p:selectManyCheckbox>
+                    <p:message for="categories"/>
                 </div>
                 <div class="form-group">
-                    <h:commandButton action="#{questionCreateController.create()}"
-                                     type="submit"
+                    <p:commandButton action="#{questionCreateController.create()}"
                                      styleClass="btn btn-primary"
+                                     type="submit"
                                      value="#{i18n['action.create']}"
-                                     validateClient="true"
-                                     ajax="false"/>
-                    <h:commandButton value="#{i18n['action.reset']}"
-                                     styleClass="btn btn-secondary"
-                                     type="reset"/>
+                                     ajax="false"
+                                     validateClient="true"/>
+                    <p:commandButton value="#{i18n['action.reset']}"
+                                     styleClass="btn btn-secondary">
+                        <p:ajax update="question_create" resetValues="true"/>
+                    </p:commandButton>
                 </div>
-            </h:form>
-        </p:panel>
+            </p:panel>
+        </h:form>
     </ui:define>
 </ui:composition>

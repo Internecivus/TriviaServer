@@ -2,18 +2,15 @@ package com.trivia.persistence.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "client", schema = "Trivia")
-public class ClientEntity implements Serializable {
+public class Client implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -34,15 +31,15 @@ public class ClientEntity implements Serializable {
     @Column(name = "date_created")
     private Timestamp dateCreated;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)// insertable nullable
-    private UserEntity user;
+    private User user;
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -82,7 +79,7 @@ public class ClientEntity implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClientEntity that = (ClientEntity) o;
+        Client that = (Client) o;
         return id == that.id &&
                 Objects.equals(dateCreated, that.dateCreated);
     }

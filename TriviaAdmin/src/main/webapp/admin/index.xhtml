@@ -5,14 +5,10 @@
                 xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/admin.xhtml">
-   <ui:define name="title">
-      <h:outputText value="#{i18n['this.admin']} - #{i18n['this.name']}"/>
-   </ui:define>
-
    <ui:define name="main">
       <div class="text-center">
          <h3>
-            <h:outputText value="#{i18n['this.greeting']}, #{viewController.userName}!"/>
+            <h:outputText value="#{i18n['greeting']}, #{viewController.userName}!"/>
          </h3>
       </div>
    </ui:define>
