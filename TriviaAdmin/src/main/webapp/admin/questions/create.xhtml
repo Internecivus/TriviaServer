@@ -83,7 +83,7 @@
                                           styleClass="form-control"
                                           layout="lineDirection"
                                           value="#{questionCreateController.question.categories}">
-                        <f:attribute name="collectionType" value="java.util.ArrayList"/>
+                        <f:attribute name="collectionType" value="java.util.Set"/>
                         <f:selectItems value="#{questionCreateController.categoriesAvailable}"
                                        var="category"
                                        itemValue="#{category}"

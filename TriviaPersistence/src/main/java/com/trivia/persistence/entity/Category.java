@@ -6,10 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
+import java.util.*;
 
 
 @Entity
@@ -40,7 +37,7 @@ public class Category {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
-    private List<Question> questions = new ArrayList<>();
+    private Set<Question> questions = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -74,7 +71,11 @@ public class Category {
         this.image = image;
     }
 
-//    public List<Question> getQuestions() {
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    //    public List<Question> getQuestions() {
 //        return questions;
 //    }
 //

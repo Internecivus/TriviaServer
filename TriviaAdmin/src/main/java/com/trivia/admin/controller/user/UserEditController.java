@@ -9,6 +9,7 @@ import com.trivia.core.service.UserService;
 import com.trivia.persistence.EntityView;
 import com.trivia.persistence.entity.Role;
 import com.trivia.persistence.entity.User;
+import org.primefaces.PrimeFaces;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 
 @Named
@@ -28,13 +30,13 @@ public class UserEditController implements Serializable {
     private @Inject RoleService roleService;
     private transient @Inject FacesContext facesContext;
     private User user;
-    private List<Role> rolesAvailable;
+    private Set<Role> rolesAvailable;
 
     @PostConstruct
     public void init() {
         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         int id = Integer.valueOf(request.getParameter("id"));
-        this.user = userService.findById(id, EntityView.QuestionDetails);
+        this.user = userService.findById(id, EntityView.UserDetails);
         this.rolesAvailable = roleService.getAll();
     }
 
@@ -47,6 +49,7 @@ public class UserEditController implements Serializable {
     public void update() {
         userService.update(user);
         Messages.addInfoGlobal(i18n.get("success"), i18n.get("update.success"));
+        // TODO: Scroll to top
     }
 
     public User getUser() {
@@ -57,7 +60,7 @@ public class UserEditController implements Serializable {
         this.user = user;
     }
 
-    public List<Role> getRolesAvailable() {
+    public Set<Role> getRolesAvailable() {
         return rolesAvailable;
     }
 }

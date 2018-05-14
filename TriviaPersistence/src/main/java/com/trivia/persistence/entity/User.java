@@ -62,7 +62,7 @@ public class User implements Serializable {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
-    private List<Question> questions = new ArrayList<>();
+    private Set<Question> questions = new HashSet<>();
 
     @PrePersist
     public void preCreate() {
@@ -70,7 +70,7 @@ public class User implements Serializable {
     }
 
 
-    public List<Question> getQuestions() {
+    public Set<Question> getQuestions() {
         return questions;
     }
 
@@ -124,6 +124,10 @@ public class User implements Serializable {
 
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public Set<String> getRolesAsStrings() {

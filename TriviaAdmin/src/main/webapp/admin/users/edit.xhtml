@@ -19,40 +19,16 @@
                     <p:message for="question"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="answer_first" value="#{i18n['question.answerFirst']}"/>
-                    <p:inputText value="#{questionEditController.question.answerFirst}"
-                                 styleClass="form-control" id="answer_first"/>
-                    <p:message for="answer_first"/>
-                </div>
-                <div class="form-group">
                     <p:outputLabel for="answer_second" value="#{i18n['question.answerSecond']}"/>
                     <p:inputText value="#{questionEditController.question.answerSecond}"
                                  styleClass="form-control" id="answer_second"/>
                     <p:message for="answer_second"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="answer_third" value="#{i18n['question.answerThird']}"/>
-                    <p:inputText value="#{questionEditController.question.answerThird}"
-                                 styleClass="form-control" id="answer_third"/>
-                    <p:message for="answer_third"/>
-                </div>
-                <div class="form-group">
                     <p:outputLabel for="answer_fourth" value="#{i18n['question.answerFourth']}"/>
                     <p:inputText value="#{questionEditController.question.answerFourth}"
                                  styleClass="form-control" id="answer_fourth"/>
                     <p:message for="answer_fourth"/>
-                </div>
-                <div class="form-group">
-                    <p:outputLabel for="answer_correct" value="#{i18n['question.answerCorrect']}"/>
-                    <h:selectOneMenu value="#{questionEditController.question.answerCorrect}"
-                                     styleClass="form-control" id="answer_correct">
-                        <f:selectItem itemLabel="#{i18n['select.one']}" noSelectionOption="true"/>
-                        <f:selectItems value="#{[1,2,3,4]}"
-                                       var="answerNumber"
-                                       itemLabel="#{answerNumber}"
-                                       itemValue="#{answerNumber}"/>
-                    </h:selectOneMenu>
-                    <p:message for="answer_correct"/>
                 </div>
                 <div class="form-group">
                     <p:outputLabel for="comment" value="#{i18n['question.comment']}"/>
@@ -66,12 +42,13 @@
                                           styleClass="form-control"
                                           layout="lineDirection"
                                           value="#{questionEditController.question.categories}">
-                        <f:attribute name="collectionType" value="java.util.ArrayList"/>
+                        <f:attribute name="collectionType" value="java.util.Set"/>
                         <f:selectItems value="#{questionEditController.categoriesAvailable}"
                                        var="category"
                                        itemValue="#{category}"
                                        itemLabel="#{category.name}"/>
                     </p:selectManyCheckbox>
+                    <p:message for="roles"/>
                 </div>
                 <div class="form-group">
                     <div class="btn-group btn-group-toggle">
@@ -82,6 +59,7 @@
                         <p:commandButton value="#{i18n['action.delete']}"
                                          styleClass="btn btn-danger"
                                          update="user_edit"
+                                         immediate="true"
                                          validateClient="false"
                                          action="#{userEditController.delete()}">
                             <p:confirm header="#{i18n['delete.confirmation.header']}"

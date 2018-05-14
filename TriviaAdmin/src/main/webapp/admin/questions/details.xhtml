@@ -11,11 +11,19 @@
     <ui:define name="main">
         <p:panel header="#{i18n['page.questions.create']}">
             <div class="form-group">
+                <p:outputLabel for="id" value="#{i18n['question.id']}"/>
+                <p><h:outputText value="#{questionDetailsController.question.id}" id="id"/></p>
+            </div>
+            <div class="form-group">
                 <p:outputLabel styleClass="form-label" for="date_created"
                                value="#{i18n['question.dateCreated']}"/>
                 <p><h:outputText id="date_created" value="#{questionDetailsController.question.dateCreated}">
                     <f:convertDateTime type="date" pattern="dd. MMMM yyyy HH:mm"/>
                 </h:outputText></p>
+            </div>
+            <div class="form-group">
+                <p:outputLabel for="user" value="#{i18n['question.user']}"/>
+                <p><h:outputText value="#{questionDetailsController.question.user.name}" id="user"/></p>
             </div>
             <div class="form-group">
                 <p:outputLabel for="question" value="#{i18n['question.question']}"/>

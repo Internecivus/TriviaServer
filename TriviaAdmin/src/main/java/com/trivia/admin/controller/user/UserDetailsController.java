@@ -1,6 +1,7 @@
 package com.trivia.admin.controller.user;
 
 import com.trivia.core.service.UserService;
+import com.trivia.persistence.EntityView;
 import com.trivia.persistence.entity.User;
 
 import javax.annotation.PostConstruct;
@@ -22,7 +23,7 @@ public class UserDetailsController implements Serializable {
     public void init() {
         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         int id = Integer.valueOf(request.getParameter("id"));
-        this.user = userService.findById(id);
+        this.user = userService.findById(id, EntityView.UserDetails);
     }
 
     public User getUser() {

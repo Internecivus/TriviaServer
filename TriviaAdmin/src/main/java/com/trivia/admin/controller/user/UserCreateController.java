@@ -16,6 +16,7 @@ import javax.inject.Named;
 import javax.persistence.EntityExistsException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 
 @Named
@@ -25,7 +26,7 @@ public class UserCreateController implements Serializable {
     private @Inject RoleService roleService;
     private transient @Inject FacesContext facesContext;
     private User user;
-    private List<Role> rolesAvailable;
+    private Set<Role> rolesAvailable;
 
     @PostConstruct
     public void init() {
@@ -47,7 +48,7 @@ public class UserCreateController implements Serializable {
         this.user = user;
     }
 
-    public List<Role> getRolesAvailable() {
+    public Set<Role> getRolesAvailable() {
         return rolesAvailable;
     }
 }

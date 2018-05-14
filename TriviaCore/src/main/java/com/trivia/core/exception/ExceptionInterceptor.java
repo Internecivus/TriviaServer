@@ -55,7 +55,7 @@ public class ExceptionInterceptor implements Serializable {
         catch (BusinessException e) {
             throw e;
         }
-        // We don't want to propagate any other exceptions to our modules, as this is a security issue.
+        // We don't want to propagate any other exceptions, as this could be a security issue.
         catch (Exception e) {
             e.printStackTrace();
             throw new SystemException();

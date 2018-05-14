@@ -83,7 +83,7 @@
                                           styleClass="form-control"
                                           layout="lineDirection"
                                           value="#{questionEditController.question.categories}">
-                        <f:attribute name="collectionType" value="java.util.ArrayList"/>
+                        <f:attribute name="collectionType" value="java.util.Set"/>
                         <f:selectItems value="#{questionEditController.categoriesAvailable}"
                                        var="category"
                                        itemValue="#{category}"
@@ -100,6 +100,7 @@
                         <p:commandButton value="#{i18n['action.delete']}"
                                          styleClass="btn btn-danger"
                                          update="question_edit"
+                                         immediate="true"
                                          validateClient="false"
                                          action="#{questionEditController.delete()}">
                             <p:confirm header="#{i18n['delete.confirmation.header']}"

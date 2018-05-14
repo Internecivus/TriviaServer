@@ -21,6 +21,8 @@ public final class Cryptography {
     public final static int API_KEY_LENGTH = 32;
     private final static String HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
 
+    private Cryptography(){}
+
     public static boolean validateMessage(String providedMessage, String storedHash) {
         String[] parts = storedHash.split(":");
         int iterations = Integer.parseInt(parts[0]);

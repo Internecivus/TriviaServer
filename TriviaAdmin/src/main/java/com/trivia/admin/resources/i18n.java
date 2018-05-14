@@ -10,7 +10,7 @@ public class i18n {
 
     /**
      * It's unfortunate that IntelliJ does not autofetch the key-value pairs if we use this method.
-     * If we want this, we can a direct PropertyResourceBundle injection and use the getString() method directly.
+     * If we want this, we can inject PropertyResourceBundle directly and use the getString() method.
      * */
     public static String get(String key) {
         ResourceBundle bundle = PropertyResourceBundle.getBundle("i18n");

@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -19,7 +21,7 @@ public class CategoriesEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCategories() {
-        List<CategoryClient> categories = categoryService.toDto(categoryService.getAll());
+        List<CategoryClient> categories = new ArrayList<>(categoryService.toDto(categoryService.getAll()));
         return Response.status(Response.Status.OK).entity(categories).build();
     }
 }

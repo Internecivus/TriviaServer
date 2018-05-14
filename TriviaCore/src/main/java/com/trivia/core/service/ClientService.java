@@ -18,6 +18,7 @@ import javax.persistence.PersistenceContext;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 
 @Stateless
@@ -31,7 +32,7 @@ public class ClientService extends Service<Client> {
 
     public ClientService() {
         super.DEFAULT_SORT_COLUMN = Client_.dateCreated;
-        super.SEARCHABLE_COLUMNS = SORTABLE_COLUMNS = new ArrayList<>(Arrays.asList(Client_.dateCreated, Client_.id));
+        super.SEARCHABLE_COLUMNS = SORTABLE_COLUMNS = new HashSet<>(Arrays.asList(Client_.dateCreated, Client_.id));
     }
 
     @RolesAllowed(RoleType.Name.PROVIDER)

@@ -10,7 +10,9 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Stateless
 // We are not inheriting from Service as we do NOT want all the methods.
@@ -22,11 +24,11 @@ public class RoleService {
 
     public RoleService() {}
 
-    public List<Role> getAll() {
-        List<Role> roleList;
-        TypedQuery<Role> query = em.createQuery("SELECT c from Role r", Role.class);
+    public Set<Role> getAll() {
+        Set<Role> roleList;
+        TypedQuery<Role> query = em.createQuery("SELECT r from Role r", Role.class);
 
-        roleList = query.getResultList();
+        roleList = new HashSet<>(query.getResultList());
 
         return roleList;
     }
