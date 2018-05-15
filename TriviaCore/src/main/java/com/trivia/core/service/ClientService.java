@@ -50,7 +50,6 @@ public class ClientService extends Service<Client> {
 
         newClient.setApiKey(apiKey);
         newClient.setApiSecret(Cryptography.hashMessage(apiSecret));
-        newClient.setDateCreated(new Timestamp(System.currentTimeMillis()));
         newClient.setUser(user);
 
         super.create(newClient);

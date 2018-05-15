@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/admin.xhtml">
+    <ui:param name="subnavigationLinks" value="#{['list', 'create']}"/>
+    <ui:param name="mainSizes" value="col-sm-12 col-sm-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2"/>
+
+    <ui:define name="main">
+        <h:form id="client_create" enctype="multipart/form-data">
+            <p:panel header="#{i18n['page.clients.create']}">
+                <div class="form-group">
+                    <p:outputLabel for="provider" value="#{i18n['user.providerKey']}"/>
+                    <p:inputText value="#{clientCreateController.client.user.providerKey}"
+                                placeholder="#{i18n['client.create.defaultProvider']}"
+                                styleClass="form-control" id="provider"/>
+                    <p:message for="provider"/>
+                </div>
+                <div class="form-group">
+                    <p:commandButton action="#{clientCreateController.create()}"
+                                     styleClass="btn btn-primary"
+                                     type="submit"
+                                     value="#{i18n['action.create']}"
+                                     ajax="false"
+                                     validateClient="true"/>
+                    <p:commandButton value="#{i18n['action.reset']}"
+                                     styleClass="btn btn-secondary">
+                        <p:ajax update="client_create" resetValues="true"/>
+                    </p:commandButton>
+                </div>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

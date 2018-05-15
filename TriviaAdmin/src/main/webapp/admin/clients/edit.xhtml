@@ -9,56 +9,42 @@
     <ui:param name="mainSizes" value="col-sm-12 col-sm-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2"/>
 
     <ui:define name="main">
-        <h:form id="user_edit" enctype="multipart/form-data">
-            <p:panel header="#{i18n['page.users.edit']}">
+        <h:form id="client_edit" enctype="multipart/form-data">
+            <p:panel header="#{i18n['page.clients.edit']}">
                 <div class="form-group">
                     <p:outputLabel styleClass="control-label" for="name"
-                                   value="#{i18n['user.name']}"/>
-                    <p:inputText value="#{userEditController.user.name}"
+                                   value="#{i18n['client.name']}"/>
+                    <p:inputText value="#{clientEditController.client.name}"
                                  styleClass="form-control" id="name"/>
                     <p:message for="name"/>
                 </div>
                 <div class="form-group">
                     <p:outputLabel for="password" value="#{i18n['auth.newPassword']}"/>
-                    <p:inputText value="#{userEditController.newPassword}"
+                    <p:inputText value="#{clientEditController.newPassword}"
                                  styleClass="form-control" id="password">
                         <f:validateLength minimum="6" maximum="20"/>
                     </p:inputText>
                     <p:message for="password"/>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="roles" value="#{i18n['user.roles']}"/>
-                    <p:selectManyCheckbox id="roles"
-                                          styleClass="form-control"
-                                          layout="lineDirection"
-                                          value="#{userEditController.user.roles}">
-                        <f:attribute name="collectionType" value="java.util.HashSet"/>
-                        <f:selectItems value="#{userEditController.rolesAvailable}"
-                                       var="role"
-                                       itemValue="#{role}"
-                                       itemLabel="#{role.name}"/>
-                    </p:selectManyCheckbox>
-                    <p:message for="roles"/>
-                </div>
-                <div class="form-group">
                     <div class="btn-group btn-group-toggle">
                         <p:commandButton value="#{i18n['action.reset']}"
                                          styleClass="btn btn-secondary">
-                            <p:ajax update="user_edit" resetValues="true"/>
+                            <p:ajax update="client_edit" resetValues="true"/>
                         </p:commandButton>
                         <p:commandButton value="#{i18n['action.delete']}"
                                          styleClass="btn btn-danger"
-                                         update="user_edit"
+                                         update="client_edit"
                                          immediate="true"
                                          validateClient="false"
-                                         action="#{userEditController.delete()}">
+                                         action="#{clientEditController.delete()}">
                             <p:confirm header="#{i18n['delete.confirmation.header']}"
                                        message="#{i18n['delete.confirmation.message']}"/>
                         </p:commandButton>
-                        <p:commandButton action="#{userEditController.update()}"
+                        <p:commandButton action="#{clientEditController.update()}"
                                          type="submit"
                                          value="#{i18n['action.save']}"
-                                         update="user_edit"
+                                         update="client_edit"
                                          validateClient="true"
                                          styleClass="btn btn-primary">
                             <p:confirm header="#{i18n['update.confirmation.header']}"

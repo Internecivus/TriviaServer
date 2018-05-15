@@ -1,5 +1,7 @@
 package com.trivia.persistence.entity;
 
+import com.trivia.persistence.EntityView;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -8,7 +10,13 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 
+
+
 @Entity
+@NamedEntityGraph(
+    name = EntityView.Name.CLIENT_DETAILS,
+    attributeNodes = @NamedAttributeNode(value = "user")
+)
 @Table(name = "client", schema = "Trivia")
 public class Client implements Serializable {
     @Id
@@ -34,6 +42,11 @@ public class Client implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)// insertable nullable
     private User user;
+
+    @PrePersist
+    public void preCreate() {
+        this.dateCreated = new Timestamp(System.currentTimeMillis());
+    }
 
     public User getUser() {
         return user;
@@ -79,14 +92,28 @@ public class Client implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Client that = (Client) o;
-        return id == that.id &&
-                Objects.equals(dateCreated, that.dateCreated);
+        Client client = (Client) o;
+        return Objects.equals(id, client.id) &&
+            Objects.equals(apiKey, client.apiKey) &&
+            Objects.equals(apiSecret, client.apiSecret) &&
+            Objects.equals(dateCreated, client.dateCreated) &&
+            Objects.equals(user, client.user);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, dateCreated);
+        return Objects.hash(id, apiKey, apiSecret, dateCreated, user);
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+            "id=" + id +
+            ", apiKey='" + apiKey + '\'' +
+            ", apiSecret='" + apiSecret + '\'' +
+            ", dateCreated=" + dateCreated +
+            ", user=" + user +
+            '}';
     }
 }

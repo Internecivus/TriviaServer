@@ -21,6 +21,15 @@
                     <f:convertDateTime type="date" pattern="dd. MMMM yyyy HH:mm"/>
                 </h:outputText></p>
             </div>
+            <p:panelGrid rendered="#{not empty questionDetailsController.question.dateLastModified}">
+                <div class="form-group">
+                    <p:outputLabel styleClass="form-label" for="date_last_modified"
+                                   value="#{i18n['question.dateLastModified']}"/>
+                    <p><h:outputText id="date_last_modified" value="#{questionDetailsController.question.dateLastModified}">
+                        <f:convertDateTime type="date" pattern="dd. MMMM yyyy HH:mm"/>
+                    </h:outputText></p>
+                </div>
+            </p:panelGrid>
             <div class="form-group">
                 <p:outputLabel for="user" value="#{i18n['question.user']}"/>
                 <p><h:outputText value="#{questionDetailsController.question.user.name}" id="user"/></p>
@@ -49,27 +58,23 @@
                 <p:outputLabel for="answer_correct" value="#{i18n['question.answerCorrect']}"/>
                 <p><h:outputText value="#{questionDetailsController.question.answerCorrect}" id="answer_correct"/></p>
             </div>
-            <div class="form-group">
-                <p:outputLabel for="comment" value="#{i18n['question.comment']}"/>
-                <p><h:outputText value="#{questionDetailsController.question.comment}" id="comment"/></p>
-            </div>
-            <div class="form-group">
-                <p:outputLabel for="image" value="#{i18n['question.image']}"/>
-
-                <c:choose>
-                    <c:when test="#{not empty questionDetailsController.question.image}">
-                        <p:graphicImage id="image" value="/images/#{questionDetailsController.question.image}}"/>
-                    </c:when>
-                    <c:otherwise>
-                        <p><h:outputText value="None" id="image"/></p>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+            <p:panelGrid rendered="#{not empty questionDetailsController.question.comment}">
+                <div class="form-group">
+                    <p:outputLabel for="comment" value="#{i18n['question.comment']}"/>
+                    <p><h:outputText value="#{questionDetailsController.question.comment}" id="comment"/></p>
+                </div>
+            </p:panelGrid>
+            <p:panelGrid rendered="#{not empty questionDetailsController.question.image}">
+                <div class="form-group">
+                    <p:outputLabel for="image" value="#{i18n['question.image']}"/>
+                    <p:graphicImage id="image" value="/images/#{questionDetailsController.question.image}}"/>
+                </div>
+            </p:panelGrid>
             <div class="form-group">
                 <p:outputLabel value="#{i18n['question.categories']}"/>
-                <div id="categories">
+                <div>
                     <ui:repeat value="#{questionDetailsController.question.categories}" var="category">
-                        <h:outputText style="padding: 5px;" value="#{category.name}"/>
+                        <div class="tag"><h:outputText value="#{category.name}"/></div>
                     </ui:repeat>
                 </div>
             </div>

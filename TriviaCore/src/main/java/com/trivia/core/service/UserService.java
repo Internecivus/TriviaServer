@@ -2,6 +2,7 @@ package com.trivia.core.service;
 
 import com.trivia.core.exception.*;
 import com.trivia.core.exception.EntityExistsException;
+import com.trivia.core.exception.EntityNotFoundException;
 import com.trivia.core.security.Cryptography;
 import com.trivia.core.utility.Generator;
 import com.trivia.persistence.EntityView;
@@ -19,8 +20,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
+/**
+ * There are many extra User selects and DRY violations going on here, and in the future, a custom RolesAllowed
+ * annotation (or figuring out how to get the CallerPrincipal entities) and special entity graphs could fix this.
+ */
 @Stateless
-@RolesAllowed({ RoleType.Name.MODERATOR, RoleType.Name.ADMIN })
+@RolesAllowed({ RoleType.Name.PRINCIPAL })
 public class UserService extends Service<User> {
     @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
@@ -54,28 +59,36 @@ public class UserService extends Service<User> {
     }
 
     @RolesAllowed(RoleType.Name.MODERATOR)
-    private User promoteToProvider(User provider) {
-        if (provider.hasRole(RoleType.PROVIDER)) throw new EntityExistsException(); // User already is a provider.
+    private User promoteToProvider(User user) {
+        // User already is a provider.
+        if (user.getProviderKey() != null) throw new EntityNotFoundException();
 
         String providerKey = Generator.generateSecureRandomString(Cryptography.API_KEY_LENGTH);
         String providerSecret = Generator.generateSecureRandomString(Cryptography.API_KEY_LENGTH);
 
-        provider.setProviderKey(providerKey);
-        provider.setProviderSecret(Cryptography.hashMessage(providerSecret));
+        user.setProviderKey(providerKey);
+        user.setProviderSecret(Cryptography.hashMessage(providerSecret));
 
-        return provider;
+        return user;
     }
 
     @Override
-    @RolesAllowed(RoleType.Name.ADMIN)
+    @PermitAll
     public void update(User updatedUser) {
+        User oldUser = findById(updatedUser.getId());
+
         // We check if we only just now added the role of Provider. Hacky, but does the trick.
-        if (updatedUser.hasRole(RoleType.PROVIDER) && !findById(updatedUser.getId()).hasRole(RoleType.PROVIDER)) {
+        if (updatedUser.hasRole(RoleType.PROVIDER) && !oldUser.hasRole(RoleType.PROVIDER)) {
             updatedUser = promoteToProvider(updatedUser);
         }
 
+        // Check if we need to update the password too.
+        if (!oldUser.getPassword().equals(updatedUser.getPassword())) updatePassword(updatedUser);
+
+        em.merge(updatedUser);
+        em.flush();
+
         logger.info("User id: {} was UPDATED by user: {}", updatedUser.getId(), sessionContext.getCallerPrincipal().getName());
-        super.update(updatedUser);
     }
 
     @PermitAll
@@ -89,10 +102,21 @@ public class UserService extends Service<User> {
         }
     }
 
+    @PermitAll
+    private void updatePassword(User user) {
+        if (!user.hasRole(RoleType.ADMIN)) {
+            User callingUser = getByField(User_.name, sessionContext.getCallerPrincipal().getName());
+            if (!callingUser.getId().equals(user.getId())) throw new NotAuthorizedException();
+        }
+
+        user.setPassword(Cryptography.hashMessage(user.getPassword()));
+    }
+
     @Override
     @RolesAllowed({RoleType.Name.MODERATOR, RoleType.Name.ADMIN}) // Because an admin who is not a moderator is still authorized to add roles.
     public User create(User newUser) {
         if (getByField(User_.name, newUser.getName()) != null) throw new EntityExistsException();
+
         if (newUser.hasRole(RoleType.PROVIDER)) {
             newUser = promoteToProvider(newUser);
         }

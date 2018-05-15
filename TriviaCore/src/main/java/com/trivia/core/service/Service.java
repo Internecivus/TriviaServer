@@ -200,7 +200,8 @@ public abstract class Service<T> implements Repository<T> {
         return entities;
     }
 
-    // TODO: This method is kinda messy.
+    // TODO: This method is kinda messy, for example it does not alert us if the searchable columns
+    // are not for a supported type.
     @SuppressWarnings("unchecked")
     protected Predicate getFilter(String searchString, CriteriaBuilder builder, Root<T> root) {
         if (searchString == null || searchString.trim().length() < 1) {

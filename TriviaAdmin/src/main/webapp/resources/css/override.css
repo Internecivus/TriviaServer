@@ -33,3 +33,13 @@
         width: 100% !important;
     }
 }
+
+.tag {
+    display: inline-block;
+    padding: 3px 5px 3px 5px;
+    border-radius: 5px;
+    cursor: default;
+    background-color: #3c8dbc !important;
+    border-color: #367fa9 !important;
+    color: white !important;
+}

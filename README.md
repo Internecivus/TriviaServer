@@ -2,7 +2,8 @@
 TODO: Show image, update image, thumbnail image, remove image
 
 // Admin
-TODO: Users, clients, categories CRUD
+TODO: Clients, Categories CRUD
+TODO: Show providerSecret on edit/create
 
 // Api
 TODO: Fix REST API methods
