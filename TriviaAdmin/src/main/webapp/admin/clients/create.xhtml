@@ -68,10 +68,10 @@
                 </c:choose>
             </p:panel>
 
-            <p:dialog id="secretDialog" widgetVar="secretDialog" header="#{i18n['warning']}" resizable="false" dynamic="true">
-                <h:outputText value="#{i18n['auth.showApiSecret']}">
-                    <f:param value="#{clientCreateController.}"/>
-                </h:outputText>
+            <p:dialog id="secretDialog" widgetVar="secretDialog" width="500px" header="#{i18n['warning']}" resizable="false" dynamic="true">
+                <h:outputFormat value="#{i18n['auth.showApiSecret']}">
+                    <f:param value="#{clientCreateController.clientSecret}"/>
+                </h:outputFormat>
             </p:dialog>
         </h:form>
     </ui:define>

@@ -28,6 +28,7 @@ public class ClientEditController implements Serializable {
     private @Inject ClientService clientService;
     private transient @Inject FacesContext facesContext;
     private Client client;
+    private String clientSecret;
 
     @PostConstruct
     public void init() {
@@ -37,14 +38,19 @@ public class ClientEditController implements Serializable {
     }
 
     public void generateNewAPISecret() {
-        clientService.generateNewAPISecret(client);
+        clientSecret = clientService.generateNewAPISecret(client);
         PrimeFaces.current().scrollTo("messages");
+        PrimeFaces.current().executeScript("PF('secretDialog').show();");
     }
 
     public void delete() throws IOException {
         clientService.deleteById(client.getId());
         Messages.addWarnFlashFor("growl", i18n.get("success"), i18n.get("delete.success"));
         facesContext.getExternalContext().redirect("/admin/clients/list.xhtml");
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
     }
 
     public Client getClient() {

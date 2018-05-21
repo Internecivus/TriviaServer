@@ -34,6 +34,7 @@ public class ClientCreateController implements Serializable {
     private transient @Inject FacesContext facesContext;
     private String providerKey;
     private String providerSecret;
+    private String clientSecret;
 
     @PostConstruct
     public void init() {}
@@ -41,7 +42,8 @@ public class ClientCreateController implements Serializable {
     public void registerForCurrent() {
         Client client = clientService.registerForCurrent();
         Messages.addInfoGlobal(i18n.get("success"), i18n.get("create.success"));
-        showSecretDialog(client.getApiSecret());
+        this.clientSecret = client.getApiSecret();
+        PrimeFaces.current().executeScript("PF('secretDialog').show();");
     }
 
     public void registerFor() {
@@ -55,7 +57,9 @@ public class ClientCreateController implements Serializable {
                 client = clientService.registerFor(providerKey, providerSecret);
             }
             Messages.addInfoGlobal(i18n.get("success"), i18n.get("create.success"));
-            showSecretDialog(client.getApiSecret());
+            this.clientSecret = client.getApiSecret();
+            PrimeFaces.current().executeScript("PF('secretDialog').show();");
+
         }
         catch (NotAuthorizedException e) {
             Messages.addErrorGlobal(i18n.get("failure"),i18n.get("login.failure"));
@@ -63,13 +67,9 @@ public class ClientCreateController implements Serializable {
         }
     }
 
-    private void showSecretDialog(String secret) {
-        PrimeFaces.current().dialog().openDynamic();
+    public String getClientSecret() {
+        return clientSecret;
     }
-
-    //    p:dialog id="secretDialog" widgetVar="secretDialog" header="#{i18n['warning']}" resizable="false" dynamic="true">
-//                <h:outputText value="#{i18n['auth.showApiSecret']}"/>
-//            </p:dialog>
 
     public String getProviderKey() {
         return providerKey;

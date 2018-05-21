@@ -64,7 +64,7 @@ public class ClientService extends Service<Client> {
         return prePersistClient;
     }
 
-    public Client generateNewAPISecret(Client client) {
+    public String generateNewAPISecret(Client client) {
         if (sessionContext.isCallerInRole(RoleType.Name.PROVIDER)) {
             User user = userService.getByField(User_.name, sessionContext.getCallerPrincipal().getName());
             if (!user.isOwnerOf(client)) throw new NotAuthorizedException();
@@ -72,8 +72,9 @@ public class ClientService extends Service<Client> {
 
         String apiSecret = Generator.generateSecureRandomString(Cryptography.API_KEY_LENGTH);
         client.setApiSecret(Cryptography.hashMessage(apiSecret));
+        super.update(client);
 
-        return client;
+        return apiSecret;
     }
 
     // Register for the current user if they are a provider.
