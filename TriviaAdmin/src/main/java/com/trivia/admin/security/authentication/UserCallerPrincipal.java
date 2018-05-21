@@ -5,7 +5,6 @@ import com.trivia.persistence.entity.User;
 import javax.security.enterprise.CallerPrincipal;
 
 
-
 public class UserCallerPrincipal extends CallerPrincipal {
     private final User user;
 

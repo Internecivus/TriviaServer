@@ -9,6 +9,7 @@ import com.trivia.persistence.EntityView;
 import com.trivia.persistence.entity.Client;
 import com.trivia.persistence.entity.Role;
 import com.trivia.persistence.entity.User;
+import org.primefaces.PrimeFaces;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -35,16 +36,15 @@ public class ClientEditController implements Serializable {
         this.client = clientService.findById(id, EntityView.ClientDetails);
     }
 
-    public void delete() throws IOException {
-        clientService.deleteById(client.getId());
-        Messages.addInfoFlashFor("growl", i18n.get("success"), i18n.get("delete.success"));
-        facesContext.getExternalContext().redirect("/admin/users/list.xhtml");
+    public void generateNewAPISecret() {
+        clientService.generateNewAPISecret(client);
+        PrimeFaces.current().scrollTo("messages");
     }
 
-    public void update() {
-        clientService.update(client);
-        Messages.addInfoGlobal(i18n.get("success"), i18n.get("update.success"));
-        // TODO: Scroll to top
+    public void delete() throws IOException {
+        clientService.deleteById(client.getId());
+        Messages.addWarnFlashFor("growl", i18n.get("success"), i18n.get("delete.success"));
+        facesContext.getExternalContext().redirect("/admin/clients/list.xhtml");
     }
 
     public Client getClient() {

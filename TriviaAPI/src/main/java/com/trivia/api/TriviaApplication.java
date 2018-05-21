@@ -2,7 +2,6 @@ package com.trivia.api;
 
 import com.trivia.api.api.v1.CategoriesEndpoint;
 import com.trivia.api.api.v1.ClientEndpoint;
-import com.trivia.api.api.v1.QuestionEndpoint;
 import com.trivia.api.api.v1.QuestionsEndpoint;
 import com.trivia.api.exception.BusinessExceptionMapper;
 import com.trivia.api.exception.ConstraintViolationExceptionMapper;
@@ -19,7 +18,6 @@ public class TriviaApplication extends Application {
     private Set<Object> singletons = new HashSet<>();
 
     public TriviaApplication() {
-        classes.add(QuestionEndpoint.class);
         classes.add(QuestionsEndpoint.class);
         classes.add(CategoriesEndpoint.class);
         classes.add(ClientEndpoint.class);

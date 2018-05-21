@@ -4,6 +4,8 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:a="http://www.trivia.com/admin-ui"
                 template="/WEB-INF/templates/admin.xhtml">
     <ui:param name="subnavigationLinks" value="#{['list', 'create']}"/>
     <ui:param name="mainSizes" value="col-sm-12 col-sm-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2"/>
@@ -11,6 +13,10 @@
     <ui:define name="main">
         <h:form id="question_edit" enctype="multipart/form-data">
             <p:panel header="#{i18n['page.questions.edit']}">
+                <div class="form-group">
+                    <p:outputLabel for="id" value="#{i18n['question.id']}"/>
+                    <p><h:outputText value="#{questionEditController.question.id}" id="id"/></p>
+                </div>
                 <div class="form-group">
                     <p:outputLabel styleClass="control-label" for="question"
                                    value="#{i18n['question.question']}"/>
@@ -61,21 +67,12 @@
                     <p:message for="comment"/>
                 </div>
                 <div class="form-group">
-                    <p:graphicImage id="image" value="#{questionEditController.uploadedImage}"/>
-                    <p:outputLabel for="image_upload" value="#{i18n['question.image']}"/>
-                    <p:fileUpload value="#{questionEditController.uploadedImage}"
-                                  fileLimit="1"
-                                  mode="advanced"
-                                  allowTypes="/(\.|\/)(gif|jpe?g|png|tiff?|w?bmp)$/"
-                                  auto="true"
-                                  id="image_upload"
-                                  invalidFileMessage="#{i18n['upload.invalidFile']}"
-                                  fileLimitMessage="#{i18n['upload.fileLimit']}"
-                                  invalidSizeMessage="#{i18n['upload.invalidSize']}"
-                                  sizeLimit="500000"
-                                  skinSimple="true"
-                                  update="image"/>
-                    <p:message for="image_upload"/>
+                    <div class="form-group">
+                        <p:outputLabel value="#{i18n['question.image']}"/>
+                        <a:imageUpload removeListener="#{questionEditController.removeImage()}"
+                                       uploadListener="#{questionEditController.uploadImage}"
+                                       image="#{questionEditController.uploadedImage}"/>
+                    </div>
                 </div>
                 <div class="form-group">
                     <p:outputLabel for="categories" value="#{i18n['question.categories']}"/>

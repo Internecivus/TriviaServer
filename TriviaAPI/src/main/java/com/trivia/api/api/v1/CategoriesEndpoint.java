@@ -15,8 +15,7 @@ import java.util.List;
 
 @Path("/categories")
 public class CategoriesEndpoint {
-    private @Inject
-    CategoryService categoryService;
+    private @Inject CategoryService categoryService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

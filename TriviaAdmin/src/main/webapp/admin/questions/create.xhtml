@@ -4,6 +4,8 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:a="http://www.trivia.com/admin-ui"
                 template="/WEB-INF/templates/admin.xhtml">
     <ui:param name="subnavigationLinks" value="#{['list', 'create']}"/>
     <ui:param name="mainSizes" value="col-sm-12 col-sm-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2"/>
@@ -61,21 +63,10 @@
                     <p:message for="comment"/>
                 </div>
                 <div class="form-group">
-                    <p:graphicImage id="image" value="#{questionCreateController.uploadedImage}"/>
-                    <p:outputLabel for="image_upload" value="#{i18n['question.image']}"/>
-                    <p:fileUpload value="#{questionCreateController.uploadedImage}"
-                                  fileLimit="1"
-                                  mode="advanced"
-                                  allowTypes="/(\.|\/)(gif|jpe?g|png|tiff?|w?bmp)$/"
-                                  auto="true"
-                                  id="image_upload"
-                                  invalidFileMessage="#{i18n['upload.invalidFile']}"
-                                  fileLimitMessage="#{i18n['upload.fileLimit']}"
-                                  invalidSizeMessage="#{i18n['upload.invalidSize']}"
-                                  sizeLimit="500000"
-                                  skinSimple="true"
-                                  update="image"/>
-                    <p:message for="image_upload"/>
+                    <p:outputLabel value="#{i18n['question.image']}"/>
+                    <a:imageUpload removeListener="#{questionCreateController.removeImage()}"
+                                   uploadListener="#{questionCreateController.uploadImage}"
+                                   image="#{questionCreateController.uploadedImage}"/>
                 </div>
                 <div class="form-group">
                     <p:outputLabel for="categories" value="#{i18n['question.categories']}"/>

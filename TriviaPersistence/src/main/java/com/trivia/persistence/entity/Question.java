@@ -85,11 +85,11 @@ public class Question {
 
     @Basic
     @Column(name = "image")
-    @Size(max = 27, message = "{field.lengthMax}")
+    @Size(max = 28, message = "{field.lengthMax}")
     private String image;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private User user;
 
     @NotEmpty(message = "{collection.required}")

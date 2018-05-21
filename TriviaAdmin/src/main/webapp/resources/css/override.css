@@ -43,3 +43,15 @@
     border-color: #367fa9 !important;
     color: white !important;
 }
+
+.image-thumbnail {
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 150px;
+}
+
+.image-thumbnail:hover {
+    box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}

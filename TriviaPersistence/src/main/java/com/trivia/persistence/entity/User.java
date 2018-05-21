@@ -52,6 +52,7 @@ public class User implements Serializable {
     @Column(name = "date_created")
     private Timestamp dateCreated;
 
+    @OrderBy(Role_.ID + " ASC")
     @NotEmpty(message = "{collection.required}")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -63,6 +64,9 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
     private Set<Question> questions = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Client> clients = new HashSet<>();
 
     @PrePersist
     public void preCreate() {
@@ -134,16 +138,16 @@ public class User implements Serializable {
         return getRoles().stream().map(r -> r.getName().name()).collect(Collectors.toSet());
     }
 
+    public Set<RoleType> getRoleTypes() {
+        return getRoles().stream().map(r -> r.getName()).collect(Collectors.toSet());
+    }
+
     public boolean hasRole(RoleType roleType) {
-        return getRoles().stream().map(r -> r.getName()).collect(Collectors.toSet()).contains(roleType);
+        return getRoleTypes().contains(roleType);
     }
 
-    public void addRole(RoleType roleType) {
-        this.roles.stream().map(r -> r.getName()).collect(Collectors.toSet()).add(roleType);
-    }
-
-    public void removeRole(RoleType roleType) {
-        this.roles.stream().map(r -> r.getName()).collect(Collectors.toSet()).remove(roleType);
+    public boolean hasOneOfRoles(RoleType... roleTypes) {
+        return getRoleTypes().stream().anyMatch(Arrays.asList(roleTypes)::contains);
     }
 
     public boolean isOwnerOf(Client client) {

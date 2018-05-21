@@ -7,7 +7,7 @@
                 template="/WEB-INF/templates/admin.xhtml">
     <ui:define name="main">
         <h:form>
-            <p:dataTable id="log_table"
+            <p:dataTable id="logs_table"
                          paginator="true"
                          paginatorPosition="bottom"
                          rows="10"
@@ -17,10 +17,11 @@
                          rowsPerPageTemplate="10,25,100"
                          pageLinks="5"
                          reflow="true"
-                         tableStyleClass="table-striped"
+                         tableStyleClass=""
+                         tableStyle="table-layout: auto;"
                          rowStyleClass=""
-                         emptyMessage="#{i18n.notFound.message}"
-                         widgetVar="logTable"
+                         emptyMessage="#{i18n['notFound']}"
+                         widgetVar="logsTable"
                          lazy="true">
                 <f:facet name="header">
                     <p:outputPanel>

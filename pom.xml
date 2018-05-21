@@ -38,6 +38,11 @@ https://stackoverflow.com/questions/43574426/how-to-resolve-java-lang-noclassdef
             <version>8.0</version>
         </dependency>
         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+        <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.11</version>

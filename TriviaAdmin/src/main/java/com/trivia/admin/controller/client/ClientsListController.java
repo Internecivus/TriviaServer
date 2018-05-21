@@ -4,6 +4,7 @@ import com.trivia.admin.resources.i18n;
 import com.trivia.admin.utility.Messages;
 import com.trivia.core.service.ClientService;
 import com.trivia.core.service.UserService;
+import com.trivia.persistence.EntityView;
 import com.trivia.persistence.entity.Client;
 import com.trivia.persistence.entity.User;
 import org.primefaces.model.LazyDataModel;
@@ -33,11 +34,12 @@ public class ClientsListController implements Serializable {
                 String searchString = (filters.get("globalFilter") != null) ? filters.get("globalFilter").toString() : null;
 
                 List<Client> result = clientService.findAll(
-                        first / pageSize + 1,
-                        pageSize,
-                        sortField,
-                        com.trivia.core.utility.SortOrder.valueOf(sortOrder.toString()),
-                        searchString
+                    first / pageSize + 1,
+                    pageSize,
+                    sortField,
+                    com.trivia.core.utility.SortOrder.valueOf(sortOrder.toString()),
+                    searchString,
+                    EntityView.ClientDetails
                 );
                 super.setRowCount(clientService.getLastCount());
                 return result;
@@ -47,7 +49,7 @@ public class ClientsListController implements Serializable {
 
     public void delete(int id) {
         clientService.deleteById(id);
-        Messages.addInfoFor("growl", i18n.get("success"), i18n.get("delete.success"));
+        Messages.addWarnFor("growl", i18n.get("success"), i18n.get("delete.success"));
     }
 
     public LazyDataModel<Client> getLazyClients() {

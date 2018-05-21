@@ -6,10 +6,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum RoleType {
-    CONTRIBUTOR(Name.CONTRIBUTOR),
-    PROVIDER(Name.PROVIDER),
-    MODERATOR(Name.MODERATOR),
-    ADMIN(Name.ADMIN);
+    CONTRIBUTOR(Name.CONTRIBUTOR), // Can CRU all questions and R all categories
+    PROVIDER(Name.PROVIDER), // Can CRUD their own clients
+    MODERATOR(Name.MODERATOR), // Can D all questions and CUD all categories, and promote clients // TODO: Is this really needed?
+    ADMIN(Name.ADMIN); // Can CRUD all users and clients
 
     private String name;
 

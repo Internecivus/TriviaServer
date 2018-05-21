@@ -39,9 +39,18 @@ public class Client implements Serializable {
     @Column(name = "date_created")
     private Timestamp dateCreated;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)// insertable nullable
     private User user;
+
+    public Client() {}
+
+    public Client(Client other) {
+        this.apiKey = other.apiKey;
+        this.apiSecret = other.apiSecret;
+        this.dateCreated = other.dateCreated;
+        //this.user = other.user;
+    }
 
     @PrePersist
     public void preCreate() {

@@ -2,11 +2,12 @@ CREATE TABLE IF NOT EXISTS `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   `description` varchar(64) NOT NULL,
-  `image` varchar(27) DEFAULT NULL,
+  `image` varchar(28) DEFAULT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `roleType` (
+CREATE TABLE IF NOT EXISTS `role` (
   `name` varchar(15) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
@@ -16,21 +17,21 @@ CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `password` char(62) NOT NULL,
   `name` varchar(20) NOT NULL,
-  `provider_key` varchar(62),
-  `provider_secret` varchar(62),
+  `provider_key` char(32),
+  `provider_secret` char(62),
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `client` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `api_key` varchar(62),
-  `api_secret` varchar(62),
+  `api_key` char(32),
+  `api_secret` char(62),
   `date_created` datetime NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `client_user_fk_idx` (`user_id`),
-  CONSTRAINT `client_user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `client_user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `question` (
@@ -40,15 +41,15 @@ CREATE TABLE IF NOT EXISTS `question` (
   `answer_second` varchar(64) NOT NULL,
   `answer_third` varchar(64) NOT NULL,
   `answer_fourth` varchar(64) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `comment` varchar(1024) DEFAULT NULL,
   `date_created` datetime NOT NULL,
   `answer_correct` tinyint(4) NOT NULL,
   `date_last_modified` datetime DEFAULT NULL,
-  `image` char(27) DEFAULT NULL,
+  `image` char(28) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `question_user_fk_idx` (`user_id`),
-  CONSTRAINT `question_user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `question_user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `question_category_map` (
@@ -66,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `user_role_map` (
   PRIMARY KEY (`user_id`,`role_id`),
   KEY `role_fk_idx` (`role_id`),
   CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE ,
-  CONSTRAINT `role_fk` FOREIGN KEY (`role_id`) REFERENCES `roleType` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `role_fk` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

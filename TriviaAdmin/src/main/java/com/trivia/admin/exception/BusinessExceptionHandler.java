@@ -38,14 +38,16 @@ public class BusinessExceptionHandler extends ExceptionHandlerWrapper {
             ExceptionQueuedEventContext context = (ExceptionQueuedEventContext) event.getSource();
 
             Throwable original = context.getException();
-            Throwable root = exceptionHandler.getRootCause(original);
+            Throwable rootCause = exceptionHandler.getRootCause(original);
 
-            // Meaning it is a FacesException/ELException.
-            if (root == null) {
-                continue;
+            if (rootCause instanceof javax.faces.el.EvaluationException) {
+                rootCause = rootCause.getCause();
             }
 
-            Throwable rootCause = root.getCause();
+            // Meaning it is a FacesException/ELException.
+            if (rootCause == null) {
+                continue;
+            }
 
             if (rootCause instanceof EntityNotFoundException) {
                 Messages.addErrorFor("growl", i18n.get("failure"), i18n.get("notFound"));
@@ -59,6 +61,9 @@ public class BusinessExceptionHandler extends ExceptionHandlerWrapper {
             }
             else if (rootCause instanceof InvalidInputException) {
                 Messages.addErrorFor("growl", i18n.get("failure"), rootCause.getMessage());
+            }
+            else if (rootCause instanceof InvalidCredentialException) {
+                Messages.addErrorFor("growl", i18n.get("failure"),i18n.get("login.failure"));
             }
             else if (rootCause instanceof SystemException) {
                 Messages.addFatalFor("growl", i18n.get("failure"), i18n.get("server.failure"));

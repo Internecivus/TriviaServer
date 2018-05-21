@@ -21,22 +21,17 @@ public final class LogUtil extends FileUtil {
      * Since a log row can have a fixed byte size, this could better be done MUCH faster by offsetting the search by
      * this number of bytes,
      * BUT, this would result in an inability to change the log format without changing this method
-     * AND it would severely inhibit the flexibility of logging by demanding a certain maximum size
-     * AND it could possibly create a much bigger .log file.
+     * AND it would inhibit the flexibility of logging by demanding a certain maximum size
+     * AND it could potentially create a much bigger .log file.
      * AND the Java SE 8 API is just so much cleaner (and already fast enough). :)
      */
     public static List<Log> readFromTo(int start, int size, LogType logType) throws IOException {
         start = start > LOGS_PAGE_MAX ? LOGS_PAGE_MAX : start;
-
         List<Log> logsObj = new ArrayList<>();
 
-        // A try block is used as a try-with-resources for an autocloseable object.
         try (Stream<String> logsRaw = Files.lines(getLogTypePath(logType), CHARSET_DEFAULT)) {
-            logsRaw.skip(start).limit(size).forEach(logRaw -> {
-                    logsObj.add(new Log(logRaw));
-            });
+            logsRaw.skip(start).limit(size).forEach(logRaw -> logsObj.add(new Log(logRaw)));
         }
-
         return logsObj;
     }
 
@@ -47,9 +42,8 @@ public final class LogUtil extends FileUtil {
      * contents, and once by getting the total number of lines. Unfortunately, because of the nature of the lazy loading
      * provider used (and since Java methods can't return tuples), the only straightforward OOP solution to remedy this
      * is to create a larger data structure that would use composition to wrap around List<Log> and the number of lines,
-     * That seems an inelegant solution at best and would result in huge clutter if this principle
-     * would be applied to the whole project. As it stands, the current system is fast enough, but will warrant
-     * a reconstruction if the scale gets large enough.
+     * That seems an inelegant solution and could result in  clutter. As it stands, the current system is fast enough,
+     * but will warrant a reconstruction if the scale gets large enough.
      */
     public static Long getLineCount(LogType logType) throws IOException {
         Long lineCount;

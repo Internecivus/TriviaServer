@@ -8,7 +8,9 @@
    <ui:define name="main">
       <div class="text-center">
          <h3>
-            <h:outputText value="#{i18n['greeting']}, #{viewController.userName}!"/>
+            <h:outputFormat value="#{i18n['greeting']}">
+               <f:param value="#{viewController.currentUser.name}"/>
+            </h:outputFormat>
          </h3>
       </div>
    </ui:define>

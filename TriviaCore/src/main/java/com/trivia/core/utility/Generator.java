@@ -36,8 +36,7 @@ public final class Generator {
     }
 
     public static String generateSecureRandomString(int size) {
-        //TODO: CHECK!!!!!
-        int bytesSize = (int) Math.ceil(size * 3.0 / 4.0);     // Calculate how many bytes we need for a String of this size.
+        int bytesSize = (int) Math.ceil(size * 3.0 / 4.0);     // Calculate how many bytes we need for a String of "size".
         byte[] bytes = generateSecureRandomBytes(bytesSize);
         return Base64.getEncoder().encodeToString(bytes);
     }

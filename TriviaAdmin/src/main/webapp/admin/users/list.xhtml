@@ -34,7 +34,7 @@
                                      styleClass="form-control"
                                      onkeyup="PF('usersTable').filter()"
                                      style="display:inline; width:150px; align-content: center"
-                                     placeholder="#{i18n['search.placeholder']}..."/>
+                                     placeholder="#{i18n['search.placeholder']}"/>
                     </p:outputPanel>
                 </f:facet>
 
@@ -48,6 +48,14 @@
 
                 <p:column headerText="#{i18n['user.providerKey']}">
                     <h:outputText value="#{user.providerKey}"/>
+                </p:column>
+
+                <p:column headerText="#{i18n['user.roles']}" styleClass="text-center">
+                    <div>
+                        <ui:repeat value="#{user.roles}" var="role">
+                            <div class="tag"><h:outputText value="#{role.name}"/></div>
+                        </ui:repeat>
+                    </div>
                 </p:column>
 
                 <p:column sortBy="#{user.dateCreated}"

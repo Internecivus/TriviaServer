@@ -23,10 +23,8 @@ import java.io.Serializable;
  *  In the future, an intricate system of error reporting (via general error codes and specific error id's)
  *  can easily be created.
  *
- *  TODO: Unfortunately, since Widlfly's own AuthorizationInterceptor gets invoked before any of our own Interceptors can, we need to deal
- *  with EJBAccessException separately.
- *  We should also note that we are using an EJB interceptor as well as a CDI interceptor to be able to achieve
- *  closer EJB integration (i.e. to intercept EJBAccessException), as this is required in Wildfly.
+ *  TODO: Unfortunately, since Widlfly's own AuthorizationInterceptor gets invoked before any of our own Interceptors
+ *  can, we need to deal with EJBAccessException separately.
  */
 @Throws
 @Interceptor
@@ -42,9 +40,6 @@ public class ExceptionInterceptor implements Serializable {
         }
         catch (javax.persistence.EntityExistsException e) {
             throw new EntityExistsException();
-        }
-        catch (javax.ejb.EJBAccessException e) {
-            throw new NotAuthorizedException();
         }
         // SystemException at this point means something is wrong in the Core Module itself, so any details are withheld.
         catch (SystemException e) {

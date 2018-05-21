@@ -7,11 +7,17 @@
                 xmlns:a="http://www.trivia.com/admin-ui"
                 template="/WEB-INF/templates/template.xhtml">
     <ui:define name="navigation">
+        <p:importEnum type="com.trivia.persistence.entity.RoleType" var="Role" allSuffix="All"/>
+
         <ul id="navigation" class="list-inline list-unstyled sm-block" style="padding-bottom: 15px">
             <li><a:link outcome="/admin/questions/list" value="#{i18n['page.questions']}" partialMatch="questions"/></li>
             <li><a:link outcome="/admin/categories/list" value="#{i18n['page.categories']}" partialMatch="categories"/></li>
-            <li><a:link outcome="/admin/users/list" value="#{i18n['page.users']}" partialMatch="users"/></li>
-            <li><a:link outcome="/admin/clients/list" value="#{i18n['page.clients']}" partialMatch="clients"/></li>
+            <c:if test="#{viewController.currentUser.hasRole(Role.ADMIN)}">
+                <li><a:link outcome="/admin/users/list" value="#{i18n['page.users']}" partialMatch="users"/></li>
+            </c:if>
+            <c:if test="#{viewController.currentUser.hasRole(Role.PROVIDER)}">
+                <li><a:link outcome="/admin/clients/list" value="#{i18n['page.clients']}" partialMatch="clients"/></li>
+            </c:if>
             <li><a:link outcome="/admin/logs/list" value="#{i18n['page.logs']}" partialMatch="logs"/></li>
             <li>
                 <h:form>

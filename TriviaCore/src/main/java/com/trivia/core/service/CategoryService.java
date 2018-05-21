@@ -1,13 +1,17 @@
 package com.trivia.core.service;
 
+import com.trivia.core.exception.InvalidInputException;
+import com.trivia.core.utility.ImageUtil;
+import com.trivia.core.utility.SortOrder;
+import com.trivia.persistence.EntityView;
 import com.trivia.persistence.dto.client.CategoryClient;
-import com.trivia.persistence.entity.Category;
-import com.trivia.persistence.entity.RoleType;
+import com.trivia.persistence.entity.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
 
 import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -15,18 +19,24 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.io.InputStream;
 import java.util.*;
 
 @Stateless
-@RolesAllowed(RoleType.Name.PRINCIPAL)
+@RolesAllowed(RoleType.Name.MODERATOR)
 public class CategoryService extends Service<Category> {
     @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
     private @Resource SessionContext sessionContext;
     private @Inject Logger logger;
+    private @Inject UserService userService;
 
-    public CategoryService() {}
+    public CategoryService() {
+        super.DEFAULT_SORT_COLUMN = Category_.dateCreated;
+        super.SEARCHABLE_COLUMNS = SORTABLE_COLUMNS = new HashSet<>(Arrays.asList(Category_.id, Category_.dateCreated, Category_.name, Category_.description));
+    }
 
+    @RolesAllowed(RoleType.Name.PRINCIPAL)
     public Set<Category> getAll() {
         Set<Category> categoryList;
         TypedQuery<Category> query = em.createQuery("SELECT c from Category c", Category.class);
@@ -36,6 +46,7 @@ public class CategoryService extends Service<Category> {
         return categoryList;
     }
 
+    @RolesAllowed({RoleType.Name.PRINCIPAL})
     public Set<String> getAllNames() {
         Set<Category> categoryList = getAll();
         Set<String> namesList = new HashSet<>();
@@ -46,22 +57,58 @@ public class CategoryService extends Service<Category> {
         return namesList;
     }
 
+    public Category create(Category newCategory, InputStream imageStream) {
+        String imagePath = ImageUtil.saveImage(imageStream);
+        newCategory.setImage(imagePath);
+        return super.create(newCategory);
+    }
+
+    @Override
+    @Deprecated
+    public Category create(Category newCategory) {
+        throw new IllegalStateException("A category needs to use the InputStream create method, as it needs to have an image!");
+    }
+
+    @Override
+    @RolesAllowed({RoleType.Name.CONTRIBUTOR})
+    public List<Category> findAll(int pageCurrent, int pageSize, String sortColumn, SortOrder sortOrder, String searchString, EntityView... entityViews) {
+        return super.findAll(pageCurrent, pageSize, sortColumn, sortOrder, searchString, entityViews);
+    }
+
+    @PermitAll
     public Collection<CategoryClient> toDto(Collection<Category> entities) {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(entities, new TypeToken<List<CategoryClient>>() {}.getType());
     }
 
     @Override
-    @RolesAllowed(RoleType.Name.MODERATOR)
     public void deleteById(Object id) {
         super.deleteById(id);
         logger.info("Category id: {} was DELETED by user: {}", id, sessionContext.getCallerPrincipal().getName());
     }
 
+    public void update(Category updatedCategory, InputStream imageStream) {
+        Category oldCategory = findById(updatedCategory.getId());
+        ImageUtil.validateImagePath(oldCategory.getImage(), updatedCategory.getImage());
+
+        // There is already an image present, and since we are adding a new one we need to delete it.
+        ImageUtil.deleteImage(oldCategory.getImage());
+
+        // Create and set the new image.
+        updatedCategory.setImage(ImageUtil.saveImage(imageStream));
+
+        em.merge(updatedCategory);
+        em.flush();
+        logger.info("Category id: {} was UPDATED by user: {}", updatedCategory.getId(), sessionContext.getCallerPrincipal().getName());
+    }
+
     @Override
-    @RolesAllowed(RoleType.Name.CONTRIBUTOR)
-    public void update(Category updatedEntity) {
-        super.update(updatedEntity);
-        logger.info("Category id: {} was UPDATED by user: {}", updatedEntity.getId(), sessionContext.getCallerPrincipal().getName());
+    public void update(Category updatedCategory) {
+        Category oldCategory = findById(updatedCategory.getId());
+        ImageUtil.validateImagePath(oldCategory.getImage(), updatedCategory.getImage());
+
+        em.merge(updatedCategory);
+        em.flush();
+        logger.info("Category id: {} was UPDATED by user: {}", oldCategory.getId(), sessionContext.getCallerPrincipal().getName());
     }
 }

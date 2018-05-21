@@ -4,6 +4,7 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://www.trivia.com/admin-ui"
                 template="/WEB-INF/templates/admin.xhtml">
     <ui:param name="subnavigationLinks" value="#{['list', 'create']}"/>
     <ui:param name="mainSizes" value="col-sm-12 col-sm-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2"/>
@@ -64,12 +65,10 @@
                     <p><h:outputText value="#{questionDetailsController.question.comment}" id="comment"/></p>
                 </div>
             </p:panelGrid>
-            <p:panelGrid rendered="#{not empty questionDetailsController.question.image}">
-                <div class="form-group">
-                    <p:outputLabel for="image" value="#{i18n['question.image']}"/>
-                    <p:graphicImage id="image" value="/images/#{questionDetailsController.question.image}}"/>
-                </div>
-            </p:panelGrid>
+            <div class="form-group">
+                <p:outputLabel value="#{i18n['question.image']}"/>
+                <a:imageThumbnail image="#{questionDetailsController.uploadedImage}"/>
+            </div>
             <div class="form-group">
                 <p:outputLabel value="#{i18n['question.categories']}"/>
                 <div>

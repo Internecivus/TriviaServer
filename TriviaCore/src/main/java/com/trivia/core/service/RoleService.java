@@ -4,6 +4,7 @@ import com.trivia.persistence.entity.Role;
 import com.trivia.persistence.entity.RoleType;
 
 import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -16,7 +17,7 @@ import java.util.Set;
 
 @Stateless
 // We are not inheriting from Service as we do NOT want all the methods.
-@RolesAllowed(RoleType.Name.PRINCIPAL) //TODO: Fix this so regular users cant see all the roles
+@RolesAllowed({RoleType.Name.MODERATOR})
 public class RoleService {
     @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;

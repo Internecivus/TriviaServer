@@ -12,45 +12,32 @@
         <h:form id="client_edit" enctype="multipart/form-data">
             <p:panel header="#{i18n['page.clients.edit']}">
                 <div class="form-group">
-                    <p:outputLabel styleClass="control-label" for="name"
-                                   value="#{i18n['client.name']}"/>
-                    <p:inputText value="#{clientEditController.client.name}"
-                                 styleClass="form-control" id="name"/>
-                    <p:message for="name"/>
+                    <p:outputLabel for="id" value="#{i18n['client.id']}"/>
+                    <p><h:outputText value="#{clientEditController.client.id}" id="id"/></p>
                 </div>
                 <div class="form-group">
-                    <p:outputLabel for="password" value="#{i18n['auth.newPassword']}"/>
-                    <p:inputText value="#{clientEditController.newPassword}"
-                                 styleClass="form-control" id="password">
-                        <f:validateLength minimum="6" maximum="20"/>
-                    </p:inputText>
-                    <p:message for="password"/>
+                    <p:outputLabel for="api_key" value="#{i18n['client.apiKey']}"/>
+                    <p><h:outputText value="#{clientEditController.client.apiKey}" id="api_key"/></p>
                 </div>
                 <div class="form-group">
-                    <div class="btn-group btn-group-toggle">
-                        <p:commandButton value="#{i18n['action.reset']}"
-                                         styleClass="btn btn-secondary">
-                            <p:ajax update="client_edit" resetValues="true"/>
-                        </p:commandButton>
-                        <p:commandButton value="#{i18n['action.delete']}"
-                                         styleClass="btn btn-danger"
-                                         update="client_edit"
-                                         immediate="true"
-                                         validateClient="false"
-                                         action="#{clientEditController.delete()}">
-                            <p:confirm header="#{i18n['delete.confirmation.header']}"
-                                       message="#{i18n['delete.confirmation.message']}"/>
-                        </p:commandButton>
-                        <p:commandButton action="#{clientEditController.update()}"
-                                         type="submit"
-                                         value="#{i18n['action.save']}"
-                                         update="client_edit"
-                                         validateClient="true"
-                                         styleClass="btn btn-primary">
-                            <p:confirm header="#{i18n['update.confirmation.header']}"
-                                       message="#{i18n['update.confirmation.message']}"/>
-                        </p:commandButton>
-                    </div>
+                    <p:outputLabel for="provider" value="#{i18n['client.provider']}"/>
+                    <p><h:outputText value="#{clientEditController.client.user.name}" id="provider"/></p>
+                </div>
+                <div class="form-group">
+                    <p:commandButton action="#{clientEditController.generateNewAPISecret()}"
+                                     styleClass="btn btn-primary"
+                                     type="submit"
+                                     value="#{i18n['auth.newApiSecret']}"
+                                     ajax="false"/>
+                    <p:commandButton value="#{i18n['action.delete']}"
+                                     styleClass="btn btn-danger"
+                                     update="client_edit"
+                                     immediate="true"
+                                     validateClient="false"
+                                     action="#{clientEditController.delete()}">
+                        <p:confirm header="#{i18n['delete.confirmation.header']}"
+                                   message="#{i18n['delete.confirmation.message']}"/>
+                    </p:commandButton>
                 </div>
             </p:panel>
         </h:form>

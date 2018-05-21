@@ -13,7 +13,7 @@ import java.util.List;
 
 @Path("/questions")
 public class QuestionsEndpoint {
-    @Inject private QuestionService questionService;
+    private @Inject QuestionService questionService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -23,6 +23,7 @@ public class QuestionsEndpoint {
             @QueryParam("page") Integer pageCurrent,
             @QueryParam("size") Integer pageSize,
             @QueryParam("sortOrder") SortOrder sortOrder,
+            @QueryParam("search") String searchString,
             @DefaultValue("false") @QueryParam("random") boolean random
     ) {
         List<?> questions;
@@ -30,7 +31,7 @@ public class QuestionsEndpoint {
             questions = questionService.toDto(questionService.getRandomFromCategory(pageSize, category));
         }
         else {
-            questions = questionService.findAll(pageCurrent, pageSize, sortField, sortOrder, null);
+            questions = questionService.toDto(questionService.findAll(pageCurrent, pageSize, sortField, sortOrder, searchString));
         }
 
         return Response.status(Response.Status.OK).entity(questions).build();

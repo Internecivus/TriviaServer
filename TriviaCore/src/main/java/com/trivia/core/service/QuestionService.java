@@ -11,6 +11,7 @@ import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
 
 import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -21,13 +22,14 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
 
-
+// TODO: Lots of confusing trouble with imagePath...
 @Stateless
 @RolesAllowed(RoleType.Name.PRINCIPAL)
 public class QuestionService extends Service<Question> {
@@ -49,6 +51,7 @@ public class QuestionService extends Service<Question> {
         ));
     }
 
+    @RolesAllowed(RoleType.Name.CLIENT)
     public List<Question> getRandomFromCategory(Integer size, String category) {
         if (category == null || category.trim().length() < 1) throw new InvalidInputException("No category specified.");
         if (size == null) size = PAGE_SIZE_RANDOM_DEFAULT;
@@ -79,44 +82,77 @@ public class QuestionService extends Service<Question> {
         return questions;
     }
 
+    @RolesAllowed({RoleType.Name.CONTRIBUTOR})
+    public void update(Question updatedQuestion, InputStream imageStream) {
+        Question oldQuestion = findById(updatedQuestion.getId());
+        ImageUtil.validateImagePath(oldQuestion.getImage(), updatedQuestion.getImage());
+
+        // There is already an image present, and since we are adding a new one we need to delete it.
+        if (oldQuestion.getImage() != null) {
+            ImageUtil.deleteImage(oldQuestion.getImage());
+        }
+
+        // Create and set the new image.
+        updatedQuestion.setImage(ImageUtil.saveImage(imageStream));
+
+        em.merge(updatedQuestion);
+        em.flush();
+        logger.info("Question id: {} was UPDATED by user: {}", updatedQuestion.getId(), sessionContext.getCallerPrincipal().getName());
+    }
+
     @Override
-    @RolesAllowed(RoleType.Name.CONTRIBUTOR)
+    @RolesAllowed({RoleType.Name.CONTRIBUTOR})
     public void update(Question updatedQuestion) {
-        super.update(updatedQuestion);
+        Question oldQuestion = findById(updatedQuestion.getId());
+        ImageUtil.validateImagePath(oldQuestion.getImage(), updatedQuestion.getImage());
+
+        // The image was previously present and was just now removed.
+        if (updatedQuestion.getImage() == null && oldQuestion.getImage() != null) {
+            ImageUtil.deleteImage(oldQuestion.getImage());
+        }
+
+        em.merge(updatedQuestion);
+        em.flush();
         logger.info("Question id: {} was UPDATED by user: {}", updatedQuestion.getId(), sessionContext.getCallerPrincipal().getName());
     }
 
     @Override
     @RolesAllowed(RoleType.Name.MODERATOR)
     public void deleteById(Object id) {
-        super.deleteById(id);
+        Question question = findById(id);
+        ImageUtil.deleteImage(question.getImage());
+
+        em.remove(question);
+        em.flush();
         logger.info("Question id: {} was DELETED by user: {}", id, sessionContext.getCallerPrincipal().getName());
     }
 
-    public void createWithImage(Question newQuestion, String fileName, InputStream inputStream) {
-        try {
-            java.nio.file.Path imagePath = ImageUtil.saveImageAndGetPath(fileName, inputStream);
-            String imageFileName = imagePath.getFileName().toString();
-            newQuestion.setImage(imageFileName);
-        }
-        catch (IOException e) {
-            throw new SystemException(e);
-        }
+    @RolesAllowed(RoleType.Name.CONTRIBUTOR)
+    public Question create(Question newQuestion, InputStream imageStream) {
+        String imagePath = ImageUtil.saveImage(imageStream);
+        newQuestion.setImage(imagePath);
 
-        create(newQuestion);
-    }
-
-    @Override
-    @RolesAllowed(RoleType.Name.ADMIN)
-    public Question create(Question newQuestion) {
         User user = userService.findByField(User_.name, sessionContext.getCallerPrincipal().getName());
         newQuestion.setUser(user);
 
-        super.create(newQuestion);
+        Question createdQuestion = super.create(newQuestion);
         logger.info("Question id: {} was CREATED by user id: {}", newQuestion.getId(), sessionContext.getCallerPrincipal().getName());
-        return newQuestion;
+        return createdQuestion;
     }
 
+    @Override
+    @RolesAllowed(RoleType.Name.CONTRIBUTOR)
+    public Question create(Question newQuestion) {
+        User user = userService.findByField(User_.name, sessionContext.getCallerPrincipal().getName());
+        newQuestion.setUser(user);
+        newQuestion.setImage(null);
+
+        Question createdQuestion = super.create(newQuestion);
+        logger.info("Question id: {} was CREATED by user id: {}", newQuestion.getId(), sessionContext.getCallerPrincipal().getName());
+        return createdQuestion;
+    }
+
+    @PermitAll
     public List<QuestionClient> toDto(List<Question> entities) {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(entities, new TypeToken<List<QuestionClient>>() {}.getType());

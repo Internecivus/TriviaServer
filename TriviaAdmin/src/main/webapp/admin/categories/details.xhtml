@@ -4,34 +4,39 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://www.trivia.com/admin-ui"
                 template="/WEB-INF/templates/admin.xhtml">
     <ui:param name="subnavigationLinks" value="#{['list', 'create']}"/>
     <ui:param name="mainSizes" value="col-sm-12 col-sm-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2"/>
 
     <ui:define name="main">
-        <p:panel header="#{i18n['page.clients.details']}">
+        <p:panel header="#{i18n['page.categories.create']}">
             <div class="form-group">
-                <p:outputLabel for="id" value="#{i18n['client.id']}"/>
-                <p><h:outputText value="#{clientDetailsController.client.id}" id="id"/></p>
+                <p:outputLabel for="id" value="#{i18n['category.id']}"/>
+                <p><h:outputText value="#{categoryDetailsController.category.id}" id="id"/></p>
             </div>
             <div class="form-group">
                 <p:outputLabel styleClass="form-label" for="date_created"
-                               value="#{i18n['client.dateCreated']}"/>
-                <p><h:outputText id="date_created" value="#{clientDetailsController.client.dateCreated}">
+                               value="#{i18n['category.dateCreated']}"/>
+                <p><h:outputText id="date_created" value="#{categoryDetailsController.category.dateCreated}">
                     <f:convertDateTime type="date" pattern="dd. MMMM yyyy HH:mm"/>
                 </h:outputText></p>
             </div>
             <div class="form-group">
-                <p:outputLabel for="api_key" value="#{i18n['client.apiKey']}"/>
-                <p><h:outputText value="#{clientDetailsController.client.apiKey}" id="api_key"/></p>
+                <p:outputLabel for="name" value="#{i18n['category.name']}"/>
+                <p><h:outputText value="#{categoryDetailsController.category.name}" id="name"/></p>
             </div>
             <div class="form-group">
-                <p:outputLabel for="provider" value="#{i18n['client.provider']}"/>
-                <p><h:outputText value="#{clientEditController.client.user.name}" id="provider"/></p>
+                <p:outputLabel for="description" value="#{i18n['category.description']}"/>
+                <p><h:outputText value="#{categoryDetailsController.category.description}" id="description"/></p>
+            </div>
+            <div class="form-group">
+                <p:outputLabel value="#{i18n['category.image']}"/>
+                <a:imageThumbnail image="#{categoryDetailsController.uploadedImage}"/>
             </div>
             <div class="form-group">
                 <p:button value="#{i18n['action.edit']}" styleClass="btn btn-primary" outcome="edit">
-                    <f:param name="id" value="#{clientDetailsController.client.id}"/>
+                    <f:param name="id" value="#{categoryDetailsController.category.id}"/>
                 </p:button>
             </div>
         </p:panel>

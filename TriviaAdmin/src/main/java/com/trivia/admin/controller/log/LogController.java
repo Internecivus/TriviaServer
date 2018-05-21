@@ -34,16 +34,10 @@ public class LogController implements Serializable {
                 catch (IOException e) {
 
                 }
-                catch (ArithmeticException e) { // Meaning the count of logs is larger than int max value.
+                catch (ArithmeticException e) { // Meaning the count of logs is larger than int max value. Won't really be needed.
                     lazyLogs.setRowCount(Integer.MAX_VALUE);
                 }
-
                 return logs;
-            }
-
-            @Override
-            public Object getRowKey(Log object) {
-                return super.getRowKey(object);
             }
         };
     }

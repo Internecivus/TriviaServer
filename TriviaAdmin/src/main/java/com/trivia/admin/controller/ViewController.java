@@ -1,6 +1,7 @@
 package com.trivia.admin.controller;
 
-import org.omnifaces.facesviews.FacesViews;
+import com.trivia.admin.security.authentication.UserCallerPrincipal;
+import com.trivia.persistence.entity.User;
 import org.omnifaces.util.Faces;
 
 import javax.annotation.PostConstruct;
@@ -9,10 +10,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.security.enterprise.SecurityContext;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Arrays;
-
 
 
 @Named
@@ -24,7 +21,7 @@ public class ViewController {
     private String path;
     private String fullName; // Uses dot ('.') as a delimiter.
     private String name;
-    private String userName;
+    private User currentUser;
 
     private String[] folders = {"admin", "public"};
 
@@ -40,11 +37,8 @@ public class ViewController {
             .replaceAll("/", ".");
         name = fullName.substring(fullName.lastIndexOf('.') + 1);
 
-        if (securityContext.getCallerPrincipal() == null) {
-            userName = null;
-        }
-        else {
-            userName = securityContext.getCallerPrincipal().getName();
+        if (securityContext.getCallerPrincipal() != null) {
+            currentUser = ((UserCallerPrincipal) securityContext.getCallerPrincipal()).getUser();
         }
     }
 
@@ -73,7 +67,7 @@ public class ViewController {
         return fullName;
     }
 
-    public String getUserName() {
-        return userName;
+    public User getCurrentUser() {
+        return currentUser;
     }
 }

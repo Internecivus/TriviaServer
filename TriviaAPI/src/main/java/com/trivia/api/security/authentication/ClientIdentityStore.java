@@ -21,11 +21,11 @@ public class ClientIdentityStore implements IdentityStore {
     public CredentialValidationResult validate(UsernamePasswordCredential credential) {
         Client client;
 
-        String username = credential.getCaller();
-        String password = credential.getPasswordAsString();
+        String apiKey = credential.getCaller();
+        String apiSecret = credential.getPasswordAsString();
 
         try {
-            client = clientService.validateCredential(username, password);
+            client = clientService.validateCredential(apiKey, apiSecret);
         }
         catch (CredentialException e) {
             return CredentialValidationResult.INVALID_RESULT;

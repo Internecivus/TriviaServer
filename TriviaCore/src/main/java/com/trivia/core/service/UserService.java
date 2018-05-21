@@ -15,6 +15,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.management.relation.Role;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,10 +23,11 @@ import java.util.HashSet;
 
 /**
  * There are many extra User selects and DRY violations going on here, and in the future, a custom RolesAllowed
- * annotation (or figuring out how to get the CallerPrincipal entities) and special entity graphs could fix this.
+ * annotation (and figuring out how to get the CallerPrincipal entities without an interceptor)
+ * and special entity graphs could fix this.
  */
 @Stateless
-@RolesAllowed({ RoleType.Name.PRINCIPAL })
+@RolesAllowed(RoleType.Name.MODERATOR)
 public class UserService extends Service<User> {
     @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
@@ -37,10 +39,6 @@ public class UserService extends Service<User> {
         super.SEARCHABLE_COLUMNS = SORTABLE_COLUMNS = new HashSet<>(Arrays.asList(User_.name, User_.id, User_.dateCreated, User_.providerKey));
     }
 
-    private void resetProvider() {
-
-    }
-
     @Override
     @RolesAllowed(RoleType.Name.ADMIN)
     public void deleteById(Object id) {
@@ -48,6 +46,7 @@ public class UserService extends Service<User> {
         logger.info("User id: {} was DELETED by user: {}", id, sessionContext.getCallerPrincipal().getName());
     }
 
+    @PermitAll
     public User validateProvider(String providerKey, String providerSecret) {
         User user = findByField(User_.providerKey, providerKey);
         if (Cryptography.validateMessage(providerSecret, user.getProviderSecret())) {
@@ -58,7 +57,16 @@ public class UserService extends Service<User> {
         }
     }
 
-    @RolesAllowed(RoleType.Name.MODERATOR)
+    private User demoteFromProvider(User user) {
+        // User is not a provider.
+        if (user.getProviderKey() == null) throw new EntityNotFoundException();
+
+        user.setProviderKey(null);
+        user.setProviderSecret(null);
+
+        return user;
+    }
+
     private User promoteToProvider(User user) {
         // User already is a provider.
         if (user.getProviderKey() != null) throw new EntityNotFoundException();
@@ -73,13 +81,16 @@ public class UserService extends Service<User> {
     }
 
     @Override
-    @PermitAll
+    @RolesAllowed(RoleType.Name.USER)
     public void update(User updatedUser) {
-        User oldUser = findById(updatedUser.getId());
+        User oldUser = findById(updatedUser.getId(), EntityView.UserDetails);
 
-        // We check if we only just now added the role of Provider. Hacky, but does the trick.
+        // We check if we only just now added the role of Provider, or if we just removed it. Hacky, but does the trick.
         if (updatedUser.hasRole(RoleType.PROVIDER) && !oldUser.hasRole(RoleType.PROVIDER)) {
             updatedUser = promoteToProvider(updatedUser);
+        }
+        else if (!updatedUser.hasRole(RoleType.PROVIDER) && oldUser.hasRole(RoleType.PROVIDER)) {
+            updatedUser = demoteFromProvider(updatedUser);
         }
 
         // Check if we need to update the password too.
@@ -102,8 +113,9 @@ public class UserService extends Service<User> {
         }
     }
 
-    @PermitAll
+    @RolesAllowed(RoleType.Name.USER)
     private void updatePassword(User user) {
+        // If the calling user is not an admin, it can only change its own password.
         if (!user.hasRole(RoleType.ADMIN)) {
             User callingUser = getByField(User_.name, sessionContext.getCallerPrincipal().getName());
             if (!callingUser.getId().equals(user.getId())) throw new NotAuthorizedException();
@@ -113,7 +125,6 @@ public class UserService extends Service<User> {
     }
 
     @Override
-    @RolesAllowed({RoleType.Name.MODERATOR, RoleType.Name.ADMIN}) // Because an admin who is not a moderator is still authorized to add roles.
     public User create(User newUser) {
         if (getByField(User_.name, newUser.getName()) != null) throw new EntityExistsException();
 
@@ -126,9 +137,9 @@ public class UserService extends Service<User> {
 
         newUser.setPassword(Cryptography.hashMessage(newUser.getPassword()));
 
-        super.create(newUser);
+        User createdUser = super.create(newUser);
         logger.info("User id: {} was CREATED by user: {}", newUser.getId(), sessionContext.getCallerPrincipal().getName());
-        return newUser;
+        return createdUser;
     }
 
     // We could check authorization programmatically but maybe we will be able to use this method later

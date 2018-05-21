@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 import java.util.*;
 
 
@@ -31,13 +32,23 @@ public class Category {
     private String description;
 
     @Basic
+    @NotNull
+    @Column(name = "date_created")
+    private Timestamp dateCreated;
+
+    @Basic
     @Column(name = "image")
-    @Size(max = 27, message = "{field.lengthMax}")
+    @Size(max = 28, message = "{field.lengthMax}")
     private String image;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Set<Question> questions = new HashSet<>();
+
+    @PrePersist
+    public void preCreate() {
+        this.dateCreated = new Timestamp(System.currentTimeMillis());
+    }
 
     public Integer getId() {
         return id;
@@ -45,6 +56,14 @@ public class Category {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = new Timestamp(dateCreated.getTime());
     }
 
     public String getName() {

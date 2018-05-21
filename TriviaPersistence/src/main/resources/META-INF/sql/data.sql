@@ -1,20 +1,20 @@
 INSERT INTO trivia_db.category
-  (name, description, image) VALUES
-  ('Computer Science', 'All about computers, programming languages and technology.', null),
-  ('Akcija', 'ggdg', 'ggg'),
-  ('Covjek', 'ggdg', 'ggg');
+  (name, description, image, date_created) VALUES
+  ('Computer Science', 'All about computers, programming languages and technology.', null, current_timestamp),
+  ('Akcija', 'ggdg', 'ggg', current_timestamp),
+  ('Covjek', 'ggdg', 'ggg', current_timestamp);
 
 INSERT INTO trivia_db.user
   (password, name, date_created) VALUES
   ('9999:fRW13T0sacHGM0a8y+sQEZweXaA=:vHoUpDMigcDMXGSd2SAQbnFzWZ4=', 'admin', '2018-05-12');
 
-INSERT INTO trivia_db.roleType
+INSERT INTO trivia_db.role
   (name) VALUES
-  ('ADMIN'), ('MODERATOR'), ('CONTRIBUTOR'), ('PROVIDER');
+  ('CONTRIBUTOR'), ('PROVIDER'), ('MODERATOR'), ('ADMIN');
 
 INSERT INTO trivia_db.user_role_map
   (user_id, role_id) VALUES
-  (1, 1), (1, 2), (1, 3);
+  (1, 1), (1, 3), (1, 4);
 
 INSERT INTO trivia_db.client
   (api_secret, api_key, date_created, user_id) VALUES

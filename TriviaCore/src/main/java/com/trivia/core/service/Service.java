@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 public abstract class Service<T> implements Repository<T> {
     @PersistenceContext(unitName = "TriviaDB")
     private EntityManager em;
+    private EntityManagerFactory emf;
 
     // TODO: Use annotations for some of this stuff.
     protected Integer PAGE_SIZE_DEFAULT = 20;

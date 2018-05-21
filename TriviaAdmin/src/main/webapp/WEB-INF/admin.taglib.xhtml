@@ -9,7 +9,7 @@
     <short-name>a</short-name>
 
     <tag>
-        <description>Navigation link</description>
+        <description>Navigation link.</description>
         <tag-name>link</tag-name>
         <source>tags/link.xhtml</source>
         <attribute>
@@ -36,6 +36,52 @@
             <name>partialMatch</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>Uploads an image and renders a thumbnail.</description>
+        <tag-name>imageUpload</tag-name>
+        <source>tags/imageUpload.xhtml</source>
+        <attribute>
+            <description>The id of the wrapping panelGroup. Defaults to imageUpload.</description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>The image as byte[] or InputStream.</description>
+            <name>image</name>
+            <required>true</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>The listener method for the upload of the image.</description>
+            <name>uploadListener</name>
+            <required>true</required>
+            <method-signature></method-signature>
+        </attribute>
+        <attribute>
+            <description>The listener method for the removal of the uploaded image.</description>
+            <name>removeListener</name>
+            <required>true</required>
+            <method-signature></method-signature>
+        </attribute>
+    </tag>
+    <tag>
+        <description>Renders an image thumbnail and dialog on click.</description>
+        <tag-name>imageThumbnail</tag-name>
+        <source>tags/imageThumbnail.xhtml</source>
+        <attribute>
+            <description>The id of the wrapping panelGroup. Defaults to imageThumbnail.</description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>The image as byte[] or InputStream.</description>
+            <name>image</name>
+            <required>true</required>
+            <type>java.lang.Object</type>
         </attribute>
     </tag>
 </facelet-taglib>

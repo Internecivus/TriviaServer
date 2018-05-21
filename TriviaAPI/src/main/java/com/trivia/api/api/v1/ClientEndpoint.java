@@ -10,8 +10,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/client")
 public class ClientEndpoint {
-    private @Inject
-    ClientService clientService;
+    private @Inject ClientService clientService;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -26,7 +25,7 @@ public class ClientEndpoint {
     }
 
     private Response registerClient(String providerKey, String providerSecret) {
-        Client clientEntity = clientService.register(providerKey, providerSecret);
+        Client clientEntity = clientService.registerFor(providerKey, providerSecret);
         return Response.status(Response.Status.OK).entity(clientEntity).build();
     }
 }

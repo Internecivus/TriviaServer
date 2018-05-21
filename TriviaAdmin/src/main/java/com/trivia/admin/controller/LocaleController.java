@@ -16,9 +16,7 @@ public class LocaleController implements Serializable {
     private Locale locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
 
     @PostConstruct
-    public void init() {
-
-    }
+    public void init() {}
 
     public Locale getLocale() {
         return locale;

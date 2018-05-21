@@ -74,16 +74,38 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Admin</web-resource-name>
+            <web-resource-name>Admin Web</web-resource-name>
             <url-pattern>/admin/*</url-pattern>
         </web-resource-collection>
 
         <auth-constraint>
             <role-name>ADMIN</role-name>
+            <role-name>CONTRIBUTOR</role-name>
+            <role-name>PROVIDER</role-name>
+            <role-name>MODERATOR</role-name>
         </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Admin Users</web-resource-name>
+            <url-pattern>/admin/users/*</url-pattern>
+        </web-resource-collection>
+
+        <auth-constraint>
+            <role-name>ADMIN</role-name>
+            <role-name>MODERATOR</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Admin</web-resource-name>
+            <url-pattern>*</url-pattern>
+        </web-resource-collection>
 
         <!--<user-data-constraint>-->
-            <!--<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
+        <!--<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
         <!--</user-data-constraint>-->
     </security-constraint>
 
