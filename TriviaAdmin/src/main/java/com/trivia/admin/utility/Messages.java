@@ -1,16 +1,23 @@
 package com.trivia.admin.utility;
 
+import com.trivia.admin.controller.LocaleController;
+import org.omnifaces.util.Faces;
+
+import javax.enterprise.inject.spi.Bean;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.util.Locale;
 
-
+// FIXME: For some reason the locale change is not recognised here
 // This is basically stolen from Omnifaces :-)
 // The only reason why we are using this instead of Omnifaces is that we want both details and the summary
 // of the messages without all the fussy configuration.
 public final class Messages {
     private static FacesMessage facesMessage;
 
-    private Messages() {};
+    private Messages() {}
 
     public static void addErrorGlobalFlash(String summary, String message) {
         facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, message);
@@ -133,7 +140,7 @@ public final class Messages {
         FacesContext.getCurrentInstance().addMessage(clientId, facesMessage);
     }
 
-    public static void addFlash() {
+    private static void addFlash() {
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
     }
 }

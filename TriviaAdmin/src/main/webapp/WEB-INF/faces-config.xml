@@ -13,6 +13,8 @@
             <base-name>i18n</base-name>
             <var>i18n</var>
         </resource-bundle>
+
+        <message-bundle>i18n</message-bundle>
     </application>
 
     <factory>

@@ -29,7 +29,6 @@ public class CategoryService extends Service<Category> {
     private EntityManager em;
     private @Resource SessionContext sessionContext;
     private @Inject Logger logger;
-    private @Inject UserService userService;
 
     public CategoryService() {
         super.DEFAULT_SORT_COLUMN = Category_.dateCreated;

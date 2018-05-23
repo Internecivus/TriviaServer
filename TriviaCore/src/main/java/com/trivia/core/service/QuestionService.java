@@ -122,7 +122,10 @@ public class QuestionService extends Service<Question> {
     @RolesAllowed(RoleType.Name.MODERATOR)
     public void deleteById(Object id) {
         Question question = findById(id);
-        ImageUtil.deleteImage(question.getImage());
+
+        if (question.getImage() != null) {
+            ImageUtil.deleteImage(question.getImage());
+        }
 
         em.remove(question);
         em.flush();

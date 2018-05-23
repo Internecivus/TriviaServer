@@ -63,7 +63,7 @@ public class ClientService extends Service<Client> {
     }
 
     public String generateNewAPISecret(Client client) {
-        if (sessionContext.isCallerInRole(RoleType.Name.PROVIDER)) {
+        if (!sessionContext.isCallerInRole(RoleType.Name.ADMIN)) {
             User user = userService.getByField(User_.name, sessionContext.getCallerPrincipal().getName());
             if (!user.isOwnerOf(client)) throw new NotAuthorizedException();
         }
@@ -109,7 +109,7 @@ public class ClientService extends Service<Client> {
     @Override
     public Client update(Client updatedClient) {
         Client client = findById(updatedClient.getId());
-        if (sessionContext.isCallerInRole(RoleType.Name.PROVIDER)) {
+        if (!sessionContext.isCallerInRole(RoleType.Name.ADMIN)) {
             User user = userService.getByField(User_.name, sessionContext.getCallerPrincipal().getName());
             if (!user.isOwnerOf(client)) throw new NotAuthorizedException();
         }
@@ -124,7 +124,7 @@ public class ClientService extends Service<Client> {
     @Override
     public void deleteById(Object id) {
         Client client = findById(id);
-        if (sessionContext.isCallerInRole(RoleType.Name.PROVIDER)) {
+        if (!sessionContext.isCallerInRole(RoleType.Name.ADMIN)) {
             User user = userService.getByField(User_.name, sessionContext.getCallerPrincipal().getName());
             if (!user.isOwnerOf(client)) throw new NotAuthorizedException();
         }

@@ -3,6 +3,7 @@ package com.trivia.admin.controller.client;
 import com.trivia.admin.controller.ViewController;
 import com.trivia.admin.resources.i18n;
 import com.trivia.admin.utility.Messages;
+import com.trivia.core.exception.InvalidCredentialException;
 import com.trivia.core.exception.NotAuthorizedException;
 import com.trivia.core.service.ClientService;
 import com.trivia.core.service.RoleService;
@@ -41,9 +42,10 @@ public class ClientCreateController implements Serializable {
 
     public void registerForCurrent() {
         Client client = clientService.registerForCurrent();
-        Messages.addInfoGlobal(i18n.get("success"), i18n.get("create.success"));
         this.clientSecret = client.getApiSecret();
         PrimeFaces.current().executeScript("PF('secretDialog').show();");
+        // FIXME: Does not show. Same goes for the ones below.
+        Messages.addInfoGlobalFlash(i18n.get("success"), i18n.get("create.success"));
     }
 
     public void registerFor() {
@@ -56,13 +58,13 @@ public class ClientCreateController implements Serializable {
             else {
                 client = clientService.registerFor(providerKey, providerSecret);
             }
-            Messages.addInfoGlobal(i18n.get("success"), i18n.get("create.success"));
             this.clientSecret = client.getApiSecret();
             PrimeFaces.current().executeScript("PF('secretDialog').show();");
+            Messages.addInfoGlobalFlash(i18n.get("success"), i18n.get("create.success"));
 
         }
-        catch (NotAuthorizedException e) {
-            Messages.addErrorGlobal(i18n.get("failure"),i18n.get("login.failure"));
+        catch (InvalidCredentialException e) {
+            Messages.addErrorGlobalFlash(i18n.get("failure"),i18n.get("login.failure"));
             facesContext.validationFailed();
         }
     }

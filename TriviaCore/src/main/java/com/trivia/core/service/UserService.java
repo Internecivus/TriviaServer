@@ -22,9 +22,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 /**
- * There are many extra User selects and DRY violations going on here, and in the future, a custom RolesAllowed
+ *      There are many extra User selects and DRY violations going on here, and in the future, a custom RolesAllowed
  * annotation (and figuring out how to get the CallerPrincipal entities without an interceptor)
  * and special entity graphs could fix this.
+ *
+ *      Another issue is the fact that we are heavily violating the SRP when checking for all kinds of different
+ * permissions to see if e.g. an admin or provider is being created and then doing extra checks for auth, etc., this will be
+ * fixed by doing this check in the main method (e.g. createUser) and then calling a specialized method according to need
+ * (e.g. createAdminUser, createProviderUser, etc.) - this would hopefully let the methods "breathe" a bit and would
+ * divide the responsibilities.
  */
 @Stateless
 @RolesAllowed(RoleType.Name.MODERATOR)
@@ -90,6 +96,14 @@ public class UserService extends Service<User> {
         User prePersistUser = new User(updatedUser);
         prePersistUser.setProviderSecret(null);
 
+        // TODO: TEST
+        if (oldUser.getName().equals("trivia")) throw new InvalidInputException("Editing the trivia user is not allowed in test mode.");
+
+        // Only admins can update other admins.
+        if (oldUser.hasRole(RoleType.ADMIN) && !sessionContext.isCallerInRole(RoleType.Name.ADMIN)) {
+            throw new NotAuthorizedException();
+        }
+
         // We check if we only just now added the role of Provider, or if we just removed it. Hacky, but does the trick.
         if (updatedUser.hasRole(RoleType.PROVIDER) && !oldUser.hasRole(RoleType.PROVIDER)) {
             updatedUser = promoteToProvider(updatedUser);
@@ -99,6 +113,13 @@ public class UserService extends Service<User> {
         }
         else if (!updatedUser.hasRole(RoleType.PROVIDER) && oldUser.hasRole(RoleType.PROVIDER)) {
             updatedUser = demoteFromProvider(updatedUser);
+        }
+
+        // Only admins can add the role admin.
+        if (updatedUser.hasRole(RoleType.ADMIN) && !oldUser.hasRole(RoleType.ADMIN)) {
+            if (!sessionContext.isCallerInRole(RoleType.Name.ADMIN)) {
+                throw new NotAuthorizedException();
+            }
         }
 
         // Check if we need to update the password too.
@@ -125,9 +146,9 @@ public class UserService extends Service<User> {
 
     @RolesAllowed(RoleType.Name.USER)
     private void updatePassword(User user) {
+        User callingUser = getByField(User_.name, sessionContext.getCallerPrincipal().getName());
         // If the calling user is not an admin, it can only change its own password.
-        if (!user.hasRole(RoleType.ADMIN)) {
-            User callingUser = getByField(User_.name, sessionContext.getCallerPrincipal().getName());
+        if (!callingUser.hasRole(RoleType.ADMIN)) {
             if (!callingUser.getId().equals(user.getId())) throw new NotAuthorizedException();
         }
 
@@ -146,8 +167,11 @@ public class UserService extends Service<User> {
             prePersistUser.setProviderSecret(newUser.getProviderSecret());
             newUser.setProviderSecret(Cryptography.hashMessage(newUser.getProviderSecret()));
         }
-        else if (newUser.hasRole(RoleType.ADMIN)) {
-            newUser = promoteToAdmin(newUser);
+        // Only admins can create admins.
+        if (newUser.hasRole(RoleType.ADMIN)) {
+            if (!sessionContext.isCallerInRole(RoleType.Name.ADMIN)) {
+                throw new NotAuthorizedException();
+            }
         }
 
         newUser.setPassword(Cryptography.hashMessage(newUser.getPassword()));
@@ -156,11 +180,5 @@ public class UserService extends Service<User> {
 
         logger.info("User id: {} was CREATED by user: {}", newUser.getId(), sessionContext.getCallerPrincipal().getName());
         return prePersistUser;
-    }
-
-    // We could check authorization programmatically but maybe we will be able to use this method later
-    @RolesAllowed(RoleType.Name.ADMIN)
-    private User promoteToAdmin(User admin) {
-        return admin;
     }
 }

@@ -21,7 +21,7 @@
                                                      styleClass="btn btn-primary"
                                                      type="submit"
                                                      value="#{i18n['action.register']}"
-                                                     ajax="false"/>
+                                                     update="client_create"/>
                                 </div>
                             </p:panelGrid>
                         </p:tab>
@@ -46,7 +46,7 @@
                                                      styleClass="btn btn-primary"
                                                      type="submit"
                                                      value="#{i18n['action.register']}"
-                                                     ajax="false"/>
+                                                     update="client_create"/>
                                     <p:commandButton value="#{i18n['action.reset']}"
                                                      styleClass="btn btn-secondary">
                                         <p:ajax update="client_create" resetValues="true"/>
@@ -62,7 +62,7 @@
                                          styleClass="btn btn-primary"
                                          type="submit"
                                          value="#{i18n['action.register']}"
-                                         ajax="false"/>
+                                         update="client_create"/>
                     </div>
                 </c:otherwise>
                 </c:choose>
