@@ -30,7 +30,7 @@ public class LoginController implements Serializable {
 
     @PostConstruct
     // For some way this throws a warning about init() using IOException, but a return of String (as in using the String
-    // redirect) is not even going to deploy. Is init() not supposed to redirect?
+    // redirect) is not even going to deploy. Is init() not supposed to redirect at all?
     public void init() throws IOException {
         user = new User();
 

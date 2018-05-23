@@ -17,7 +17,7 @@ public interface Repository<T> {
     <V> T findByField(SingularAttribute<T, V> field, V value, EntityView... entityViews);
     <V> T getByField(SingularAttribute<T, V> field, V value, EntityView... entityViews);
 
-    void update(T updatedEntity);
+    T update(T updatedEntity);
     T create(T newEntity);
 
     void deleteById(Object id);

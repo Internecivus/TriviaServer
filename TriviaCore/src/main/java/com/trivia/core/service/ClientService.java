@@ -51,17 +51,15 @@ public class ClientService extends Service<Client> {
 
         newClient.setApiKey(apiKey);
         newClient.setUser(provider);
-
-        // A trick to return the apiSecret before hashing, but with the trouble of being unable to return database properties such as ID.
-        newClient.setApiSecret(apiSecret);
-        Client prePersistClient = new Client(newClient);
         newClient.setApiSecret(Cryptography.hashMessage(apiSecret));
 
+        // A trick to return the secret before hashing.
         super.create(newClient);
+        newClient.setApiSecret(apiSecret);
+
         logger.info("Client id: {} was CREATED by user id: {}", newClient.getId(), sessionContext.getCallerPrincipal().getName());
 
-        // Return the unhashed.
-        return prePersistClient;
+        return newClient;
     }
 
     public String generateNewAPISecret(Client client) {
@@ -109,16 +107,18 @@ public class ClientService extends Service<Client> {
     }
 
     @Override
-    public void update(Client updatedClient) {
+    public Client update(Client updatedClient) {
         Client client = findById(updatedClient.getId());
         if (sessionContext.isCallerInRole(RoleType.Name.PROVIDER)) {
             User user = userService.getByField(User_.name, sessionContext.getCallerPrincipal().getName());
             if (!user.isOwnerOf(client)) throw new NotAuthorizedException();
         }
 
-        em.merge(client);
+        em.merge(updatedClient);
         em.flush();
         logger.info("Client id: {} was UPDATED by user id: {}", updatedClient.getId(), sessionContext.getCallerPrincipal().getName());
+
+        return updatedClient;
     }
 
     @Override

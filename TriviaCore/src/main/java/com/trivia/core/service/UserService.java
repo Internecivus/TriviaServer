@@ -75,19 +75,27 @@ public class UserService extends Service<User> {
         String providerSecret = Generator.generateSecureRandomString(Cryptography.API_KEY_LENGTH);
 
         user.setProviderKey(providerKey);
-        user.setProviderSecret(Cryptography.hashMessage(providerSecret));
+        user.setProviderSecret(providerSecret);
 
         return user;
     }
 
+    /**
+     * providerSecret will be set to null if it was not updated.
+     */
     @Override
     @RolesAllowed(RoleType.Name.USER)
-    public void update(User updatedUser) {
+    public User update(User updatedUser) {
         User oldUser = findById(updatedUser.getId(), EntityView.UserDetails);
+        User prePersistUser = new User(updatedUser);
+        prePersistUser.setProviderSecret(null);
 
         // We check if we only just now added the role of Provider, or if we just removed it. Hacky, but does the trick.
         if (updatedUser.hasRole(RoleType.PROVIDER) && !oldUser.hasRole(RoleType.PROVIDER)) {
             updatedUser = promoteToProvider(updatedUser);
+            // TODO: This is violating the SRP.
+            prePersistUser.setProviderSecret(updatedUser.getProviderSecret());
+            updatedUser.setProviderSecret(Cryptography.hashMessage(updatedUser.getProviderSecret()));
         }
         else if (!updatedUser.hasRole(RoleType.PROVIDER) && oldUser.hasRole(RoleType.PROVIDER)) {
             updatedUser = demoteFromProvider(updatedUser);
@@ -100,6 +108,8 @@ public class UserService extends Service<User> {
         em.flush();
 
         logger.info("User id: {} was UPDATED by user: {}", updatedUser.getId(), sessionContext.getCallerPrincipal().getName());
+
+        return prePersistUser;
     }
 
     @PermitAll
@@ -128,8 +138,13 @@ public class UserService extends Service<User> {
     public User create(User newUser) {
         if (getByField(User_.name, newUser.getName()) != null) throw new EntityExistsException();
 
+        User prePersistUser = new User(newUser);
+
         if (newUser.hasRole(RoleType.PROVIDER)) {
             newUser = promoteToProvider(newUser);
+            // TODO: This is violating the SRP.
+            prePersistUser.setProviderSecret(newUser.getProviderSecret());
+            newUser.setProviderSecret(Cryptography.hashMessage(newUser.getProviderSecret()));
         }
         else if (newUser.hasRole(RoleType.ADMIN)) {
             newUser = promoteToAdmin(newUser);
@@ -137,9 +152,10 @@ public class UserService extends Service<User> {
 
         newUser.setPassword(Cryptography.hashMessage(newUser.getPassword()));
 
-        User createdUser = super.create(newUser);
+        super.create(newUser);
+
         logger.info("User id: {} was CREATED by user: {}", newUser.getId(), sessionContext.getCallerPrincipal().getName());
-        return createdUser;
+        return prePersistUser;
     }
 
     // We could check authorization programmatically but maybe we will be able to use this method later

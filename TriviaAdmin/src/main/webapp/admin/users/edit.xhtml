@@ -72,6 +72,14 @@
                     </div>
                 </div>
             </p:panel>
+
+            <p:dialog id="secretDialog" widgetVar="secretDialog" width="500px" header="#{i18n['warning']}" resizable="false" dynamic="true">
+                <p:ajax event="close" listener="#{userEditController.closeSecretDialog}"/>
+
+                <h:outputFormat value="#{i18n['auth.showApiSecret']}">
+                    <f:param value="#{userEditController.providerSecret}"/>
+                </h:outputFormat>
+            </p:dialog>
         </h:form>
     </ui:define>
 </ui:composition>

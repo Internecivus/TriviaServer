@@ -7,6 +7,8 @@ import com.trivia.core.service.RoleService;
 import com.trivia.core.service.UserService;
 import com.trivia.persistence.entity.Role;
 import com.trivia.persistence.entity.User;
+import org.primefaces.PrimeFaces;
+import org.primefaces.event.CloseEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -14,6 +16,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityExistsException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +30,7 @@ public class UserCreateController implements Serializable {
     private transient @Inject FacesContext facesContext;
     private User user;
     private Set<Role> rolesAvailable;
+    private String providerSecret;
 
     @PostConstruct
     public void init() {
@@ -35,9 +39,25 @@ public class UserCreateController implements Serializable {
     }
 
     public String create() {
-        userService.create(user);
+        User createdUser = userService.create(user);
+        providerSecret = createdUser.getProviderSecret();
+        if (providerSecret != null) {
+            PrimeFaces.current().executeScript("PF('secretDialog').show();");
+            return null;
+        }
+        else {
+            Messages.addInfoGlobalFlash(i18n.get("success"), i18n.get("create.success"));
+            return facesContext.getViewRoot().getViewId() + "?faces-redirect=true";
+        }
+    }
+
+    public void closeSecretDialog(CloseEvent closeEvent) throws IOException {
         Messages.addInfoGlobalFlash(i18n.get("success"), i18n.get("create.success"));
-        return facesContext.getViewRoot().getViewId() + "?faces-redirect=true";
+        facesContext.getExternalContext().redirect(facesContext.getViewRoot().getViewId() + "?faces-redirect=true");
+    }
+
+    public String getProviderSecret() {
+        return providerSecret;
     }
 
     public User getUser() {

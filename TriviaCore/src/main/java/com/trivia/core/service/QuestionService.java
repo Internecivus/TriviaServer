@@ -102,7 +102,7 @@ public class QuestionService extends Service<Question> {
 
     @Override
     @RolesAllowed({RoleType.Name.CONTRIBUTOR})
-    public void update(Question updatedQuestion) {
+    public Question update(Question updatedQuestion) {
         Question oldQuestion = findById(updatedQuestion.getId());
         ImageUtil.validateImagePath(oldQuestion.getImage(), updatedQuestion.getImage());
 
@@ -114,6 +114,8 @@ public class QuestionService extends Service<Question> {
         em.merge(updatedQuestion);
         em.flush();
         logger.info("Question id: {} was UPDATED by user: {}", updatedQuestion.getId(), sessionContext.getCallerPrincipal().getName());
+
+        return updatedQuestion;
     }
 
     @Override

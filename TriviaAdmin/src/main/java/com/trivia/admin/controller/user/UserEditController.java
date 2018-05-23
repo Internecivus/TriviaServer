@@ -11,6 +11,7 @@ import com.trivia.persistence.entity.Role;
 import com.trivia.persistence.entity.User;
 import org.omnifaces.util.Faces;
 import org.primefaces.PrimeFaces;
+import org.primefaces.event.CloseEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -36,6 +37,7 @@ public class UserEditController implements Serializable {
     private User user;
     private Set<Role> rolesAvailable;
     private String newPassword;
+    private String providerSecret;
 
     @PostConstruct
     public void init() {
@@ -53,9 +55,26 @@ public class UserEditController implements Serializable {
 
     public void update() {
         if (newPassword != null) user.setPassword(newPassword);
-        userService.update(user);
-        Messages.addWarnGlobal(i18n.get("success"), i18n.get("auth.update")); // TODO: Needs a more hard reset. This is a security issue too.
+        User updatedUser = userService.update(user);
+
+        // Was not updated.
+        if (updatedUser.getProviderSecret() == null) {
+            Messages.addWarnGlobal(i18n.get("success"), i18n.get("auth.update")); // TODO: Needs a more hard reset. This is a security issue too.
+            PrimeFaces.current().scrollTo("messages");
+        }
+        else {
+            providerSecret = updatedUser.getProviderSecret();
+            PrimeFaces.current().executeScript("PF('secretDialog').show();");
+        }
+    }
+
+    public void closeSecretDialog(CloseEvent closeEvent) {
+        Messages.addWarnGlobal(i18n.get("success"), i18n.get("auth.update"));
         PrimeFaces.current().scrollTo("messages");
+    }
+
+    public String getProviderSecret() {
+        return providerSecret;
     }
 
     public User getUser() {

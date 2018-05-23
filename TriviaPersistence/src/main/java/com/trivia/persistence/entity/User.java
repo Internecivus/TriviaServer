@@ -68,6 +68,17 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Client> clients = new HashSet<>();
 
+    public User() {}
+
+    public User(User other) {
+        this.password = other.password;
+        this.name = other.name;
+        this.providerKey = other.providerKey;
+        this.providerSecret = other.providerSecret;
+        this.dateCreated = other.dateCreated;
+        this.roles = other.roles;
+    }
+
     @PrePersist
     public void preCreate() {
         this.dateCreated = new Timestamp(System.currentTimeMillis());

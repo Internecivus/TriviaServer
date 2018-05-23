@@ -44,14 +44,22 @@
                                      styleClass="btn btn-primary"
                                      type="submit"
                                      value="#{i18n['action.create']}"
-                                     ajax="false"
-                                     validateClient="true"/>
+                                     update="user_create"
+                                     validateClient="true"/> <!--ajax="false"-->
                     <p:commandButton value="#{i18n['action.reset']}"
                                      styleClass="btn btn-secondary">
                         <p:ajax update="user_create" resetValues="true"/>
                     </p:commandButton>
                 </div>
             </p:panel>
+
+            <p:dialog id="secretDialog" widgetVar="secretDialog" width="500px" header="#{i18n['warning']}" resizable="false" dynamic="true">
+                <p:ajax event="close" listener="#{userCreateController.closeSecretDialog}"/>
+
+                <h:outputFormat value="#{i18n['auth.showApiSecret']}">
+                    <f:param value="#{userCreateController.providerSecret}"/>
+                </h:outputFormat>
+            </p:dialog>
         </h:form>
     </ui:define>
 </ui:composition>

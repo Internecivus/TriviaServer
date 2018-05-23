@@ -128,10 +128,11 @@ public abstract class Service<T> implements Repository<T> {
         return entity;
     }
 
-    public void update(T updatedEntity) {
+    public T update(T updatedEntity) {
         findById(getIdFieldOf(updatedEntity));
         em.merge(updatedEntity);
         em.flush();
+        return updatedEntity;
     }
 
     public void deleteById(Object id) {

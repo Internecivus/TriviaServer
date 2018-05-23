@@ -103,12 +103,14 @@ public class CategoryService extends Service<Category> {
     }
 
     @Override
-    public void update(Category updatedCategory) {
+    public Category update(Category updatedCategory) {
         Category oldCategory = findById(updatedCategory.getId());
         ImageUtil.validateImagePath(oldCategory.getImage(), updatedCategory.getImage());
 
         em.merge(updatedCategory);
         em.flush();
         logger.info("Category id: {} was UPDATED by user: {}", oldCategory.getId(), sessionContext.getCallerPrincipal().getName());
+
+        return updatedCategory;
     }
 }

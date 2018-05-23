@@ -1,15 +1,12 @@
 package com.trivia.admin.utility;
 
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
-
 
 
 // This is basically stolen from Omnifaces :-)
-// The only reason why we are using this instead of Omnifaces is that we want both details and the summary of the messages.
+// The only reason why we are using this instead of Omnifaces is that we want both details and the summary
+// of the messages without all the fussy configuration.
 public final class Messages {
     private static FacesMessage facesMessage;
 
