@@ -9,13 +9,9 @@
         <class>com.trivia.persistence.entity.User</class>
         <class>com.trivia.persistence.entity.Role</class>
         <class>com.trivia.persistence.entity.Category</class>
+        <class>com.trivia.persistence.entity.Client</class>
         <shared-cache-mode>UNSPECIFIED</shared-cache-mode>
         <properties>
-            <!--<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/Trivia"/>-->
-            <!--<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>-->
-            <!--<property name="hibernate.connection.username" value="root"/>-->
-            <!--<property name="hibernate.connection.password" value="niniva01"/>-->
-
             <property name="hibernate.archive.autodetection" value="class"/>
             <property name="javax.persistence.validation.mode" value="none"/>
             <property name="hibernate.validator.apply_to_ddl" value="false"/>
