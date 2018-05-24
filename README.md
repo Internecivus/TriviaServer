@@ -1,8 +1,10 @@
-#H1 TriviaServer
+#H1
+TriviaServer
 TODO: Change password for admin
 
 
-#H2 TL;DR
+#H2
+TL;DR
 * **Web sučelje se može vidjeti na:  (testno korisničko ime i lozinka su `trivia` i `trivia`)**
 
 * **Gotova klijentska aplikacija se može preuzeti [ovdje]() (potrebno je imati instaliranu Java koja se može naći [ovdje](https://java.com/en/download/)).**
@@ -15,7 +17,8 @@ TODO: Change password for admin
     *
     *
 
-#H2 Opis
+#H2
+Opis
 Ovo je prvi dio projekta za Objektno Programiranje 2 i Uvod u XML programiranje.
 Sadrži server Trivia platforme s kojim komunicira klijentska aplikacija. Organiziran je u .EAR u kojem se nalaze 3 modula i jedna zajednička bibioloteka.
 
@@ -26,7 +29,8 @@ Kod klijentske aplikacije dostupan je na [GitHubu](https://github.com/Interneciv
 
 
 
-#H2 Upute
+#H2
+Upute
 1. Downloadajte i instalirajte [Java JDK 10](http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html)
 (pazite da možda IDE koji koristite nema manju bundelanu verziju, u suprotnom morate promijeniti verziju ili Maven zastavice).
 
