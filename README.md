@@ -2,7 +2,6 @@
 TODO: Change password for admin
 
 
-
 # H2 TL;DR
 *Web sučelje se može vidjeti na:  (testno korisničko ime i lozinka su `trivia` i `trivia`)*
 *Gotova klijentska aplikacija se može preuzeti [ovdje]() (Potrebno je imati instaliranu Java koja se može naći [ovdje](https://java.com/en/download/).*
@@ -58,11 +57,13 @@ Kod klijentske aplikacije dostupan je na https://github.com/Internecivus/TriviaC
             </security>
         </datasource>```
     Pod `datasources` pod `<subsystem xmlns="urn:jboss:domain:datasources:5.0">`
-    S time da morate zamijeniti BAZA_IME, USERNAME i PASSWORD s vašim podacima.
-    Imajte na umu da je u persistence.xml datasource referenciran sa trivia_db_remote.
+    S time da morate zamijeniti `BAZA_IME`, `USERNAME` i `PASSWORD` s vašim podacima.
+    Imajte na umu da je u `persistence.xml` datasource referenciran sa `trivia_db_remote`.
 
-4. Pokrenite Wildfly sa -Dee8.preview.mode=true
+4. S obzirom na to da je kolona `slike` za entitet `Kategorija` označena sa `NOT NULL`, a na vašem lokalnom računalu nema slika koje su referencirane u `TriviaPersistence/src/main/resources/META-INF/sql/data.sql`, morate ili onemogućiti dodavanje SQL podataka (u `persistence.xml`) ili vrijednosti slika postaviti u `NULL` te promijeniti tu kolonu u `NULLABLE` (`TriviaPersistence/src/main/resources/META-INF/sql/create.sql`)
+ili 
 
+5. Pokrenite Wildfly sa `-Dee8.preview.mode=true`
 
 
 
