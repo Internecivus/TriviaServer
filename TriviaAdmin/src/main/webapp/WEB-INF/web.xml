@@ -39,6 +39,7 @@
     </context-param>
 
 
+
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
@@ -67,10 +68,6 @@
         <exception-type>java.lang.Throwable</exception-type>
         <location>/WEB-INF/errors/500.xhtml</location>
     </error-page>
-    <context-param>
-        <param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
-        <param-value>true</param-value>
-    </context-param>
 
 
     <!--Security-->

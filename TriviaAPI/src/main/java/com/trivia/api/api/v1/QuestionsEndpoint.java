@@ -20,13 +20,14 @@ public class QuestionsEndpoint {
     public Response getQuestions(
             @MatrixParam("category") String category,
             @MatrixParam("sortField") String sortField,
-            @QueryParam("page") Integer pageCurrent,
-            @QueryParam("size") Integer pageSize,
+            @QueryParam("page") int pageCurrent,
+            @QueryParam("size") int pageSize,
             @QueryParam("sortOrder") SortOrder sortOrder,
             @QueryParam("search") String searchString,
             @DefaultValue("false") @QueryParam("random") boolean random
     ) {
         List<?> questions;
+
         if (random) {
             questions = questionService.toDto(questionService.getRandomFromCategory(pageSize, category));
         }

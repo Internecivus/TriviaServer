@@ -192,9 +192,9 @@ public abstract class Service<T> implements Repository<T> {
         TypedQuery<T> typedQuery = em.createQuery(query);
         //TODO: TEMPORARY - read below
         lastCount = typedQuery.getResultList().size();
-        pageSize = (pageSize >= 0 && pageSize <= PAGE_SIZE_MAX) ? pageSize : PAGE_SIZE_DEFAULT;
+        pageSize = (pageSize > 0 && pageSize <= PAGE_SIZE_MAX) ? pageSize : PAGE_SIZE_DEFAULT;
         typedQuery.setMaxResults(pageSize);
-        pageCurrent = (pageCurrent >= 0) ? pageCurrent : 0;
+        pageCurrent = (pageCurrent > 0) ? pageCurrent : 1;
         typedQuery.setFirstResult(pageCurrent * pageSize - pageSize);
 
         typedQuery.setHint("javax.persistence.fetchgraph", getEntityGraph(entityViews));

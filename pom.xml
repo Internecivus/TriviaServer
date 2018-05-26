@@ -75,16 +75,16 @@ https://stackoverflow.com/questions/43574426/how-to-resolve-java-lang-noclassdef
                     <fork>true</fork>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.wildfly.plugins</groupId>
-                <artifactId>wildfly-maven-plugin</artifactId>
-                <version>1.2.1.Final</version>
-                <configuration>
-                    <hostname>localhost</hostname>
-                    <username>_USERNAME_</username>
-                    <password>_PASSWORD_</password>
-                </configuration>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.wildfly.plugins</groupId>-->
+                <!--<artifactId>wildfly-maven-plugin</artifactId>-->
+                <!--<version>1.2.1.Final</version>-->
+                <!--<configuration>-->
+                    <!--<hostname>localhost</hostname>-->
+                    <!--<username>_USERNAME_</username>-->
+                    <!--<password>_PASSWORD_</password>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 </project>

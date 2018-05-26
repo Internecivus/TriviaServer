@@ -56,7 +56,7 @@
                     <unpackTypes>rar,war,ejb</unpackTypes>
                     <version>8</version>
                     <defaultLibBundleDir>lib</defaultLibBundleDir>
-                    <generateApplicationXml>true</generateApplicationXml>
+                    <generateApplicationXml>false</generateApplicationXml>
                     <initializeInOrder>true</initializeInOrder>
                     <modules>
                         <jarModule>
@@ -89,6 +89,6 @@
             </plugin>
         </plugins>
         <!--TODO: Needs to have an .ear extension because of Intellij exploded deployment rules. Remove in production.-->
-        <finalName>TriviaEAR</finalName>
+        <finalName>TriviaEAR.ear</finalName>
     </build>
 </project>

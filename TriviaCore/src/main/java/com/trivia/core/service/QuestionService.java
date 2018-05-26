@@ -40,7 +40,7 @@ public class QuestionService extends Service<Question> {
     private @Resource SessionContext sessionContext;
 
     private final static Integer PAGE_SIZE_RANDOM_DEFAULT = 10;
-    private final static Integer PAGE_SIZE_RANDOM_MAX = 20;
+    private final static Integer PAGE_SIZE_RANDOM_MAX = 50;
 
     public QuestionService() {
         super.DEFAULT_SORT_COLUMN = Question_.dateCreated;
@@ -52,12 +52,12 @@ public class QuestionService extends Service<Question> {
     }
 
     @RolesAllowed(RoleType.Name.CLIENT)
-    public List<Question> getRandomFromCategory(Integer size, String category) {
+    public List<Question> getRandomFromCategory(int size, String category) {
         if (category == null || category.trim().length() < 1) throw new InvalidInputException("No category specified.");
-        if (size == null) size = PAGE_SIZE_RANDOM_DEFAULT;
-        if (size < 1) throw new InvalidInputException(String.format("Size must be a positive number (is %d).", size));
+        if (size == 0) size = PAGE_SIZE_RANDOM_DEFAULT;
+        if (size < 0) throw new InvalidInputException(String.format("Size must be a positive number (is %d).", size));
         if (size > PAGE_SIZE_RANDOM_MAX) throw new InvalidInputException(String.format(
-                    "Size is over the maximum allowed size that is %d (given %d).", PAGE_SIZE_RANDOM_MAX, size));
+                    "Size is over the maximum allowed size of %d (is %d).", PAGE_SIZE_RANDOM_MAX, size));
 
         List<Question> questions = new ArrayList<>();
         CriteriaBuilder builder = em.getCriteriaBuilder();
