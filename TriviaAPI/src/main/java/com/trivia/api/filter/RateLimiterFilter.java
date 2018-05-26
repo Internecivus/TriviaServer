@@ -25,7 +25,6 @@ public class RateLimiterFilter implements Filter {
         String userName = request.getRemoteAddr();
 
         if (visitorsRequests.containsKey(userName)) {
-
             visitorsRequests.put(userName, visitorsRequests.get(userName) + 1);
         } else {
             visitorsRequests.put(userName, 1L);

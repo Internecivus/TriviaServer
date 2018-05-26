@@ -45,7 +45,8 @@ Kod klijentske aplikacije dostupan je na [GitHubu](https://github.com/Interneciv
     i
     * dodajte `<file name="image-content" path="${jboss.home.dir}/standalone/data/images"/>`
     unutar `<handlers>` pod `<subsystem xmlns="urn:jboss:domain:undertow:5.0">`
-    da omogućite pristupanju slikama putem `/images`. *Napomena: u produkciji se datoteke ne bi trebale spašavati u folder aplikacijskog servera*.
+    da omogućite pristupanju slikama putem `/images`. Stvorite direktorij `images` u `WILDFLY_FOLDER/standalone/data`. *Napomena: u produkciji se datoteke ne bi trebale spašavati u folder aplikacijskog servera!*.
+    
     * Dodajte vlastiti datasource po sljedećem principu:
         ```xml
       <datasource jndi-name="java:jboss/datasources/trivia_db_remote pool-name="trivia_db_local">
@@ -63,10 +64,9 @@ Kod klijentske aplikacije dostupan je na [GitHubu](https://github.com/Interneciv
       </datasource>
         ```
     pod `<datasources>` pod `<subsystem xmlns="urn:jboss:domain:datasources:5.0">`, s time da morate zamijeniti `BAZA_IME`, `USERNAME` i `PASSWORD` s vašim podacima. 
-    *Napomena: U `persistence.xml` datasource je referenciran sa `trivia_db_remote` jer se na live serveru koristi Amazon RDS.*
+    *Napomena: U `persistence.xml` datasource je referenciran sa `trivia_db_remote` jer se na live serveru koristi Amazon RDS!*
     
-    5. Dodajte 
-    ```xml
+    * dodajte ```xml
     <driver name="mysql" module="com.mysql.jdbc">
         <driver-class>com.mysql.jdbc.Driver</driver-class>
     </driver>
@@ -76,7 +76,7 @@ Kod klijentske aplikacije dostupan je na [GitHubu](https://github.com/Interneciv
 
 5. S obzirom na to da na vašem lokalnom računalu nema slika koje su referencirane u `TriviaPersistence/src/main/resources/META-INF/sql/data.sql`, morate onemogućiti dodavanje tih SQL podataka (ručnim brisanjem ili putem `persistence.xml`).
 
-6. Pokrenite Wildfly sa `-Dee8.preview.mode=true`.
+5. Pokrenite Wildfly sa `-Dee8.preview.mode=true`.
 
 
 

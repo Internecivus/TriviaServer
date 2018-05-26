@@ -88,7 +88,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <!--Needs to have an .ear extension because of Intellij exploded deployment rules. Remove in production.-->
-        <finalName>TriviaEAR.ear</finalName>
+        <!--TODO: Needs to have an .ear extension because of Intellij exploded deployment rules. Remove in production.-->
+        <finalName>TriviaEAR</finalName>
     </build>
 </project>
