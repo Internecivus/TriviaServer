@@ -34,7 +34,9 @@ Kod klijentske aplikacije dostupan je na [GitHubu](https://github.com/Interneciv
 
 2. Downloadajte i instalirajte [Maven](https://maven.apache.org). (Opcionalno možete koristiti IDE koji ima integraciju s Mavenom kao što je IntelliJ)
 
-3. U WILDFLY_FOLDER/standalone/configuration/standalone.xml:
+3. Downloadajte i intalirajte [MySQL](https://www.mysql.com).
+
+4. U WILDFLY_FOLDER/standalone/configuration/standalone.xml:
     
     * dodajte `<default-security-domain value="jaspitest"/>` pod `<subsystem xmlns="urn:jboss:domain:ejb3:5.0">` da omogućite EJBContext sigurnosne provjere.
     
@@ -45,7 +47,8 @@ Kod klijentske aplikacije dostupan je na [GitHubu](https://github.com/Interneciv
     unutar `<handlers>` pod `<subsystem xmlns="urn:jboss:domain:undertow:5.0">`
     da omogućite pristupanju slikama putem `/images`. *Napomena: u produkciji se datoteke ne bi trebale spašavati u folder aplikacijskog servera*.
     * Dodajte vlastiti datasource po sljedećem principu:
-        ```<datasource jndi-name="java:jboss/datasources/trivia_db_remote pool-name="trivia_db_local">
+        ```xml
+      <datasource jndi-name="java:jboss/datasources/trivia_db_remote pool-name="trivia_db_local">
             <connection-url>jdbc:mysql://localhost:3306/BAZA_IME</connection-url>
             <driver>mysql</driver>
             <pool>
@@ -57,13 +60,23 @@ Kod klijentske aplikacije dostupan je na [GitHubu](https://github.com/Interneciv
                 <user-name>USERNAME</user-name>
                 <password>PASSWORD</password>
             </security>
-        </datasource>
-    pod `<datasources>` pod `<subsystem xmlns="urn:jboss:domain:datasources:5.0">`, s time da morate zamijeniti `BAZA_IME`, `USERNAME` i `PASSWORD` s vašim podacima.
-    Imajte na umu da je u `persistence.xml` datasource referenciran sa `trivia_db_remote`.
+      </datasource>
+        ```
+    pod `<datasources>` pod `<subsystem xmlns="urn:jboss:domain:datasources:5.0">`, s time da morate zamijeniti `BAZA_IME`, `USERNAME` i `PASSWORD` s vašim podacima. 
+    *Napomena: U `persistence.xml` datasource je referenciran sa `trivia_db_remote` jer se na live serveru koristi Amazon RDS.*
+    
+    5. Dodajte 
+    ```xml
+    <driver name="mysql" module="com.mysql.jdbc">
+        <driver-class>com.mysql.jdbc.Driver</driver-class>
+    </driver>
+    ```
+    pod `<drivers>` pod `<subsystem xmlns="urn:jboss:domain:datasources:5.0">`. Također morate dodati i sam [driver](https://dev.mysql.com/downloads/connector/j/5.1.html) pod gore naveden path u Wildfly folder (ne zaboravite i module.xml!).
+                                    
 
-4. S obzirom na to da je kolona `slike` za entitet `Kategorija` označena sa `NOT NULL`, a na vašem lokalnom računalu nema slika koje su referencirane u `TriviaPersistence/src/main/resources/META-INF/sql/data.sql`, morate ili onemogućiti dodavanje SQL podataka (u `persistence.xml`) ili vrijednosti slika postaviti u `NULL` te promijeniti tu kolonu u `NULLABLE` (`TriviaPersistence/src/main/resources/META-INF/sql/create.sql`)
+5. S obzirom na to da na vašem lokalnom računalu nema slika koje su referencirane u `TriviaPersistence/src/main/resources/META-INF/sql/data.sql`, morate onemogućiti dodavanje tih SQL podataka (ručnim brisanjem ili putem `persistence.xml`).
 
-5. Pokrenite Wildfly sa `-Dee8.preview.mode=true`.
+6. Pokrenite Wildfly sa `-Dee8.preview.mode=true`.
 
 
 
