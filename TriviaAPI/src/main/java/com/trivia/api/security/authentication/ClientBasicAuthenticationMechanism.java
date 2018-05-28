@@ -10,32 +10,38 @@ import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.HttpHeaders;
 import java.util.Base64;
 import java.util.List;
+
 
 
 @AutoApplySession
 @ApplicationScoped
 public class ClientBasicAuthenticationMechanism implements HttpAuthenticationMechanism {
-    @Inject private IdentityStore identityStore;
+    private @Inject IdentityStore identityStore;
 
     @Override
     public AuthenticationStatus validateRequest(HttpServletRequest request, HttpServletResponse response, HttpMessageContext context) {
-        Credential credential = getCredential(request);
+        Credential credential = getCredential(request.getHeader(HttpHeaders.AUTHORIZATION));
 
-        if (credential != null) {
-            CredentialValidationResult credentialValidationResult = identityStore.validate(credential);
-            if (credentialValidationResult.getStatus() == CredentialValidationResult.Status.VALID) {
-                return context.notifyContainerAboutLogin(credentialValidationResult);
-            }
+        if (!context.isProtected()) {
+            return context.doNothing();
         }
+        else {
+            if (credential != null) {
+                CredentialValidationResult credentialValidationResult = identityStore.validate(credential);
+                if (credentialValidationResult.getStatus() == CredentialValidationResult.Status.VALID) {
+                    return context.notifyContainerAboutLogin(credentialValidationResult);
+                }
+            }
 
-        response.setHeader("WWW-Authenticate","Basic realm=\"Trivia API\"");
-        return context.responseUnauthorized();
+            response.setHeader(HttpHeaders.WWW_AUTHENTICATE,"Basic realm=\"Trivia API\"");
+            return context.responseUnauthorized();
+        }
     }
 
-    private Credential getCredential(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader("Authorization");
+    public Credential getCredential(String authorizationHeader) {
         if (authorizationHeader != null && authorizationHeader.startsWith("Basic ")) {
             try {
                 String[] headerCredential = new String(Base64.getDecoder().decode(authorizationHeader.substring(6))).split(":");

@@ -5,6 +5,7 @@ package com.trivia.persistence.dto.client;
 import java.util.List;
 
 public class QuestionClient {
+    private int id;
     private String question;
     private String answerFirst;
     private String answerSecond;
@@ -12,6 +13,14 @@ public class QuestionClient {
     private String answerFourth;
     private int answerCorrect;
     private String image;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getAnswerCorrect() {
         return answerCorrect;

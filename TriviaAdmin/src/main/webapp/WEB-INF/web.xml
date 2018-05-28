@@ -100,14 +100,14 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Admin</web-resource-name>
-            <url-pattern>*</url-pattern>
+            <web-resource-name>Admin Public</web-resource-name>
+            <url-pattern>/public/*</url-pattern>
         </web-resource-collection>
-
-        <!--<user-data-constraint>-->
-        <!--<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
-        <!--</user-data-constraint>-->
     </security-constraint>
+
+    <!--<user-data-constraint>-->
+    <!--<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
+    <!--</user-data-constraint>-->
 
     <security-role>
         <role-name>CONTRIBUTOR</role-name>

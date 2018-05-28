@@ -8,7 +8,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>REST API</web-resource-name>
-            <url-pattern>*</url-pattern>
+            <url-pattern>/*</url-pattern>
         </web-resource-collection>
 
         <auth-constraint>
@@ -16,14 +16,14 @@
         </auth-constraint>
 
         <!--<user-data-constraint>-->
-        <!--<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
+            <!--<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
         <!--</user-data-constraint>-->
     </security-constraint>
 
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>REST API Registration</web-resource-name>
-            <url-pattern>/register</url-pattern>
+            <url-pattern>/client</url-pattern>
         </web-resource-collection>
     </security-constraint>
 
