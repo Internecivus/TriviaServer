@@ -55,6 +55,7 @@ public class ClientService extends Service<Client> {
 
         // A trick to return the secret before hashing.
         super.create(newClient);
+        em.detach(newClient);
         newClient.setApiSecret(apiSecret);
 
         logger.info("Client id: {} was CREATED by user id: {}", newClient.getId(), sessionContext.getCallerPrincipal().getName());

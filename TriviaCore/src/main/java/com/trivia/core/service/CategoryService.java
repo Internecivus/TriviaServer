@@ -90,8 +90,8 @@ public class CategoryService extends Service<Category> {
         Category oldCategory = findById(updatedCategory.getId());
         ImageUtil.validateImagePath(oldCategory.getImage(), updatedCategory.getImage());
 
-        // There is already an image present, and since we are adding a new one we need to delete it.
-        ImageUtil.deleteImage(oldCategory.getImage());
+        // If there is already an image present (and there should be) and we are adding a new one, we need to delete it.
+        if (oldCategory.getImage() != null) ImageUtil.deleteImage(oldCategory.getImage());
 
         // Create and set the new image.
         updatedCategory.setImage(ImageUtil.saveImage(imageStream));

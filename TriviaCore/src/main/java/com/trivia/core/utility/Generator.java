@@ -20,10 +20,10 @@ public final class Generator {
 
         Random random = new Random();
 
-        while (set.size() < size - 1) {
+        while (set.size() < size) {
             int randomNumber = random.nextInt(boundsMax);
             if (set.add(randomNumber)) {
-                array[set.size()] = randomNumber;
+                array[set.size() - 1] = randomNumber;
             }
         }
 

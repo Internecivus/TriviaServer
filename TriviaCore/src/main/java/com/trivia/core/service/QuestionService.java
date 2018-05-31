@@ -73,12 +73,12 @@ public class QuestionService extends Service<Question> {
         if (size > count) throw new InvalidInputException(String.format(
                     "Not enough questions matching category '%s' found (found only %d out of %d).", category, count, size));
 
+        // Would this be faster with RAND()?
         int[] randomUniqueArray = Generator.generateRandomUniqueArray(size, count);
         for (int i = 0; i < randomUniqueArray.length; i++) {
             typedQuery.setFirstResult(randomUniqueArray[i]).setMaxResults(1);
             questions.addAll(typedQuery.getResultList()); // This logic is unfortunate.
         }
-
         return questions;
     }
 
