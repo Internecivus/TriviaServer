@@ -4,6 +4,8 @@ import com.trivia.core.exception.InvalidInputException;
 import com.trivia.core.exception.SystemException;
 import com.trivia.core.utility.Generator;
 import com.trivia.core.utility.ImageUtil;
+import com.trivia.persistence.dto.client.CategoryClient;
+import com.trivia.persistence.dto.client.ImageData;
 import com.trivia.persistence.dto.client.QuestionClient;
 import com.trivia.persistence.entity.*;
 import org.modelmapper.ModelMapper;
@@ -158,8 +160,18 @@ public class QuestionService extends Service<Question> {
     }
 
     @PermitAll
-    public List<QuestionClient> toDto(List<Question> entities) {
+    public List<QuestionClient> toDto(List<Question> questions) {
         ModelMapper mapper = new ModelMapper();
-        return mapper.map(entities, new TypeToken<List<QuestionClient>>() {}.getType());
+        List<QuestionClient> questionsDto = mapper.map(questions, new TypeToken<List<QuestionClient>>() {
+        }.getType());
+
+        for (int i = 0; i < questionsDto.size(); i++) {
+            String imagePath = new ArrayList<>(questions).get(i).getImage();
+            if (imagePath != null) {
+                questionsDto.get(i).setImageData(new ImageData(imagePath, ImageUtil.getDateCreated(imagePath)));
+            }
+        }
+
+        return questionsDto;
     }
 }

@@ -1,10 +1,12 @@
 package com.trivia.persistence.dto.client;
 
+import java.util.Date;
+
 public class CategoryClient {
     private int id;
     private String name;
     private String description;
-    private String image;
+    private ImageData imageData;
 
     public int getId() {
         return id;
@@ -30,11 +32,11 @@ public class CategoryClient {
         this.description = description;
     }
 
-    public String getImage() {
-        return image;
+    public ImageData getImageData() {
+        return imageData;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageData(ImageData imageData) {
+        this.imageData = imageData;
     }
 }

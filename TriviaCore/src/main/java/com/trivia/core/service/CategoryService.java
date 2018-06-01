@@ -5,6 +5,7 @@ import com.trivia.core.utility.ImageUtil;
 import com.trivia.core.utility.SortOrder;
 import com.trivia.persistence.EntityView;
 import com.trivia.persistence.dto.client.CategoryClient;
+import com.trivia.persistence.dto.client.ImageData;
 import com.trivia.persistence.entity.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -20,7 +21,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.io.InputStream;
+import java.io.ObjectStreamClass;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Stateless
 @RolesAllowed(RoleType.Name.MODERATOR)
@@ -75,9 +79,19 @@ public class CategoryService extends Service<Category> {
     }
 
     @PermitAll
-    public Collection<CategoryClient> toDto(Collection<Category> entities) {
+    public Collection<CategoryClient> toDto(Collection<Category> categories) {
         ModelMapper mapper = new ModelMapper();
-        return mapper.map(entities, new TypeToken<List<CategoryClient>>() {}.getType());
+        List<CategoryClient> categoriesDto = mapper.map(categories, new TypeToken<List<CategoryClient>>() {
+        }.getType());
+
+        for (int i = 0; i < categoriesDto.size(); i++) {
+            String imagePath = new ArrayList<>(categories).get(i).getImage();
+            if (imagePath != null) {
+                categoriesDto.get(i).setImageData(new ImageData(imagePath, ImageUtil.getDateCreated(imagePath)));
+            }
+        }
+
+        return categoriesDto;
     }
 
     @Override

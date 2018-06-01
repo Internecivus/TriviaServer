@@ -9,6 +9,8 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageInputStream;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.BasicAttributes;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -17,8 +19,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 
 // TODO: This has to be refactored, pay attention to performance.
@@ -136,6 +140,16 @@ public final class ImageUtil extends FileUtil {
             // New image path is not equal but is not null either (would mark it for delete).
             newPath != null && !newPath.equals(oldPath)) {
             throw new InvalidInputException("Manual image path change is not allowed! Pass the image as an argument to create or set null to delete.");
+        }
+    }
+
+    public static Date getDateCreated(String imagePath) {
+        try {
+            BasicFileAttributes attributes = Files.readAttributes(
+                Paths.get(IMAGE_DIR + "/" + imagePath), BasicFileAttributes.class);
+            return new Date(attributes.creationTime().toMillis());
+        } catch (IOException e) {
+            throw new SystemException(e);
         }
     }
 }

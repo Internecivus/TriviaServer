@@ -7,9 +7,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:c="http://java.sun.com/jstl/core"
       xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      lang="#{localeController.language}">
 <f:view locale="#{localeController.locale}">
     <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <h:outputScript library="javascript" name="utility.js"/>
         <title>
             <ui:insert name="title">

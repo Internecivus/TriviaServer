@@ -12,7 +12,7 @@ public class QuestionClient {
     private String answerThird;
     private String answerFourth;
     private int answerCorrect;
-    private String image;
+    private ImageData imageData;
 
     public int getId() {
         return id;
@@ -70,11 +70,11 @@ public class QuestionClient {
         this.answerFourth = answerFourth;
     }
 
-    public String getImage() {
-        return image;
+    public ImageData getImageData() {
+        return imageData;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageData(ImageData imageData) {
+        this.imageData = imageData;
     }
 }
