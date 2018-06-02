@@ -5,7 +5,7 @@
 
 * **Gotova klijentska aplikacija (Windows, Mac, JAR) može se preuzeti [ovdje](https://drive.google.com/open?id=1T8gWPx-VExwQIaaZ3CYgZUo1xAIyfBu7).**
 
-* **API sučelje se može vidjeti [ovdje](http://ec2-52-14-48-132.us-east-2.compute.amazonaws.com:8080/api).**
+* **API sučelje se može vidjeti [ovdje](http://ec2-52-14-48-132.us-east-2.compute.amazonaws.com:8080/api) (testno korisničko ime i lozinka su `trivia` i `trivia`).**
 
     Neki primjeri upita su:
     * /api/questions

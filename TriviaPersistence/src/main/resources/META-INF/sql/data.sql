@@ -10,7 +10,7 @@ INSERT INTO trivia_db.user
 
 INSERT into trivia_db.client
   (api_key, api_secret, date_created, user_id) VALUES
-  ('admin', '9999:fRW13T0sacHGM0a8y+sQEZweXaA=:vHoUpDMigcDMXGSd2SAQbnFzWZ4=', current_date, 1);
+  ('trivia', '9999:RFKzY5goL/vDLAPuneqyZBRk+kA=:w0+mbBB8INJ+3FaraLl90j5iRT0=', current_date, 1);
 
 INSERT INTO trivia_db.role
   (name) VALUES
