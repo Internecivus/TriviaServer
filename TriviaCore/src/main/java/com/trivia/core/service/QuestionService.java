@@ -66,9 +66,9 @@ public class QuestionService extends Service<Question> {
         CriteriaQuery<Question> query = builder.createQuery(Question.class);
         Root<Question> root = query.from(Question.class);
         query.select(root);
-
         Join join = root.join(Question_.categories);
-        builder.equal(join.get(Category_.name), category);
+        query.where(builder.equal(join.get(Category_.name), category));
+
         TypedQuery<Question> typedQuery = em.createQuery(query);
 
         int count = typedQuery.getResultList().size();

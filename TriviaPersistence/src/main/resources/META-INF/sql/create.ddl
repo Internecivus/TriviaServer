@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
-  `description` varchar(64) NOT NULL,
+  `description` varchar(128) NOT NULL,
   `image` varchar(28) DEFAULT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`)

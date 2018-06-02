@@ -28,7 +28,7 @@ public class Category {
     @Basic
     @Column(name = "description")
     @NotBlank(message = "{field.required}")
-    @Size(max = 64, message = "{field.lengthMax}")
+    @Size(max = 128, message = "{field.lengthMax}")
     private String description;
 
     @Basic
