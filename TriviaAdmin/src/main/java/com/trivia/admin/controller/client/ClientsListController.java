@@ -3,10 +3,8 @@ package com.trivia.admin.controller.client;
 import com.trivia.admin.resources.i18n;
 import com.trivia.admin.utility.Messages;
 import com.trivia.core.service.ClientService;
-import com.trivia.core.service.UserService;
 import com.trivia.persistence.EntityView;
 import com.trivia.persistence.entity.Client;
-import com.trivia.persistence.entity.User;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 

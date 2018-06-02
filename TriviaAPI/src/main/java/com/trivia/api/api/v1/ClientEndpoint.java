@@ -4,13 +4,10 @@ import com.trivia.api.security.authentication.ClientBasicAuthenticationMechanism
 import com.trivia.core.service.ClientService;
 import com.trivia.persistence.entity.Client;
 
-import javax.faces.annotation.RequestMap;
 import javax.inject.Inject;
-import javax.security.enterprise.credential.Credential;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Base64;
 

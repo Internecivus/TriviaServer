@@ -4,25 +4,18 @@ import com.trivia.admin.controller.ViewController;
 import com.trivia.admin.resources.i18n;
 import com.trivia.admin.utility.Messages;
 import com.trivia.core.exception.InvalidCredentialException;
-import com.trivia.core.exception.NotAuthorizedException;
 import com.trivia.core.service.ClientService;
 import com.trivia.core.service.RoleService;
-import com.trivia.core.service.UserService;
 import com.trivia.persistence.entity.Client;
-import com.trivia.persistence.entity.Role;
 import com.trivia.persistence.entity.RoleType;
-import com.trivia.persistence.entity.User;
 import org.primefaces.PrimeFaces;
-import org.primefaces.context.RequestContext;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.Set;
 
 
 

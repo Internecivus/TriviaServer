@@ -2,14 +2,11 @@ package com.trivia.admin.controller.user;
 
 import com.trivia.admin.resources.i18n;
 import com.trivia.admin.utility.Messages;
-import com.trivia.core.exception.BusinessException;
-import com.trivia.core.exception.NotAuthorizedException;
 import com.trivia.core.service.RoleService;
 import com.trivia.core.service.UserService;
 import com.trivia.persistence.EntityView;
 import com.trivia.persistence.entity.Role;
 import com.trivia.persistence.entity.User;
-import org.omnifaces.util.Faces;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.CloseEvent;
 
@@ -19,11 +16,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.security.enterprise.SecurityContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 

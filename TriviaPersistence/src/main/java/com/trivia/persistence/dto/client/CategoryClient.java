@@ -1,7 +1,5 @@
 package com.trivia.persistence.dto.client;
 
-import java.util.Date;
-
 public class CategoryClient {
     private int id;
     private String name;

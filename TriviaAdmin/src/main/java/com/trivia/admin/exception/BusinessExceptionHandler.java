@@ -4,12 +4,12 @@ import com.trivia.admin.resources.i18n;
 import com.trivia.admin.utility.Messages;
 import com.trivia.core.exception.*;
 
-import java.util.Iterator;
 import javax.ejb.EJBAccessException;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
+import java.util.Iterator;
 
 /**
  * To my knowledge, there isn't a better way to map application exceptions to faces messages.

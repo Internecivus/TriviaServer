@@ -11,7 +11,8 @@ import javax.inject.Inject;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
 
 
 @ApplicationScoped

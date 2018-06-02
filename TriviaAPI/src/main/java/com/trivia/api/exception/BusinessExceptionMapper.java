@@ -2,7 +2,6 @@ package com.trivia.api.exception;
 
 import com.trivia.core.exception.*;
 
-import javax.ejb.EJBAccessException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;

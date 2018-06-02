@@ -1,14 +1,7 @@
 package com.trivia.admin.utility;
 
-import com.trivia.admin.controller.LocaleController;
-import org.omnifaces.util.Faces;
-
-import javax.enterprise.inject.spi.Bean;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.util.Locale;
 
 // FIXME: For some reason the locale change is not recognised here
 // This is basically stolen from Omnifaces :-)

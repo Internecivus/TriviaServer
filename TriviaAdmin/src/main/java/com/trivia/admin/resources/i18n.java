@@ -1,11 +1,6 @@
 package com.trivia.admin.resources;
 
-import com.trivia.admin.controller.LocaleController;
-
-import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;

@@ -4,7 +4,6 @@ import com.trivia.persistence.entity.Role;
 import com.trivia.persistence.entity.RoleType;
 
 import javax.annotation.Resource;
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -12,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Stateless

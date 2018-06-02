@@ -1,8 +1,8 @@
 package com.trivia.admin.controller.auth;
 
+import com.trivia.admin.resources.i18n;
 import com.trivia.admin.utility.Messages;
 import com.trivia.persistence.entity.User;
-import com.trivia.admin.resources.i18n;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;

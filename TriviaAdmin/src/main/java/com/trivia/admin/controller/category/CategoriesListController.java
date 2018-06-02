@@ -3,10 +3,7 @@ package com.trivia.admin.controller.category;
 import com.trivia.admin.resources.i18n;
 import com.trivia.admin.utility.Messages;
 import com.trivia.core.service.CategoryService;
-import com.trivia.core.service.QuestionService;
-import com.trivia.persistence.EntityView;
 import com.trivia.persistence.entity.Category;
-import com.trivia.persistence.entity.Question;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 

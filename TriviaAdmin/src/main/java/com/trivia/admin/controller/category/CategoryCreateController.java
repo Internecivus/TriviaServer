@@ -4,14 +4,11 @@ import com.trivia.admin.resources.i18n;
 import com.trivia.admin.utility.Messages;
 import com.trivia.core.exception.InvalidInputException;
 import com.trivia.core.service.CategoryService;
-import com.trivia.core.service.QuestionService;
 import com.trivia.core.utility.ImageUtil;
 import com.trivia.persistence.entity.Category;
-import com.trivia.persistence.entity.Question;
 import org.apache.commons.io.IOUtils;
 import org.omnifaces.util.Ajax;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.UploadedFile;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -22,7 +19,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.Set;
 
 
 @Named

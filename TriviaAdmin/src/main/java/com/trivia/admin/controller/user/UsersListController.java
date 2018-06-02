@@ -2,8 +2,6 @@ package com.trivia.admin.controller.user;
 
 import com.trivia.admin.resources.i18n;
 import com.trivia.admin.utility.Messages;
-import com.trivia.core.exception.BusinessException;
-import com.trivia.core.exception.NotAuthorizedException;
 import com.trivia.core.service.UserService;
 import com.trivia.persistence.EntityView;
 import com.trivia.persistence.entity.User;
@@ -15,7 +13,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

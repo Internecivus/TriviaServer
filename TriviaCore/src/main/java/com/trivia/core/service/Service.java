@@ -1,7 +1,6 @@
 package com.trivia.core.service;
 
 import com.trivia.core.exception.EntityNotFoundException;
-import com.trivia.core.exception.ExceptionInterceptor;
 import com.trivia.core.exception.InvalidInputException;
 import com.trivia.core.utility.SortOrder;
 import com.trivia.persistence.EntityView;
@@ -9,11 +8,13 @@ import com.trivia.persistence.entity.RoleType;
 import org.modelmapper.internal.util.TypeResolver;
 
 import javax.annotation.security.RolesAllowed;
-import javax.interceptor.Interceptors;
 import javax.persistence.*;
 import javax.persistence.criteria.*;
 import javax.persistence.metamodel.SingularAttribute;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**

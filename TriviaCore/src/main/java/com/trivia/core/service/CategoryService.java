@@ -1,12 +1,13 @@
 package com.trivia.core.service;
 
-import com.trivia.core.exception.InvalidInputException;
 import com.trivia.core.utility.ImageUtil;
 import com.trivia.core.utility.SortOrder;
 import com.trivia.persistence.EntityView;
 import com.trivia.persistence.dto.client.CategoryClient;
 import com.trivia.persistence.dto.client.ImageData;
-import com.trivia.persistence.entity.*;
+import com.trivia.persistence.entity.Category;
+import com.trivia.persistence.entity.Category_;
+import com.trivia.persistence.entity.RoleType;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
@@ -21,10 +22,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.io.InputStream;
-import java.io.ObjectStreamClass;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Stateless
 @RolesAllowed(RoleType.Name.MODERATOR)

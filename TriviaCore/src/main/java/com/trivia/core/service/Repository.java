@@ -4,7 +4,6 @@ import com.trivia.core.utility.SortOrder;
 import com.trivia.persistence.EntityView;
 
 import javax.persistence.metamodel.SingularAttribute;
-import java.util.Collection;
 import java.util.List;
 
 /**

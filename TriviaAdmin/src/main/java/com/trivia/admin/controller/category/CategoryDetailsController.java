@@ -1,11 +1,9 @@
 package com.trivia.admin.controller.category;
 
 import com.trivia.core.service.CategoryService;
-import com.trivia.core.service.QuestionService;
 import com.trivia.core.utility.ImageUtil;
 import com.trivia.persistence.EntityView;
 import com.trivia.persistence.entity.Category;
-import com.trivia.persistence.entity.Question;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -15,8 +13,6 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 @Named
 @ViewScoped

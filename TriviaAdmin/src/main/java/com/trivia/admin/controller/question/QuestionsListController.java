@@ -1,12 +1,12 @@
 package com.trivia.admin.controller.question;
 
+import com.trivia.admin.resources.i18n;
 import com.trivia.admin.utility.Messages;
 import com.trivia.core.service.QuestionService;
 import com.trivia.persistence.EntityView;
 import com.trivia.persistence.entity.Question;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
-import com.trivia.admin.resources.i18n;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;

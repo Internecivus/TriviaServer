@@ -1,9 +1,5 @@
 package com.trivia.core.exception;
 
-import javax.ejb.ApplicationException;
-
-
-
 public class SystemException extends BusinessException {
     public SystemException() {
         super();

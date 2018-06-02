@@ -1,10 +1,8 @@
 package com.trivia.core.service;
 
 import com.trivia.core.exception.InvalidInputException;
-import com.trivia.core.exception.SystemException;
 import com.trivia.core.utility.Generator;
 import com.trivia.core.utility.ImageUtil;
-import com.trivia.persistence.dto.client.CategoryClient;
 import com.trivia.persistence.dto.client.ImageData;
 import com.trivia.persistence.dto.client.QuestionClient;
 import com.trivia.persistence.entity.*;
@@ -21,10 +19,11 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-import java.io.IOException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;

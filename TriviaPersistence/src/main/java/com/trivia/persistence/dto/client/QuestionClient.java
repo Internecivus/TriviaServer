@@ -1,9 +1,6 @@
 package com.trivia.persistence.dto.client;
 
 
-
-import java.util.List;
-
 public class QuestionClient {
     private int id;
     private String question;

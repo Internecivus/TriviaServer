@@ -1,12 +1,12 @@
 package com.trivia.core.service;
 
 import com.trivia.core.exception.*;
-import com.trivia.core.exception.EntityExistsException;
-import com.trivia.core.exception.EntityNotFoundException;
 import com.trivia.core.security.Cryptography;
 import com.trivia.core.utility.Generator;
 import com.trivia.persistence.EntityView;
-import com.trivia.persistence.entity.*;
+import com.trivia.persistence.entity.RoleType;
+import com.trivia.persistence.entity.User;
+import com.trivia.persistence.entity.User_;
 import org.slf4j.Logger;
 
 import javax.annotation.Resource;
@@ -15,9 +15,8 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.management.relation.Role;
-import javax.persistence.*;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Arrays;
 import java.util.HashSet;
 

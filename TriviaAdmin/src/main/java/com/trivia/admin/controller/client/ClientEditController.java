@@ -3,12 +3,8 @@ package com.trivia.admin.controller.client;
 import com.trivia.admin.resources.i18n;
 import com.trivia.admin.utility.Messages;
 import com.trivia.core.service.ClientService;
-import com.trivia.core.service.RoleService;
-import com.trivia.core.service.UserService;
 import com.trivia.persistence.EntityView;
 import com.trivia.persistence.entity.Client;
-import com.trivia.persistence.entity.Role;
-import com.trivia.persistence.entity.User;
 import org.primefaces.PrimeFaces;
 
 import javax.annotation.PostConstruct;
@@ -19,7 +15,6 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Set;
 
 
 @Named

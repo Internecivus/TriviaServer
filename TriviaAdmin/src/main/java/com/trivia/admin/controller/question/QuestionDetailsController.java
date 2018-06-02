@@ -4,7 +4,6 @@ import com.trivia.core.service.QuestionService;
 import com.trivia.core.utility.ImageUtil;
 import com.trivia.persistence.EntityView;
 import com.trivia.persistence.entity.Question;
-import org.apache.commons.io.IOUtils;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -12,12 +11,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 @Named
 @ViewScoped

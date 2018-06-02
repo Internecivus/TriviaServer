@@ -1,7 +1,7 @@
 package com.trivia.admin.controller.log;
 
-import com.trivia.core.utility.LogUtil;
 import com.trivia.core.utility.LogType;
+import com.trivia.core.utility.LogUtil;
 import com.trivia.persistence.dto.server.Log;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;

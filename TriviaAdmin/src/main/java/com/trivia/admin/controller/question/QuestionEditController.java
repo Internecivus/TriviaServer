@@ -2,9 +2,7 @@ package com.trivia.admin.controller.question;
 
 import com.trivia.admin.resources.i18n;
 import com.trivia.admin.utility.Messages;
-import com.trivia.core.exception.BusinessException;
 import com.trivia.core.exception.InvalidInputException;
-import com.trivia.core.exception.NotAuthorizedException;
 import com.trivia.core.service.CategoryService;
 import com.trivia.core.service.QuestionService;
 import com.trivia.core.utility.ImageUtil;
@@ -14,22 +12,18 @@ import com.trivia.persistence.entity.Question;
 import org.apache.commons.io.IOUtils;
 import org.omnifaces.util.Ajax;
 import org.primefaces.PrimeFaces;
-import org.primefaces.context.PrimeExternalContext;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.UploadedFile;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Set;
 
 

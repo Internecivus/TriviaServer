@@ -1,7 +1,5 @@
 package com.trivia.admin.controller;
 
-import org.primefaces.PrimeFaces;
-
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
