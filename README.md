@@ -21,7 +21,6 @@ Server je namijenjen pokretanju na Wildfly 12.0.0.Final aplikacijskom serveru u 
 
 Klijentska aplikacija dostupna je na [GitHubu](https://github.com/Internecivus/TriviaClient).
 
-
 ## Upute
 1. Downloadajte i instalirajte [Java JDK 10](http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html)
 (pazite da možda IDE koji koristite nema manju bundelanu verziju, u suprotnom morate promijeniti verziju ili Maven zastavice).
