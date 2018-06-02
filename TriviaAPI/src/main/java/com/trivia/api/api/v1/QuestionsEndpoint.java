@@ -32,7 +32,8 @@ public class QuestionsEndpoint {
             questions = questionService.toDto(questionService.getRandomFromCategory(pageSize, category));
         }
         else {
-            questions = questionService.toDto(questionService.findAll(pageCurrent, pageSize, sortField, sortOrder, searchString));
+            // TODO: Only for testing!
+            questions = questionService.findAll(pageCurrent, pageSize, sortField, sortOrder, searchString);
         }
 
         return Response.status(Response.Status.OK).entity(questions).build();

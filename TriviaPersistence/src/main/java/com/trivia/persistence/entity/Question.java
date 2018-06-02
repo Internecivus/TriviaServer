@@ -1,7 +1,7 @@
 package com.trivia.persistence.entity;
 
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.trivia.persistence.EntityView;
 
 import javax.persistence.*;
@@ -88,16 +88,18 @@ public class Question {
     @Size(max = 28, message = "{field.lengthMax}")
     private String image;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private User user;
 
+    @JsonIgnore
     @NotEmpty(message = "{collection.required}")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name="question_category_map",
-            joinColumns = {@JoinColumn(name = "question_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")}
+        name="question_category_map",
+        joinColumns = {@JoinColumn(name = "question_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")}
     )
     private Set<Category> categories = new HashSet<>();
 

@@ -3,17 +3,17 @@ TODO: Change password for admin
 
 
 ## TL;DR
-* **Web sučelje se može vidjeti na:  (testno korisničko ime i lozinka su `trivia` i `trivia`)**
+* **Web sučelje se može vidjeti [ovdje](http://ec2-52-14-48-132.us-east-2.compute.amazonaws.com:8080/public/login) (testno korisničko ime i lozinka su `trivia` i `trivia`).**
 
-* **Gotova klijentska aplikacija se može preuzeti [ovdje]() (potrebno je imati instaliranu Java koja se može naći [ovdje](https://java.com/en/download/)).**
+* **Gotova klijentska aplikacija može se preuzeti [ovdje]().**
 
-* **API sučelje se može vidjeti na:**
+* **API sučelje se može vidjeti [ovdje](http://ec2-52-14-48-132.us-east-2.compute.amazonaws.com:8080/api)**
 
     Neki primjeri upita su:
-    *
-    *
-    *
-    *
+    * /api/questions
+    * /api/questions;category=History?random=true&size=5
+    * /api/questions?page=1&size=10&sortField=id&sortOrder=desc&search=Java
+    * /api/categories
 
 ## Opis
 Ovo je prvi dio projekta za Objektno Programiranje 2 i Uvod u XML programiranje.
