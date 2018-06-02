@@ -1,13 +1,11 @@
 # TriviaServer
-TODO: Change password for admin
-
 
 ## TL;DR
 * **Web sučelje se može vidjeti [ovdje](http://ec2-52-14-48-132.us-east-2.compute.amazonaws.com:8080/public/login) (testno korisničko ime i lozinka su `trivia` i `trivia`).**
 
-* **Gotova klijentska aplikacija može se preuzeti [ovdje]().**
+* **Gotova klijentska aplikacija (Windows, Mac, JAR) može se preuzeti [ovdje](https://drive.google.com/open?id=1T8gWPx-VExwQIaaZ3CYgZUo1xAIyfBu7).**
 
-* **API sučelje se može vidjeti [ovdje](http://ec2-52-14-48-132.us-east-2.compute.amazonaws.com:8080/api)**
+* **API sučelje se može vidjeti [ovdje](http://ec2-52-14-48-132.us-east-2.compute.amazonaws.com:8080/api).**
 
     Neki primjeri upita su:
     * /api/questions
@@ -17,13 +15,11 @@ TODO: Change password for admin
 
 ## Opis
 Ovo je prvi dio projekta za Objektno Programiranje 2 i Uvod u XML programiranje.
-Sadrži server Trivia platforme s kojim komunicira klijentska aplikacija. Organiziran je u .EAR u kojem se nalaze 3 modula i jedna zajednička bibioloteka.
+Sadrži server Trivia platforme s kojim komunicira klijentska aplikacija. Organiziran je u .EAR u kojem se nalaze 3 modula i jedna zajednička biblioteka.
 
 Server je namijenjen pokretanju na Wildfly 12.0.0.Final aplikacijskom serveru u Java EE 8 preview modu.
 
-Kod klijentske aplikacije dostupan je na [GitHubu](https://github.com/Internecivus/TriviaClient).
-
-
+Klijentska aplikacija dostupna je na [GitHubu](https://github.com/Internecivus/TriviaClient).
 
 
 ## Upute
@@ -32,7 +28,7 @@ Kod klijentske aplikacije dostupan je na [GitHubu](https://github.com/Interneciv
 
 1. Downloadajte i instalirajte [Wildfly 12.0.0.Final](http://wildfly.org).
 
-2. Downloadajte i instalirajte [Maven](https://maven.apache.org). (Opcionalno možete koristiti IDE koji ima integraciju s Mavenom kao što je IntelliJ)
+2. Downloadajte i instalirajte [Maven](https://maven.apache.org) (opcionalno možete koristiti IDE koji ima integraciju s Mavenom kao što je IntelliJ).
 
 3. Downloadajte i intalirajte [MySQL](https://www.mysql.com).
 
@@ -47,9 +43,9 @@ Kod klijentske aplikacije dostupan je na [GitHubu](https://github.com/Interneciv
     unutar `<handlers>` pod `<subsystem xmlns="urn:jboss:domain:undertow:5.0">`
     da omogućite pristupanju slikama putem `/images`. Stvorite direktorij `images` u `WILDFLY_FOLDER/standalone/data`. *Napomena: u produkciji se datoteke ne bi trebale spašavati u folder aplikacijskog servera!*.
     
-    * Dodajte vlastiti datasource po sljedećem principu:
+    * dodajte vlastiti datasource po sljedećem principu:
         ```xml
-      <datasource jndi-name="java:jboss/datasources/trivia_db_remote pool-name="trivia_db_local">
+      <datasource jndi-name="java:jboss/datasources/trivia_db_remote" pool-name="trivia_db_remote">
             <connection-url>jdbc:mysql://localhost:3306/BAZA_IME</connection-url>
             <driver>mysql</driver>
             <pool>
@@ -66,12 +62,14 @@ Kod klijentske aplikacije dostupan je na [GitHubu](https://github.com/Interneciv
     pod `<datasources>` pod `<subsystem xmlns="urn:jboss:domain:datasources:5.0">`, s time da morate zamijeniti `BAZA_IME`, `USERNAME` i `PASSWORD` s vašim podacima. 
     *Napomena: U `persistence.xml` datasource je referenciran sa `trivia_db_remote` jer se na live serveru koristi Amazon RDS!*
     
-    * dodajte ```xml
+    * dodajte
+    ```xml
     <driver name="mysql" module="com.mysql.jdbc">
         <driver-class>com.mysql.jdbc.Driver</driver-class>
     </driver>
     ```
-    pod `<drivers>` pod `<subsystem xmlns="urn:jboss:domain:datasources:5.0">`. Također morate dodati i sam [driver](https://dev.mysql.com/downloads/connector/j/5.1.html) pod gore naveden path u Wildfly folder (ne zaboravite i module.xml!).
+    pod `<drivers>` pod `<subsystem xmlns="urn:jboss:domain:datasources:5.0">`.
+    Također morate dodati i sam [driver](https://dev.mysql.com/downloads/connector/j/5.1.html) pod gore naveden path u Wildfly direktorij modula (ne zaboravite i module.xml!).
                                     
 
 5. S obzirom na to da na vašem lokalnom računalu nema slika koje su referencirane u `TriviaPersistence/src/main/resources/META-INF/sql/data.sql`, morate onemogućiti dodavanje tih SQL podataka (ručnim brisanjem ili putem `persistence.xml`).
