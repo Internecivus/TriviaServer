@@ -24,6 +24,6 @@ public class i18n {
         if (bundle.containsKey(key)) {
             message = bundle.getString(message);
         }
-        return new String(((parameters.length == 0) ? message : String.format(message, parameters)).getBytes(), StandardCharsets.UTF_8);
+        return (parameters.length == 0) ? message : String.format(message, parameters);
     }
 }

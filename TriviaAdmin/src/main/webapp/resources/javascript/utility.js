@@ -4,4 +4,4 @@ window.onload = function scrollToInputError() {
         var first = elements[0];
         if (first) first.scrollIntoView();
     }
-}
+};
