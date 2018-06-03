@@ -61,7 +61,7 @@ INSERT INTO trivia_db.question
 
     ('In which country was the Magna Carta written?', 'USA', 'England', 'France', 'Italy',
     2, 1, null, current_timestamp, null, null),
-    ('Who did Caligula make consul', 'A tomato plant', 'His son', 'A homeless man', 'A horse',
+    ('Who did Caligula make consul?', 'A tomato plant', 'His son', 'A homeless man', 'A horse',
     4, 1, null, current_timestamp, null, null),
     ('How long did the shortest war in history last?', 'Half an hour', '1 day', '1 week', '1 month',
     1, 1, null, current_timestamp, null, null),
