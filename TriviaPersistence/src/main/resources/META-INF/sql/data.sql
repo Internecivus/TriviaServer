@@ -35,7 +35,7 @@ INSERT INTO trivia_db.question
     4, 1, null, current_timestamp, null, null),
   ('Which is the most used programming language (according to TIOBE)?', 'Java', 'C++', 'C#', 'Javascript',
     1, 1, null, current_timestamp, null, 'img_17683032077377249832.png'),
-  ('Which is considered the most expensive internet domain, valued at just under $50 million?', 'internet.com', 'carinsurance.com', 'sex.com', 'hotels.com',
+  ('What is considered to be the most expensive internet domain, valued at just under $50 million?', 'internet.com', 'carinsurance.com', 'sex.com', 'hotels.com',
     2, 1, null, current_timestamp, null, null),
   ('Who is widely considered to be the first computer programmer?', 'Donald Knuth', 'Bill Gates', 'Charles Babbage', 'Ada Lovelace',
     4, 1, null, current_timestamp, null, null),
@@ -50,14 +50,13 @@ INSERT INTO trivia_db.question
   ('Which password did the U.S. use for it''s nuclear missiles controls for over eight years?', '0123456789', 'password', ' 00000000', 'strikerussia',
     3, 1, null, current_timestamp, null, 'img_11108316137734411686.png'),
   ('What does CAPTCHA stand for?', 'Can Anyone Precisely Tell Characters Herein Ascertained?', ' CAPture CHAracters', 'Completely Automated Public Turing test to tell Computers and Humans Apart', 'Complex Automation Provider for Training Computers How to Apply intelligence',
-    4, 1, null, current_timestamp, null, null),
+    3, 1, null, current_timestamp, null, null),
   ('What was the "dirty dozen" a name for?', 'First 12 computer viruses', 'Unused prototypes of a 1st edition iPhone', 'Developers who made the first IBM computer', '12 most wanted dark web websites',
     3, 1, null, current_timestamp, null, null),
   ('What was the original name for Windows?', 'Orange', 'Interface Manager', 'Automaton', 'Computer Screen 1.0',
     2, 1, null, current_timestamp, null, null),
   ('What was the first registered domain name?', 'www.symbolics.com', 'www.internet.com', 'www.com.com', 'wwww.domains.com',
     1, 1, null, current_timestamp, null, 'img_870650305982202907.png'),
-
 
     ('In which country was the Magna Carta written?', 'USA', 'England', 'France', 'Italy',
     2, 1, null, current_timestamp, null, null),
@@ -68,15 +67,34 @@ INSERT INTO trivia_db.question
     ('What did the Romans use for mouthwash?', 'Animal blood', 'Honey', 'Vinegar', 'Human urine',
     4, 1, null, current_timestamp, null, null),
     ('Who was offered the presidency of Israel but declined?', 'Elvis Presley', 'Fidel Castro', 'Albert Einstein', 'Dwight D. Eisenhower',
+    3, 1, null, current_timestamp, null, null),
+    ('Which animal did Napoleon Bonaparte had to flee from after being attacked during a hunting trip?', 'Rabbits', 'Lions', 'Wild dogs', 'Foxes',
+    1, 1, null, current_timestamp, null, null),
+    ('Which of the following was an official court title in ancient Egypt?', 'The Royal Flatterer', 'Taster of Human Tears', 'The Angry Magician', 'Shepherd of the Royal Anus',
+    4, 4, null, current_timestamp, null, null),
+    ('What year did Columbus discover America?', '1492', '1502', '1222', '1678',
+    1, 1, null, current_timestamp, null, null),
+    ('Which historical person was responsible for the most people killed (over 40 million)?', 'Adolf Hitler', 'Joseph Stalin', 'Genghis Khan', 'Alexander the Great',
+    3, 1, null, current_timestamp, null, null),
+    ('Who invented the arabic numerals?', 'The Arabs', 'The Greeks', 'The Indians', 'The French',
+    3, 1, null, current_timestamp, null, null),
+    ('Why did Charles VI of France not want to be touched??', 'He had OCD', 'He thought he was made of glass', 'He believed nobody was worthy', 'He had very tender skin',
+    2, 1, null, current_timestamp, null, null),
+    ('What did most soldiers during the US Civil War die from?', 'Battle-related wounds', 'Diseases such as diarrhea', 'Suicide', 'Incompetent doctors',
+    2, 1, null, current_timestamp, null, null),
+    ('What did Julius Caesar tell the pirates who kidnapped him and demanded 20 gold pieces for his release?', 'All the answers are correct', 'That he is going to kill them after they release him', 'That he is worth more than that', 'He made friends with them',
+    1, 1, null, current_timestamp, null, null),
+    ('In 2018, the USA has existed for 242 years. How many of these has it been at war?', '25', '102', '222', '241',
+    4, 1, null, current_timestamp, null, null),
+    ('Who killed JFK?', 'J. Edgar Hoover', 'Jack Ruby', 'Lee Harvey Oswald', 'Lyndon B. Johnson',
     3, 1, null, current_timestamp, null, null);
-
-
 
 INSERT INTO trivia_db.question_category_map
   (question_id, category_id) VALUES
   (1, 1),(2, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1), (8, 1), (9, 1), (10, 1), (11, 1), (12, 1), (13, 1),
   (14, 1), (15, 1), (16, 1), (17, 1),
-  (18, 2), (19, 2), (20, 2), (21, 2), (22, 2);
+  (18, 2), (19, 2), (20, 2), (21, 2), (22, 2), (23, 2), (24, 2), (25, 2), (26, 2), (27, 2), (28, 2), (29, 2), (30, 2),
+  (32, 2), (33, 2);
 
 
 
