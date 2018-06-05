@@ -1,11 +1,11 @@
 # TriviaServer
 
 ## TL;DR
-* **Web sučelje se može vidjeti [ovdje](http://ec2-18-220-145-50.us-east-2.compute.amazonaws.com:8080/public/login) (testno korisničko ime i lozinka su `trivia` i `trivia`).**
+* **Web sučelje se može vidjeti [ovdje](http://http://18.220.145.50:8080/public/login) (testno korisničko ime i lozinka su `trivia` i `trivia`).**
 
 * **Gotova klijentska aplikacija (Windows, Mac, JAR) može se preuzeti [ovdje](https://drive.google.com/open?id=1T8gWPx-VExwQIaaZ3CYgZUo1xAIyfBu7).**
 
-* **API sučelje se može vidjeti [ovdje](http://ec2-18-220-145-50.us-east-2.compute.amazonaws.com:8080/api) (testno korisničko ime i lozinka su `trivia` i `trivia`).**
+* **API sučelje se može vidjeti [ovdje](http://http://18.220.145.50:8080/api) (testno korisničko ime i lozinka su `trivia` i `trivia`).**
 
     Neki primjeri upita su:
     * /api/questions

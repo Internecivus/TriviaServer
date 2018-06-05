@@ -23,3 +23,7 @@ public enum EntityView {
         public final static String CLIENT_DETAILS = "graph.Client.details";
     }
 }
+
+
+
+
