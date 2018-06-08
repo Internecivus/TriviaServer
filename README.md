@@ -27,7 +27,7 @@ Klijentska aplikacija dostupna je na [GitHubu](https://github.com/Internecivus/T
 
 1. Downloadajte i instalirajte [Wildfly 12.0.0.Final](http://wildfly.org).
 
-2. Downloadajte i instalirajte [Maven](https://maven.apache.org) (opcionalno možete koristiti IDE koji ima integraciju s Mavenom kao što je IntelliJ).
+2. Downloadajte i "instalirajte" [Maven](https://maven.apache.org) (opcionalno možete koristiti IDE koji ima integraciju s Mavenom kao što je IntelliJ).
 
 3. Downloadajte i intalirajte [MySQL](https://www.mysql.com).
 

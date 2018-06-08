@@ -23,7 +23,8 @@ public class RateLimiterFilter implements Filter {
 
         if (visitorsRequests.containsKey(userName)) {
             visitorsRequests.put(userName, visitorsRequests.get(userName) + 1);
-        } else {
+        }
+        else {
             visitorsRequests.put(userName, 1L);
         }
 
@@ -50,5 +51,4 @@ public class RateLimiterFilter implements Filter {
     public void clearFilter() {
         visitorsRequests.clear();
     }
-
 }
